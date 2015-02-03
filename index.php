@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: PlanSo Forms
- * Plugin URI: http://www.planso.de/en/
+ * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: PlanSo.de
  * Author URI: http://www.planso.de/author/stephanhelbig/
  * Text Domain: Optional. psfbldr
@@ -28,23 +28,6 @@
 
 load_plugin_textdomain( 'psfbldr', false, dirname( plugin_basename( __FILE__ ) ).'/locale' );
 
-/*
-pushover.net
-curl_setopt_array($ch = curl_init(), array(
-  CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-  CURLOPT_POSTFIELDS => array(
-    "token" => "undwnHWZbfLVNeM5TDeQr5pJm6pFhn",
-    "user" => "sh@planso.de",
-    "message" => "hello world",
-    "title" => "Title",
-    "url" => "http://planso.de",
-    "url_title" => "PlanSo"
-  ),
-  CURLOPT_SAFE_UPLOAD => true,
-));
-curl_exec($ch);
-curl_close($ch);
-*/
 
 function ps_echo_form($atts, $content= ''){
 	$atts = shortcode_atts(
@@ -94,11 +77,9 @@ add_action( 'admin_menu', 'ps_form_builder_admin_menu' );
 
 /** Hook Admin Menu */
 function ps_form_builder_admin_menu() {
-	//add_options_page( 'PlanSo Form Builder Options', 'PlanSo Form Builder', 'manage_options', 'ps-form-builder', 'ps_form_builder_options' );
 	
 	$edit = add_menu_page( __('PlanSo Form Builder','psfbldr'), __('PlanSo Form Builder','psfbldr'), 'manage_options', 'ps-form-builder', 'ps_form_builder_list' );
 	add_submenu_page( 'ps-form-builder', __('Create new PlanSo Form','psfbldr'), __('New Form','psfbldr'), 'manage_options', 'ps-form-builder-new', 'ps_form_builder_options');
-	//add_submenu_page( 'ps-form-builder', __('PlanSo Forms','psfbldr'), __('List forms','psfbldr'), 'manage_options', 'ps-form-builder-list', 'ps_form_builder_list');
 	
 	add_action( 'load-' . $edit, 'psfb_load_contact_form_admin' );
 }
@@ -114,7 +95,6 @@ function psfb_submit_form(){
 add_action('init', 'psfb_submit_form');
 
 
-//add_action('init', 'product_register');
 add_action('admin_init', 'psfb_register');
  
 function psfb_register() {
@@ -183,7 +163,6 @@ function psfb_save_form(){
 			'post_content' => trim( $post_content ) ) );
 	}
 	
-	
 	$query = array(
 		'message' => ( -1 == $_POST['post_ID'] ) ? 'created' : 'saved',
 		'post' => $id );
@@ -197,7 +176,7 @@ function psfb_load_contact_form_admin(){
 	global $plugin_page;
 
 	$action = psfb_current_action();
-//exit('hier-'.$action);
+	
 	if ( 'save' == $action ) {
 		psfb_save_form();
 		
@@ -235,8 +214,6 @@ function psfb_load_contact_form_admin(){
 		wp_safe_redirect( $redirect_to );
 		exit();
 	}
-	//ps_form_builder_list();
-	//exit('hierin');
 }
 
 function ps_form_builder_enqueue($hook) {
@@ -244,10 +221,10 @@ function ps_form_builder_enqueue($hook) {
   if ( !strstr($hook,'ps-form-builder')) {
       return;
   }
-	 wp_register_style( 'font-awesome',plugins_url( '/ps-form-builder/css/font-awesome-4.2.0/css/font-awesome.min.css', dirname(__FILE__) ) ,array() ,'4.2.0');
+	wp_register_style( 'font-awesome',plugins_url( '/css/font-awesome-4.2.0/css/font-awesome.min.css', (__FILE__) ) ,array() ,'4.2.0');
 	wp_enqueue_style( 'font-awesome');
-	wp_enqueue_style( 'bootstrap',plugins_url( '/ps-form-builder/css/bootstrap/full/bootstrap.min.css', dirname(__FILE__) ) );
-	wp_enqueue_style( 'bootstrap-theme',plugins_url( '/ps-form-builder/css/bootstrap/full/bootstrap-theme.min.css', dirname(__FILE__) ) );
+	wp_enqueue_style( 'bootstrap',plugins_url( '/css/bootstrap/full/bootstrap.min.css', (__FILE__) ) );
+	wp_enqueue_style( 'bootstrap-theme',plugins_url( '/css/bootstrap/full/bootstrap-theme.min.css', (__FILE__) ) );
 	
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-draggable' );
@@ -255,11 +232,11 @@ function ps_form_builder_enqueue($hook) {
 	wp_enqueue_script( 'jquery-ui-sortable' );
 	
 	
-	wp_register_script( 'bootstrap-tooltip',plugins_url( '/ps-form-builder/js/bootstrap/src/tooltip.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
-	wp_register_script( 'bootstrap-modal',plugins_url( '/ps-form-builder/js/bootstrap/src/modal.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
-	wp_register_script( 'bootstrap-collapse',plugins_url( '/ps-form-builder/js/bootstrap/src/collapse.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
-	wp_register_script( 'bootstrap-tab',plugins_url( '/ps-form-builder/js/bootstrap/src/tab.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
-	wp_register_script( 'bootstrap-transition',plugins_url( '/ps-form-builder/js/bootstrap/src/transition.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
+	wp_register_script( 'bootstrap-tooltip',plugins_url( '/js/bootstrap/src/tooltip.js', (__FILE__) ), array('jquery'), '3.2.2', true );
+	wp_register_script( 'bootstrap-modal',plugins_url( '/js/bootstrap/src/modal.js', (__FILE__) ), array('jquery'), '3.2.2', true );
+	wp_register_script( 'bootstrap-collapse',plugins_url( '/js/bootstrap/src/collapse.js', (__FILE__) ), array('jquery'), '3.2.2', true );
+	wp_register_script( 'bootstrap-tab',plugins_url( '/js/bootstrap/src/tab.js', (__FILE__) ), array('jquery'), '3.2.2', true );
+	wp_register_script( 'bootstrap-transition',plugins_url( '/js/bootstrap/src/transition.js', (__FILE__) ), array('jquery'), '3.2.2', true );
 	wp_enqueue_script( 'bootstrap-tooltip' );
 	wp_enqueue_script( 'bootstrap-modal' );
 	wp_enqueue_script( 'bootstrap-collapse' );
@@ -282,12 +259,5 @@ function ps_form_builder_options() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
-	
 	require_once(dirname(__FILE__).'/includes/edit.php');
-	/*
-	echo '<div class="wrap">';
-	
-	
-	echo '</div>';
-	*/
 }
