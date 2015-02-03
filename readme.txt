@@ -1,6 +1,6 @@
 === PlanSo Forms ===
-Contributors: Stephan Helbig, Pablo Garcia
-Tags: form,forms,contact form,form builder,form creator
+Contributors: Stephan Helbig, PabloFernandezGarcia
+Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms
 Requires at least: 3.6
 Tested up to: 4.1
 Stable tag: trunk
@@ -9,19 +9,25 @@ PlanSo Forms makes it easy to create professional forms. Build forms and manage 
 
 == Description ==
 
-PlanSo Forms makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize fields with icons, etc.
+PlanSo Forms makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize form fields with icons, labels, placeholders and the like.
 
 [youtube http://www.youtube.com/watch?v=pKlgQH5VCck]
 
+[Check out PlanSo Forms Pro and Expert](http://forms.planso.de/ "PlanSo Forms - Professional forms easy as 1-2-3")
+
+= Overview =
+
+**Responsive Forms**  
+PlanSo Forms are responsive and adjust to your user's screen size. All forms look eaqually awesome when visited from a tablet, a desktop pc, a smartphone and even on TV.
+
 **Quick & easy**  
-PlanSo Forms are easy to use. It just takes a few seconds to create your own form.
+PlanSo Forms are easy to create. It just takes a few seconds to build your own form.
 
 **Flexible use cases**
+PlanSo Forms are highly flexible. Create any kind of form for infinite use cases.
 
-PlanSo Forms are highly flexible. Create any kind of forms for infinite use cases.
-
-**Mobile-friendly & responsive**  
-Forms created with PlanSo Forms look and feel awesome, even on any mobile device.
+**Mobile first**  
+Forms created with PlanSo Forms comply to mobile-first development style as each form is based on Twitter's bootstrap form syntax.
 
 **Themes**  
 PlanSo Forms are based on Twitter's Bootstrap and are highly compatible with different themes.
@@ -29,8 +35,93 @@ PlanSo Forms are based on Twitter's Bootstrap and are highly compatible with dif
 **No coding**  
 Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding skills.
 
- 
+= Features =
+* HTML5 form fields
+* Multiple form columns
+* Mixed column counts
+* Form field icons
+* Intuitive drag-n-drop
+* Autoresponder emails after form submission
+* Email attachments submitted via a form
+* File uploads
+* Integrated SPAM protection WITHOUT captchas
+* Bootstrap date- and timepicker included
+* Unlimited combination of form fields
+* Custom CSS classes and styles per form field
+* Individual labels, placeholders and help-texts
+* Multi file uploads
+* Font-Awesome Icons for input groups
+* Works with any theme
+
+= Example use cases =
+* Contact forms
+* Registration forms
+* Invitation forms
+* Calendar forms
+* Booking forms
+* Payment forms
+* Contest forms
+* Subscription forms
+* Complaint forms
+* Appointment forms
+* Donation forms
+* Quiz forms
+* Order forms
+* Test forms
+* Mobile forms
+* Survey forms
+* Application forms
+* Tax forms
+* And many, many more
+
+> #### PlanSo Forms Pro
+> PlanSo Forms Pro comes with the following features.<br />
+>
+> HTML-Emails.<br />
+> No reference to PlanSo Forms in emails.<br />
+> Google Analytics Integration.<br />
+> Pushover.net Integration.<br />
+> Zapier.com Integration(ready soon).<br />
+> Priority Support.<br />
+>
+> [Learn more about PlanSo Forms Pro >>](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link)
+
 
 == Installation ==
 
-Extract the zip file and just drop the contents in the wp-content/plugins/ directory of your WordPress installation and then activate the Plugin from Plugins page. 
+There are three easy ways to install PlanSo Forms:
+
+**Uploading .zip file via WordPress**
+Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.latest-stable.zip) file. Log on to your WordPress admin account. Select Plugins on the left hand options, click Add New and Upload Plugin. Either drag the downloaded .zip file into the upload area or choose the .zip file from the download directory and click Install Now. After the installation click Activate Plugin and after a few seconds you will find a new option on the left hand menu named Planso Forms.
+
+**Uploading the plugin via FTP**
+Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.latest-stable.zip) file and extract its contents to a local folder. Go to your FTP client and browse on your hosting server to /your_wp_installation/wp-content/plugins/. Upload the extracted planso-forms folder into this directory. Afterwards log on to your WordPress admin account. Select Plugins on the left hand options, click Installed Plugins and Activate the PlanSo Forms Plugin. After a few seconds you will find a new option on the left hand menu named Planso Forms.
+
+**Installing from the WordPress directory**
+Log on to your WordPress admin account. Select Plugins on the left hand options and click Add New. Search for PlanSo Forms in the search bar and click  Install Now. After the installation click Activate Plugin and after a few seconds you will find a new option on the left hand menu named Planso Forms.
+
+= ATTENTION IIS/AZURE USERS =
+If you are using a windows server or azure websites for your WordPress host you might have to enable "smtp mail" in order for autoresponder emails to work. You can install a plugin like easy smtp to make your life easier.
+
+== Frequently Asked Questions ==
+
+= How do I get in touch for support? =
+
+Please use our [support form](http://www.planso.de/en/support/) to report bugs and to receive help.
+
+== Screenshots ==
+1. Easily create forms with multiple columns using drag-n-drop.
+
+2. Preview forms created while editing - PlanSo forms acts like a wysiwyg form creator.
+
+3. Edit form field details fast and intuitively within comfortable modal dialogs.
+
+4. PlanSo Forms offers you a wide variety of form fields to choose from. Just drag them into the stage and you'll see the resulting form instantly.
+
+5. Create forms for different use cases: signup forms, newsletter registration forms, contact forms, application forms, quizzes, order forms, donation forms, subscription forms, and so on. The sky is the limit.
+
+6. Customize the autoresponder emails sent upon form submission easily. You can add each field of the form into the email text by simply clicking a button.
+
+7. Customize form fields with your own css classes and styles. This way you can alter the design to suid very special needs.
+
+8. Integrate your forms by inserting the generated shortcode anywhere within your site.
