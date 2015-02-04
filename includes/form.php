@@ -5,6 +5,8 @@
 	}
 	$_POST['psfb_global_cnt'] ++;
 	
+	//$_SESSION = null;
+	
 	$framework = array();
   
   wp_register_style( 'font-awesome',plugins_url( '/css/font-awesome-4.2.0/css/font-awesome.min.css', dirname(__FILE__) ) ,array() ,'4.2.0');
@@ -57,20 +59,34 @@
 	$out = '';
 	
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($j,true).'</pre>';
-	//$out .= '<pre>'.print_r($_SESSION['psfb_errors'][$atts['id']],true).'</pre>';
-	//$out .= '<pre>'.print_r($_SESSION['psfb_values'][$atts['id']],true).'</pre>';
-	//$out .= '<pre>'.print_r($GLOBALS['wp_scripts'],true).'</pre>';
-	//$out .= '<pre>'.print_r($GLOBALS['wp_styles'],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION['psfb_errors'][$atts['id']],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION['psfb_errors'],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION,true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION['psfb_values'][$atts['id']],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_scripts'],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_styles'],true).'</pre>';
 	
-	$out .= '<form enctype="multipart/form-data" method="post" class="planso-form-builder" data-id="'.$atts['id'].'" data-cnt="'.$_POST['psfb_global_cnt'].'">';
-	
-	$out .= '<input type="hidden" name="pageurl" value="'.htmlspecialchars(@$_SERVER['HTTP_REFERER']).'"/>';
-	$out .= '<input type="hidden" name="userip" value="'.@$_SERVER['REMOTE_ADDR'].'"/>';
-	$out .= '<input type="hidden" name="useragent" value="'.@$_SERVER['HTTP_USER_AGENT'].'"/>';
-	$out .= '<input type="hidden" name="landingpage" value="'.htmlspecialchars(@$_SESSION['LandingPage']).'"/>';
-	$out .= '<input type="hidden" name="referer" value="'.htmlspecialchars(@$_SESSION['OriginalRef']).'"/>';
+	$out .= '<form enctype="multipart/form-data" method="post" class="planso-form-builder" data-id="'.$atts['id'].'" data-cnt="'.$_POST['psfb_global_cnt'].'" id="planso_forms_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'">';
+	if(isset($_SESSION['psfb_errors'][$atts['id']]) && !empty($_SESSION['psfb_errors'][$atts['id']]) ){
+		$out .= '<p style="padding: 15px;" class="bg-danger">'.__('Attention! There has been an error submitting the form. Please check the marked fields below.','psfbldr').'</p>';
+		if(isset($_SESSION['psfb_errors'][$atts['id']]['psfb_message'])){
+			$out .= '<p class="bg-warning">'.$_SESSION['psfb_errors'][$atts['id']]['psfb_message'].'</p>';
+		}
+	}
+	if(isset($_SESSION['psfb_success'][$atts['id']]) && !empty($_SESSION['psfb_success'][$atts['id']]) ){
+		$out .= '<p style="padding: 15px;" class="bg-success">'.__('Your submission was successful.','psfbldr').'</p>';
+		$_SESSION['psfb_success'][$atts['id']] = null;
+	}
+	//$out .= '<input type="hidden" name="psfb_pageurl" value="'.htmlspecialchars(@$_SERVER['HTTP_REFERER']).'"/>';
+	$out .= '<input type="hidden" name="psfb_pageurl" value="'.htmlspecialchars(get_permalink( get_the_ID() ) ).'"/>';
+	$out .= '<input type="hidden" name="psfb_userip" value="'.@$_SERVER['REMOTE_ADDR'].'"/>';
+	$out .= '<input type="hidden" name="psfb_useragent" value="'.@$_SERVER['HTTP_USER_AGENT'].'"/>';
+	$out .= '<input type="hidden" name="psfb_landingpage" value="'.htmlspecialchars(@$_SESSION['LandingPage']).'"/>';
+	$out .= '<input type="hidden" name="psfb_referer" value="'.htmlspecialchars(@$_SESSION['OriginalRef']).'"/>';
+	$out .= '<input type="hidden" name="psfb_page_id" value="'.get_the_ID().'"/>';
 	$out .= '<input type="hidden" name="psfb_form_submit" value="1"/>';
 	$out .= '<input type="hidden" name="psfb_form_id" value="'.$atts['id'].'"/>';
+	$out .= '<input type="hidden" name="psfb_form_cnt" value="'.$_POST['psfb_global_cnt'].'"/>';
 	
 	$out .= '<div style="display:none"><input type="text" name="psfb_hon_as"/></div>';
 	
@@ -114,16 +130,30 @@ EOF;
 				}
 				$out .= '">';
 				
-				if(!strstr('submit',$col->type)){
-					$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">'.$col->label.'';
-					if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-						$out .= '*';
-					}
-					if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name])){
-						$out .= ' <small>('.$_SESSION['psfb_errors'][$atts['id']][$col->name]['message'].')</small>';
-					}
-					$out .= '</label>';
+				//$out .= 'hide_label:'.$col->type.' '.print_r($col->hide_label,true).'<br/>';
+				if( strstr('submit',$col->type) || strstr('button',$col->type) ){
 					
+					if(isset($col->force_label) && $col->force_label == true){
+						$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
+						$out .= '&nbsp;';
+						$out .= '</label>';
+					}
+				} else {
+					if( !isset($col->hide_label) || $col->hide_label==false || $col->hide_label==''  ){
+						$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
+						
+						$out .= $col->label;
+						
+						if(isset($col->required) && ($col->required=='required' || $col->required==true)){
+							$out .= '*';
+						}
+						
+						if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name])){
+							$out .= ' <small class="bg-danger">('.$_SESSION['psfb_errors'][$atts['id']][$col->name]['message'].')</small>';
+						}
+						$out .= '</label>';
+						
+					}
 				}
 				
 				if(isset($col->icon) && !empty($col->icon)){

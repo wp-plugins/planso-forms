@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) )
 	if ( !isset($_REQUEST['post']) || empty($_REQUEST['post']) || $_REQUEST['post'] == -1 ) {
 		echo esc_html( __( 'Add New Form', 'psfbldr' ) );
 		$post_id = -1;
+		$shortcode_out = '';
 	} else {
 		echo esc_html( __( 'Edit Form', 'psfbldr' ) );
 
@@ -22,6 +23,8 @@ if ( ! defined( 'ABSPATH' ) )
 		if(isset($psform->post_content) && !empty($psform->post_content) && strstr($psform->post_content,'{')){
 			$j = json_decode($psform->post_content);
 		}
+		
+		$shortcode_out = '<div><input type="text" onfocus="this.select();" readonly="readonly" value="[psfb id=&quot;'.$post_id.'&quot; title=&quot;'.$psform->post_title.'&quot;]" class="shortcode-in-list-table wp-ui-text-highlight code form-control"></div>';
 	}
 	echo ' <a href="' . esc_url( menu_page_url( 'ps-form-builder', false ) ) . '" class="add-new-h2">' . esc_html( __( 'Back to forms', 'psfbldr' ) ) . '</a>';
 	
@@ -269,6 +272,13 @@ jQuery(document).ready(function($){
 					required = false;
 				}
 				
+				var  hide_label = $(this).find('#field'+mid+'').data('hide_label');
+				if (typeof hide_label != typeof 'undefined' && (hide_label == true || hide_label=='true' || hide_label=='1')) {
+					hide_label = true;
+				} else {
+					hide_label = false;
+				}
+				
 				var  style = $(this).find('#field'+mid+'').attr('style');
 				if (typeof style !== typeof undefined && style !== false) {
 					
@@ -286,6 +296,7 @@ jQuery(document).ready(function($){
 				j[rind][ind].class = myclass;
 				j[rind][ind].style = style;
 				j[rind][ind].required = required;
+				j[rind][ind].hide_label = hide_label;
 				j[rind][ind].placeholder = placeholder;
 				j[rind][ind].icon = icon;
 				j[rind][ind].name = name;
@@ -445,7 +456,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
   
   if(mytype != 'submit' && mytype!='submitimage'){
   	
-	  row += '<label for="field'+dynID+'" class="field_label">'+myLabel;
+	  row += '<label for="field'+dynID+'" class="field_label"';
+	  if(typeof j.hide_label!='undefined' && j.hide_label==true){
+	  	row += ' style="display:none;"';
+	  }
+	  row += '>'+myLabel;
 	  
 		if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
 			row += '*';
@@ -464,6 +479,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    row += '"';
 	    if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
 	    	row += ' required="required"';
+	    }
+	    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+	    	row += ' data-hide_label="true"';
 	    }
 	    if(typeof j.style!='undefined' && j.style!=''){
 	    	row += ' style="'+j.style+'"';
@@ -503,6 +521,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    }
 	    row += '"';
 	    
+	    if(typeof j.force_label!='undefined' && (j.force_label==true || j.force_label=='true' || j.force_label=='1')){
+	    	row += ' data-force_label="true"';
+	    }
 	    if(typeof j.style!='undefined' && j.style!=''){
 	    	row += ' style="'+j.style+'"';
 	    }
@@ -583,6 +604,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
     	if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
 	    	row += ' multiple="multiple"';
 	    }
+	    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+	    	row += ' data-hide_label="true"';
+	    }
 	    if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
 	    	row += ' required="required"';
 	    }
@@ -623,6 +647,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
     }
     if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
     	row += ' required="required"';
+    }
+    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+    	row += ' data-hide_label="true"';
     }
     row += ' class="form-control';
     if(typeof j.class!='undefined' && j.class!='' && j.class!='undefined'){
@@ -783,6 +810,16 @@ function ps_field_drop( event, ui, target, j, createcol ){
   		$('#field_required').prop('checked',false);
   	}
   	
+  	var hide_label = $(this).closest('.field_container').find('.form-group :input').data('hide_label');
+  	//console.log(req);
+  	if(typeof hide_label!='undefined' && (hide_label == '1' || hide_label==true || hide_label=='true') ){
+  		hide_label = true;
+  		$('#field_hide_label').prop('checked',true);
+  	} else {
+  		hide_label = false;
+  		$('#field_hide_label').prop('checked',false);
+  	}
+  	
   	$('#field_icon').val('');
   	if( $(this).closest('.field_container').find('.input-group').length > 0){
   		$('#field_icon').val( $(this).closest('.field_container').find('.input-group .fa').attr('class').replace('fa ','') );
@@ -901,6 +938,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
   			
   			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class','form-control '+ $('#field_cssclass').val() );
   			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('#field_label').val() );
+	  		
 	  		if($('#field_required').is(':checked')==1){
 	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('required','required');
 	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').append( '*' );
@@ -908,6 +946,16 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').removeAttr('required');
 	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html().replace('*','') );
 	  		}
+	  		
+	  		
+	  		if($('#field_hide_label').is(':checked')==1){
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',true);
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').hide();
+	  		} else {
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',false);
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').show();
+	  		}
+	  		
   		}
   		$('.field_container[data-id="'+myID+'"]').find('.form-group .help-block').html( $('#field_helptext').val() );
   		
@@ -1215,15 +1263,30 @@ jQuery.fn.setCursorPosition = function(position){
 						    <p class="help-block"><?php echo __('Please enter a Font-Awesome icon class. i.e. &quot;fa-user&quot;. Available Icons are found here: ','psfbldr'); ?><a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">Font-Awesome</a></p>
 						  </div>
 						  
-						  <div class="form-group">
-						    <label for="field_required"><?php echo __('Mandatory','psfbldr'); ?></label>
-						  	<div class="checkbox">
-						  		<label>
-						  			<input type="checkbox" id="field_required" value="1"> <?php echo __('Mandatory field','psfbldr'); ?>
-						  		</label>
-						  	</div>
-						    <p class="help-block"><?php echo __('Check this to mark the field as required','psfbldr'); ?></p>
-						  </div>
+						  <div class="row">
+						  	
+							  <div class="form-group col-md-6">
+							    <label for="field_required"><?php echo __('Mandatory','psfbldr'); ?></label>
+							  	<div class="checkbox">
+							  		<label>
+							  			<input type="checkbox" id="field_required" value="1"> <?php echo __('Mandatory field','psfbldr'); ?>
+							  		</label>
+							  	</div>
+							    <p class="help-block"><?php echo __('Check this to mark the field as required','psfbldr'); ?></p>
+							  </div>
+							  
+							  <div class="form-group col-md-6">
+							    <label for="field_hide_label"><?php echo __('Hide label','psfbldr'); ?></label>
+							  	<div class="checkbox">
+							  		<label>
+							  			<input type="checkbox" id="field_hide_label" value="1"> <?php echo __('Hide label of field','psfbldr'); ?>
+							  		</label>
+							  	</div>
+							    <p class="help-block"><?php echo __('Check this to hide the label of the field','psfbldr'); ?></p>
+							  </div>
+						  
+						</div>
+						  
 		        </div><!-- ende basics -->
 		        <div class="selectoptions tab-pane" id="tab-selectoptions" role="tabpanel">
 		        	<div class="selectoptions_template" style="display:none;">
@@ -1311,6 +1374,7 @@ jQuery.fn.setCursorPosition = function(position){
 <div id="titlediv">
 	<div id="titlewrap">
 		<input type="text" size="30" value="<?php if(isset($psform) && isset($psform->post_title))echo $psform->post_title;?>" class="psfb_title_input" id="title" spellcheck="true" autocomplete="off" placeholder="<?php echo __('Form Title','psfbldr'); ?>">
+	<?php echo $shortcode_out; ?>
 	</div>
 	<div class="inside">
 		<div id="edit-slug-box" class="hide-if-no-js">
@@ -1706,9 +1770,7 @@ jQuery.fn.setCursorPosition = function(position){
   <div style="clear:both;"></div>
 </div>
 </form>
-<?php 
-//print_r($psform); 
-?>
+
 <div style="clear:both;"></div>
 </div><!-- wrap -->
 <div style="clear:both;"></div>

@@ -21,7 +21,8 @@ if(!function_exists('validate_url')){
 if(isset($_POST['psfb_hon_as']) && !empty($_POST['psfb_hon_as'])){
 	if($_POST['psfb_hon_as']!=''){
 		//honeypot is not empty - must be spam
-		wp_safe_redirect( $_POST['pageurl'].'#psform'.$_POST['psfb_form_id'] );
+		$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Honeypot is not empty','psfbldr') );
+		wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 	}
 }
 
@@ -33,18 +34,22 @@ if(isset($_SESSION['psfb_anti_spam'][$_POST['psfb_form_id']][$_POST['psfb_cnt_ch
 		//either no session available or 
 		if(strlen($_POST['psfb_hon_as2']) != 32){
 			//md5 was changed is definitly not 32 chars and therefore spam
-			wp_safe_redirect( $_POST['pageurl'].'#psform'.$_POST['psfb_form_id'] );
+			$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Salt missmatch','psfbldr') );
+			wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 		}
 	}
 }
 if(isset($j->javascript_antispam) && $j->javascript_antispam==true){
 	if( !isset($_POST['psfb_js_as']) || empty($_POST['psfb_js_as'])){
 		//javascript antispam field not submitted - spam
-			wp_safe_redirect( $_POST['pageurl'].'#psform'.$_POST['psfb_form_id'] );
+		
+		$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Anti spam field was omitted','psfbldr') );
+		wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 	} else {
 		if($_POST['psfb_js_as']!=$_POST['psfb_hon_as2']){
 			//fields dont match - spam
-			wp_safe_redirect( $_POST['pageurl'].'#psform'.$_POST['psfb_form_id'] );
+			$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Anti spam fields dont match','psfbldr') );
+			wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 		}
 	}
 }
@@ -79,28 +84,46 @@ if(isset($j->fields) && count($j->fields)>0){
 			}
 			
 			if( isset($col->required) && ($col->required==true || $col->required=='required')){
-				
-				if(!isset($_POST[$col->name]) || empty($_POST[$col->name])){
-					//fehler - feld muss ausgefüllt sein
-					$errors[$col->name]['error'] = true;
-					$errors[$col->name]['required'] = true;
-					$errors[$col->name]['message'] = __('This field is required','psfbldr');
-				}
-				
-				if($fieldtype=='email' && !is_email($_POST[$col->name])){
-					$errors[$col->name]['error'] = true;
-					$errors[$col->name]['message'] = __('Invalid E-Mail','psfbldr');
-				}
-				
-				if($fieldtype=='url' && !validate_url($_POST[$col->name])){
-					$errors[$col->name]['error'] = true;
-					$errors[$col->name]['message'] = __('Invalid URL','psfbldr');
+				if(!strstr($col->type,'file')){
+					if(!isset($_POST[$col->name]) || empty($_POST[$col->name])){
+						//fehler - feld muss ausgefüllt sein
+						$errors[$col->name]['error'] = true;
+						$errors[$col->name]['required'] = true;
+						$errors[$col->name]['message'] = __('This field is required','psfbldr');
+					}
+					
+					if($fieldtype=='email' && !is_email($_POST[$col->name])){
+						$errors[$col->name]['error'] = true;
+						$errors[$col->name]['message'] = __('Invalid E-Mail','psfbldr');
+					}
+					
+					if($fieldtype=='url' && !validate_url($_POST[$col->name])){
+						$errors[$col->name]['error'] = true;
+						$errors[$col->name]['message'] = __('Invalid URL','psfbldr');
+					}
+				} else {
+					//file && required
+					if(is_array($_FILES[$col->name]['tmp_name'])){
+						foreach($_FILES[$col->name]['tmp_name'] as $key=>$val){
+							if($_FILES[$col->name]['error'][$key]!=UPLOAD_ERR_OK){
+								$errors[$col->name]['error'] = true;
+								$errors[$col->name]['message'] = __('File upload error','psfbldr');
+							}
+						}
+					} else {
+						if($_FILES[$col->name]['error']!=UPLOAD_ERR_OK){
+							$errors[$col->name]['error'] = true;
+							$errors[$col->name]['message'] = __('File upload error','psfbldr');
+						}
+					}
 				}
 			}//end required
 			
 			$mail_replace[$col->name] = $_POST[$col->name];
 			if(strstr($col->type,'file')){
 				$file_keys[] = $col->name;
+			} else {
+				$zmail_replace[$col->name] = $_POST[$col->name];
 			}
 		}
 	}
@@ -135,50 +158,79 @@ if(count($errors)<1){
 
 
 
-======================================
-Powered by PlanSo Form Builder (free version)
-http://www.planso.de
+=====================
+Powered by PlanSo Forms
+http://forms.planso.de/
 EOF;
 			$admin_content = $content;
-			//$attachments = array( WP_CONTENT_DIR . '/uploads/file_to_attach.zip' );
+			
 			$attachments = array();
+			$zattachments = array();
 			$has_attachments = false;
 			if(count($file_keys)>0){
 				$wp_upload_dir = wp_upload_dir();
-				if(!is_dir($wp_upload_dir['basedir'].'/ps-form-builder/')){
-					mkdir( $wp_upload_dir['basedir'].'/ps-form-builder/',0777 );
+				if(!is_dir($wp_upload_dir['basedir'].'/planso-forms/')){
+					mkdir( $wp_upload_dir['basedir'].'/planso-forms/',0777 );
 				}
 				//dirname(dirname(__FILE__)) == plugin root
 				//$upload_dir = dirname(dirname(__FILE__)).'/uploads/'.session_id();
 				//mkdir( $upload_dir,0777 );
 				
-				$upload_dir = $wp_upload_dir['basedir'].'/ps-form-builder/'.session_id();
-				mkdir( $upload_dir,0777 );
+				$upload_dir = $wp_upload_dir['basedir'].'/planso-forms/'.session_id();
+				$upload_url = $wp_upload_dir['baseurl'].'/planso-forms/'.session_id();
+				if(!is_dir($upload_dir)){
+					mkdir( $upload_dir,0777 );
+				}
 				
 				foreach($file_keys as $f){
 					if(isset($_FILES[$f])){
-						$has_attachments = true;
 						if(is_array($_FILES[$f]['tmp_name'])){
 							foreach($_FILES[$f]['tmp_name'] as $key => $tmp_name){
-						    $file_name = $_FILES[$f]['name'][$key];
-						    $file_size =$_FILES[$f]['size'][$key];
-						    $file_tmp =$_FILES[$f]['tmp_name'][$key];
-						    $file_type=$_FILES[$f]['type'][$key];  
-						    
-						    
-						    move_uploaded_file($file_tmp, $upload_dir.'/'.$file_name);
-						    $attachments[] = $upload_dir.'/'.$file_name;
+								/*
+								Array ( 
+									[Multiple_files] => Array ( 
+										[name] => Array ( 
+											[0] => 
+										)
+										[type] => Array ( [0] => )
+										[tmp_name] => Array ( [0] => )
+										[error] => Array ( [0] => 4 )
+										[size] => Array ( [0] => 0 )
+									)
+								)
+								*/
+								if($_FILES[$f]['error'][$key]==UPLOAD_ERR_OK){
+									$has_attachments = true;
+							    $file_name = $_FILES[$f]['name'][$key];
+							    $file_size = $_FILES[$f]['size'][$key];
+							    $file_tmp = $_FILES[$f]['tmp_name'][$key];
+							    $file_type = $_FILES[$f]['type'][$key];  
+							    /*
+							    $wcnt = 1;
+							    $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+							    $orif_file_name = $file_name;
+							    while(is_file($upload_dir.'/'.$file_name)){
+							    	$file_name = str_replace('.'.$ext,$cnt
+							    }
+							    */
+							    move_uploaded_file($file_tmp, $upload_dir.'/'.$file_name);
+							    $attachments[] = $upload_dir.'/'.$file_name;
+							    $zattachments[$f][] = $upload_dir.'/'.$file_name;
+							    $zuattachments[$f][] = $upload_url.'/'.$file_name;
+							  }
 							}
-						} else {
+						} else if($_FILES[$f]['error']==UPLOAD_ERR_OK){
 							
+							$has_attachments = true;
 							$file_name = $_FILES[$f]['name'];
 					    $file_size =$_FILES[$f]['size'];
 					    $file_tmp =$_FILES[$f]['tmp_name'];
 					    $file_type=$_FILES[$f]['type'];  
 					    
-					    
 					    move_uploaded_file($file_tmp, $upload_dir.'/'.$file_name);
 					    $attachments[] = $upload_dir.'/'.$file_name;
+						  $zattachments[$f][] = $upload_dir.'/'.$file_name;
+						  $zuattachments[$f][] = $upload_url.'/'.$file_name;
 					    
 						}
 					}
@@ -219,10 +271,12 @@ EOF;
 			
 			if($has_attachments && count($attachments)>0){
 				wp_mail( explode(';',$recipients), $subject, $content, $headers, $attachments );
+			/*
 				foreach($attachments as $f){
 					unlink($f);
 				}
 				rmdir($upload_dir);
+			*/
 			} else {
 				wp_mail( explode(';',$recipients), $subject, $content, $headers);//, $attachments );
 			}
@@ -255,9 +309,9 @@ EOF;
 
 
 
-======================================
-Powered by PlanSo Form Builder (free version)
-http://www.planso.de
+=====================
+Powered by PlanSo Forms
+http://forms.planso.de/
 EOF;
 			
 			$headers = array();
@@ -305,7 +359,7 @@ EOF;
 			    "user" => $j->pushover_user,
 			    "message" => $admin_content,
 			    "title" => $psform->post_title.' '.__('has been submitted','psfbldr'),
-			    "url" =>  $_POST['pageurl'],
+			    "url" =>  $_POST['psfb_pageurl'],
 			    "url_title" => get_option( 'blogname', __('Your Wordpress Blog','psfbldr'))
 			  ),
 			  CURLOPT_SAFE_UPLOAD => true,
@@ -316,11 +370,68 @@ EOF;
 		curl_close($ch);
 	}
 	
+	if(isset($j->zapier_url) && count($j->zapier_url)>0){
+		
+		//zapier url muss array werden damit mehrere zaps durchgeführt werden können
+		if(is_array($j->zapier_url)){
+			$zurl = $j->zapier_url;
+		} else if(is_object($j->zapier_url)){
+			$zurl = $j->zapier_url;
+		} else {
+			$zurl[] = $j->zapier_url;
+		}
+		
+		if($has_attachments && count($zattachments)>0){
+			foreach($zuattachments as $k=>$a){
+				for($cnt = 0;$cnt < count($a);$cnt++){
+					//$zmail_replace[$k.'['.$cnt.']'] = '@' . $a[$cnt];
+					$zmail_replace[$k.'['.$cnt.']'] = $a[$cnt];
+				}
+			}
+		}
+		
+		foreach($zurl as $url){
+					//CURLOPT_URL => "https://zapier.com/hooks/catch/oebhyc/",
+					//https://zapier.com/hooks/catch/oe3kcr/
+			$options = array( 
+					CURLOPT_URL => $url,
+	        CURLOPT_RETURNTRANSFER => true,         // return response 
+	        CURLOPT_HEADER         => false,        // don't return headers 
+	        CURLOPT_USERAGENT      => "PlanSo Forms",     // who am i 
+	        CURLOPT_CONNECTTIMEOUT => 60,          // timeout on connect 
+	        CURLOPT_TIMEOUT        => 60,          // timeout on response 
+	        CURLOPT_POST            => 1,            // i am sending post data 
+	           CURLOPT_POSTFIELDS     => $zmail_replace,    // this are my post vars 
+	        CURLOPT_SSL_VERIFYHOST => 0,            // don't verify ssl 
+	        CURLOPT_SSL_VERIFYPEER => false        // 
+	    ); 
+	
+	    $ch      = curl_init(); 
+	    curl_setopt_array($ch,$options); 
+			
+			$result = curl_exec($ch);
+			curl_close($ch);
+		}
+	}
+	//print_r($attachments);
+	/** CLEAN UPLOADED ATTACHMENTS **/
+	if(!isset($j->clean_attachments) || $j->clean_attachments==true){
+		if($has_attachments && count($attachments)>0){
+			foreach($attachments as $f){
+				unlink($f);
+			}
+			rmdir($upload_dir);
+		}
+	}
+	//print_r($zmail_replace);
+	//exit($result);
+	
 	
 	if(isset($j->thankyou_page_url) && validate_url($j->thankyou_page_url)){
 		wp_redirect( $j->thankyou_page_url );
 	} else {
-		wp_safe_redirect( $_POST['pageurl'].'#psform'.$_POST['psfb_form_id'] );
+		$_SESSION['psfb_success'][$_POST['psfb_form_id']] = true;
+		wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 	}
 	exit();
 	
@@ -329,7 +440,7 @@ else {
 	//error: register in session
 	$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = $errors;
 	$_SESSION['psfb_values'][$_POST['psfb_form_id']] = $_POST;
-	wp_safe_redirect( $_POST['pageurl'].'#psform'.$_POST['psfb_form_id'] );
+	wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 	exit();
 }
 

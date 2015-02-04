@@ -24,7 +24,7 @@ PlanSo Forms are responsive and adjust to your user's screen size. All forms loo
 PlanSo Forms are easy to create. It just takes a few seconds to build your own form.
 
 **Flexible use cases**  
-PlanSo Forms are highly flexible. Create any kind of form for infinite use cases.
+PlanSo Forms are highly flexible. Create any kind of form for infinite use cases with PlanSo form builder.
 
 **Mobile first**  
 Forms created with PlanSo Forms comply to mobile-first development style as each form is based on Twitter's Bootstrap form syntax.
@@ -39,6 +39,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 * HTML5 form fields
 * Multiple form columns
 * Mixed column counts
+* Multilingual form builder
 * Form field icons
 * Intuitive drag-n-drop
 * Autoresponder emails after form submission
@@ -110,7 +111,7 @@ If you are using a windows server or azure websites for your WordPress host you 
 Please use our [support form](http://www.planso.de/en/support/) to report bugs and to receive help.
 
 == Screenshots ==
-1. Easily create forms with multiple columns using drag-n-drop.
+1. Easily create forms with multiple columns using drag-n-drop with PlanSo Forms builder.
 
 2. Preview forms created while editing - PlanSo forms acts like a wysiwyg form creator.
 

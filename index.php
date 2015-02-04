@@ -3,10 +3,10 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: PlanSo.de
  * Author URI: http://www.planso.de/author/stephanhelbig/
- * Text Domain: Optional. psfbldr
+ * Text Domain: psfbldr
  * Domain Path: /locale/
  * License: GPL2
  */
@@ -260,4 +260,53 @@ function ps_form_builder_options() {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 	}
 	require_once(dirname(__FILE__).'/includes/edit.php');
+}
+
+
+
+
+
+
+
+// add new buttons
+add_filter('mce_buttons', 'psfb_register_buttons');
+function psfb_register_buttons($buttons) {
+	array_push($buttons, 'separator', 'planso_forms_shortcodes');
+	return $buttons;
+}
+ 
+// Load the TinyMCE plugin : editor_plugin.js (wp2.5)
+add_filter('mce_external_plugins', 'psfb_register_tinymce_javascript');
+
+function psfb_register_tinymce_javascript($plugin_array) {
+	psfb_add_tinymce_button();
+	$plugin_array['planso_forms_shortcodes'] = plugins_url('/js/mce-button.js',__file__);
+	return $plugin_array;
+}
+
+
+
+
+function psfb_add_tinymce_button(){
+	
+	$out = '<script type="text/javascript">';
+	$out .= 'var planso = {};planso.forms = {};';
+	
+	$out .= 'planso.forms.shortcodes = [';
+	
+	$shortcodes = query_posts( 'post_type=psfb&posts_per_page=20');
+	$fcnt = 0;
+	foreach($shortcodes as $row){
+		if($fcnt > 0)$out .= ',';
+		$id = $row->ID;
+		$title = $row->post_title;
+		$out .= '{';
+		$out .= "text:'".$title."',onclick:function(){planso.forms.editor.insertContent( '[psfb id=\"".$id."\" title=\"".$title."\"]');}";
+		$out .= '}';
+		$fcnt ++;
+	}
+	
+	$out .= '];';
+	$out .= '</script><style type="text/css">.mce-i-planso-gears-icon{background-image:url(\''.plugins_url( 'images/planso-logo-gears-transparent-72x72.png', (__FILE__)).'\');}</style>';
+	echo $out;
 }
