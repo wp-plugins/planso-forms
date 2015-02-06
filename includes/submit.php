@@ -153,16 +153,14 @@ if(count($errors)<1){
 				$bcc = str_replace('['.$k.']',$v,$bcc);
 			}
 			
-			$content .= <<<EOF
-
-
-
-
-=====================
-Powered by PlanSo Forms
-http://forms.planso.de/
-EOF;
+			//vars.inc.php
+			$content .= $powered_by_txt_email;
+			
+			
+			
 			$admin_content = $content;
+			$admin_content = apply_filters('psfb_submit_admin_content',$content);
+			
 			
 			$attachments = array();
 			$zattachments = array();
@@ -270,7 +268,10 @@ EOF;
 			}
 			
 			if($has_attachments && count($attachments)>0){
-				wp_mail( explode(';',$recipients), $subject, $content, $headers, $attachments );
+				
+				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>$attachments));
+				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers'], $filtered_mail_contents['attachments'] );
+				//wp_mail( explode(';',$recipients), $subject, $content, $headers, $attachments );
 			/*
 				foreach($attachments as $f){
 					unlink($f);
@@ -278,7 +279,10 @@ EOF;
 				rmdir($upload_dir);
 			*/
 			} else {
-				wp_mail( explode(';',$recipients), $subject, $content, $headers);//, $attachments );
+				
+				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>array()));
+				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers']);//, $attachments );
+				//wp_mail( explode(';',$recipients), $subject, $content, $headers);//, $attachments );
 			}
 		}
 		
@@ -304,15 +308,8 @@ EOF;
 				$bcc = str_replace('['.$k.']',$v,$bcc);
 			}
 			
-			$content .= <<<EOF
-
-
-
-
-=====================
-Powered by PlanSo Forms
-http://forms.planso.de/
-EOF;
+			//vars.inc.php
+			$content .= $powered_by_txt_email;
 			
 			$headers = array();
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
@@ -343,7 +340,11 @@ EOF;
 			if(is_email($reply_to)){
 				$headers[] = 'Reply-To: '.trim($reply_to);
 			}
-			wp_mail( explode(';',$recipients), $subject, $content, $headers);//, $attachments );
+			
+			$filtered_mail_contents = apply_filters('psfb_submit_before_user_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers));
+			
+			
+			wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers']);//, $attachments );
 		}
 		
 		
@@ -391,8 +392,6 @@ EOF;
 		}
 		
 		foreach($zurl as $url){
-					//CURLOPT_URL => "https://zapier.com/hooks/catch/oebhyc/",
-					//https://zapier.com/hooks/catch/oe3kcr/
 			$options = array( 
 					CURLOPT_URL => $url,
 	        CURLOPT_RETURNTRANSFER => true,         // return response 
@@ -426,6 +425,12 @@ EOF;
 	//print_r($zmail_replace);
 	//exit($result);
 	
+	$page_detail_atts = array(
+		'id' => $psform->ID,
+		'permalink' => $_POST['psfb_pageurl'],
+		'title' => $psform->post_title
+	);
+	do_action( 'psfb_submit_before_redirect_successfull',$page_detail_atts );
 	
 	if(isset($j->thankyou_page_url) && validate_url($j->thankyou_page_url)){
 		wp_redirect( $j->thankyou_page_url );
@@ -437,6 +442,7 @@ EOF;
 	
 }//no errors
 else {
+	do_action( 'psfb_submit_before_redirect_error' );
 	//error: register in session
 	$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = $errors;
 	$_SESSION['psfb_values'][$_POST['psfb_form_id']] = $_POST;

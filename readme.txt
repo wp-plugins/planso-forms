@@ -1,7 +1,7 @@
 === PlanSo Forms ===
 Contributors: Stephan Helbig, PabloFernandezGarcia
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms
-Requires at least: 3.6
+Requires at least: 3.9
 Tested up to: 4.1
 Stable tag: trunk
 
@@ -52,6 +52,9 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 * Individual labels, placeholders and help-texts
 * Multi file uploads
 * Font-Awesome Icons for input groups
+* Select from different datepickers within form builder
+* Multiple form recipients of autoresponder email
+* Multiple bcc recipients
 * Works with any theme
 
 = Example use cases =
@@ -82,7 +85,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 > No reference to PlanSo Forms in emails<br />
 > Google Analytics Integration<br />
 > Pushover.net Integration<br />
-> Zapier.com Integration(ready soon)<br />
+> Zapier.com Integration<br />
 > Priority Support<br />
 >
 > [Learn more about PlanSo Forms Pro >>](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link)
@@ -108,7 +111,7 @@ If you are using a windows server or azure websites for your WordPress host you 
 
 = How do I get in touch for support? =
 
-Please use our [support form](http://www.planso.de/en/support/) to report bugs and to receive help.
+Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) in the WordPress plugin directory or use our [support form](http://www.planso.de/en/support/) to report bugs and to receive help.
 
 == Screenshots ==
 1. Easily create forms with multiple columns using drag-n-drop with PlanSo Forms builder.

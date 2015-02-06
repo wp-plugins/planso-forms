@@ -165,6 +165,9 @@ jQuery(document).ready(function($){
 		if(typeof jf.javascript_antispam!='undefined' && jf.javascript_antispam==true){
 			$('#javascript_antispam').prop('checked','checked');
 		}
+		if(typeof jf.datepicker!='undefined'){
+			$('#psfb_datepicker').val(jf.datepicker);
+		}
 		var j = jf.fields;
 		//console.log(j);
 		$.each(j,function(k,v){
@@ -372,7 +375,21 @@ jQuery(document).ready(function($){
 		} else {
 			jj.javascript_antispam = false;
 		}
+		jj.datepicker = $('#psfb_datepicker').val();
+		
 		jj.thankyou_page_url = $('#thankyou_page_url').val();
+		
+		if( $('input.zapier_url').length > 0){
+			jj.zapier_url = [];
+			$('input.zapier_url').each(function(i){
+				if( $(this).val() != ''){
+					jj.zapier_url[i] = $(this).val();
+				}
+			});
+		}
+		if( $('input.pushover_user').length > 0){
+			jj.pushover_user =  $('input.pushover_user').val();
+		}
 		
 		$('#psfb_title').val( $('.psfb_title_input').val() );
 		$('#psfb_json').val( JSON.stringify( jj ) );
@@ -1110,8 +1127,6 @@ function ps_manage_form_vars(){
 
 
 
-
-
 jQuery.fn.getCursorPosition = function(){
     if(this.lengh == 0) return -1;
     return jQuery(this).getSelectionStart();
@@ -1179,7 +1194,10 @@ jQuery.fn.setCursorPosition = function(position){
 };
 
 
+<?php do_action( 'psfb_edit_javascript' ); ?>
+
 </script>
+<?php do_action( 'psfb_edit_after_javascript' ); ?>
 <style type="text/css">
 
 .form_builder_stage .field_container .options{
@@ -1205,6 +1223,8 @@ jQuery.fn.setCursorPosition = function(position){
 .form_builder_stage .row:last-child{
 	padding-bottom:25px;
 }
+
+<?php do_action( 'psfb_edit_cssstyles' ); ?>
 </style>
 
 
@@ -1381,6 +1401,9 @@ jQuery.fn.setCursorPosition = function(position){
 			</div>
 	</div>
 </div>
+
+<?php do_action( 'psfb_edit_after_title_input' ); ?>
+
 <!--
 <section class="container-fluid">
 	<section class="row">
@@ -1434,6 +1457,7 @@ jQuery.fn.setCursorPosition = function(position){
 	</section><!-- ende .row -->
 </section><!-- ende .container -->
 
+<?php do_action( 'psfb_edit_after_form_stage' ); ?>
 
 <section class="container-fluid">
 	<div class="row">
@@ -1468,6 +1492,8 @@ jQuery.fn.setCursorPosition = function(position){
 		</div>
 	</section>
 </section>
+
+<?php do_action( 'psfb_edit_after_thankyoupage' ); ?>
 
 <section class="container-fluid">
 	<div class="row">
@@ -1608,6 +1634,8 @@ jQuery.fn.setCursorPosition = function(position){
 </section>
 
 
+<?php do_action( 'psfb_edit_after_admin_mail' ); ?>
+
 <section class="container-fluid">
 	<div class="row">
 		<div class="form-group">
@@ -1700,6 +1728,7 @@ jQuery.fn.setCursorPosition = function(position){
 	</section>
 </section>
 
+<?php do_action( 'psfb_edit_after_user_mail' ); ?>
 
 <section class="container-fluid">
 	<div class="row">
@@ -1723,28 +1752,51 @@ jQuery.fn.setCursorPosition = function(position){
 				
 				<section class="col-md-9">
 					
-					
-						<div class="form-group checkbox">
-					    <label for="ps_link_love">
-					    	<input type="checkbox" id="ps_link_love" name="ps_link_love" value="1">
-					    	<?php echo __('Get good karma and spread some link love','psfbldr'); ?>
-					    </label>
-					  </div>
-					
-						<div class="form-group checkbox">
-					    <label for="planso_style">
-					    	<input type="checkbox" id="planso_style" name="planso_style" value="1">
-					    	<?php echo __('Include special Stylesheet based on bootstrap 3.0 if your form does not look good','psfbldr'); ?>
-					    </label>
-					  </div>
-					
-						<div class="form-group checkbox">
-					    <label for="javascript_antispam">
-					    	<input type="checkbox" id="javascript_antispam" name="javascript_antispam" value="1">
-					    	<?php echo __('Enable special javascript based anti spam protection','psfbldr'); ?>
-					    </label>
-					    <p class="help-block"><?php echo __('If checked a special hidden field will be appended to your form via javascript. The form will break for users with javascript disabled!','psfbldr'); ?></p>
-					  </div>
+					<div class="row">
+						<div class="col-md-6">
+							
+							<div class="form-group checkbox">
+						    <label for="ps_link_love">
+						    	<input type="checkbox" id="ps_link_love" name="ps_link_love" value="1">
+						    	<?php echo __('Get good karma and spread some link love','psfbldr'); ?>
+						    </label>
+						  </div>
+						
+							<div class="form-group checkbox">
+						    <label for="planso_style">
+						    	<input type="checkbox" id="planso_style" name="planso_style" value="1">
+						    	<?php echo __('Include special Stylesheet based on bootstrap 3.0 if your form does not look good','psfbldr'); ?>
+						    </label>
+						  </div>
+						
+							<div class="form-group checkbox">
+						    <label for="javascript_antispam">
+						    	<input type="checkbox" id="javascript_antispam" name="javascript_antispam" value="1">
+						    	<?php echo __('Enable special javascript based anti spam protection','psfbldr'); ?>
+						    </label>
+						    <p class="help-block"><?php echo __('If checked a special hidden field will be appended to your form via javascript. The form will break for users with javascript disabled!','psfbldr'); ?></p>
+						  </div>
+							
+						</div>
+						<div class="col-md-6">
+							
+							<div class="form-group">
+						    <label for="psfb_datepicker"><?php echo __('Select the Datepicker that best fits your theme','psfbldr'); ?></label>
+					    	<select id="psfb_datepicker" name="psfb_datepicker">
+					    		<option value="bootstrap-datetimepicker">Bootstrap DateTimePicker (Eonasdan)</option>
+					    		<option value="bootstrap-datepicker-eternicode">Bootstrap Datepicker(Eternicode)</option>
+					    		<option value="jquery-ui-datepicker">jQuery UI Datepicker</option>
+					    <!--
+					    		<option value="bootstrap-datepicker">Bootstrap Datepicker(Eyecon)</option>
+					    -->
+					    	</select>
+						    
+						    <p class="help-block"><?php echo __('Depending on your theme you might want to choose a different datepicker for date fields.','psfbldr'); ?></p>
+						  </div>
+							
+						</div>
+					</div>
+						
 					  
 				</section>
 			</div>
@@ -1752,6 +1804,7 @@ jQuery.fn.setCursorPosition = function(position){
 	</section>
 </section>
 
+<?php do_action( 'psfb_edit_after_additional_settings' ); ?>
 
 <form method="post" class="psfb_submit_form" action="<?php echo esc_url( add_query_arg( array( 'post' => $post_id ), menu_page_url( 'ps-form-builder', false ) ) ); ?>">
 <input type="hidden" name="action" value="save"/>

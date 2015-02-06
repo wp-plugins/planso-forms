@@ -3,9 +3,9 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: PlanSo.de
- * Author URI: http://www.planso.de/author/stephanhelbig/
+ * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
  * Domain Path: /locale/
  * License: GPL2
@@ -67,10 +67,23 @@ function psfb_set_session_values()
 	{
 		$_SESSION['LandingPage'] = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; 
 	}
+	if(isset($_SESSION['psfb_track_successfull_submission'])){
+		$_SESSION['psfb_track_successfull_submission'] = null;
+		add_action('wp_footer', 'psfb_track_successfull_submission');
+	}
 }
 add_action('init', 'psfb_set_session_values');
 
-
+function psfb_track_successfull_submission(){
+?>
+<script type="text/javascript">
+var _gaq = _gaq || [];_gaq.push(['_trackEvent', 'PlanSo Forms', '<?php echo $_SESSION['psfb_track_successfull_submission_form_label']; ?>', '<?php echo $_SESSION['psfb_track_successfull_submission_permalink']; ?>']);
+try{ga('send', 'event', 'PlanSo Forms', '<?php echo $_SESSION['psfb_track_successfull_submission_form_label']; ?>', '<?php echo $_SESSION['psfb_track_successfull_submission_form_id']; ?>', {'page': '<?php echo $_SESSION['psfb_track_successfull_submission_permalink']; ?>'});}catch(e){console.log('analytics.js not loaded');}
+</script>
+<?php
+	$_SESSION['psfb_track_successfull_submission_form_id'] = null;
+	$_SESSION['psfb_track_successfull_submission_permalink'] = null;
+}
 
 /** Register Admin Menu */
 add_action( 'admin_menu', 'ps_form_builder_admin_menu' );
@@ -299,7 +312,12 @@ function psfb_add_tinymce_button(){
 	foreach($shortcodes as $row){
 		if($fcnt > 0)$out .= ',';
 		$id = $row->ID;
-		$title = $row->post_title;
+		if(isset($row->post_title) && !empty($row->post_title)){
+			$title = $row->post_title; 
+		} else {
+			$title = __('Unnamed form','psfbldr');
+		}
+		
 		$out .= '{';
 		$out .= "text:'".$title."',onclick:function(){planso.forms.editor.insertContent( '[psfb id=\"".$id."\" title=\"".$title."\"]');}";
 		$out .= '}';
