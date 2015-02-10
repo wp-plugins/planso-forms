@@ -132,6 +132,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.0.5 =
+* Fixed additional styling issues
+
 = 1.0.4 =
 * Fixed styling issues with several Themes, especially with the Genesis Framework
 

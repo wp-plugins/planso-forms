@@ -109,6 +109,7 @@
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_styles'],true).'</pre>';
 	
 	$out .= '<form enctype="multipart/form-data" method="post" class="planso-form-builder" data-id="'.$atts['id'].'" data-cnt="'.$_POST['psfb_global_cnt'].'" id="planso_forms_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'">';
+	$out .= '<div class="container-fluid">';
 	if(isset($_SESSION['psfb_errors'][$atts['id']]) && !empty($_SESSION['psfb_errors'][$atts['id']]) ){
 		$out .= '<p style="padding: 15px;" class="bg-danger">'.__('Attention! There has been an error submitting the form. Please check the marked fields below.','psfbldr').'</p>';
 		if(isset($_SESSION['psfb_errors'][$atts['id']]['psfb_message'])){
@@ -385,6 +386,7 @@ EOF;
 		} //ende foreach fields
 	}// ende if fields
 	
+	$out .= '</div>';
 	$out .= '</form>';
 	
 	if(isset($j->link_love) && !empty($j->link_love) && $j->link_love==true){

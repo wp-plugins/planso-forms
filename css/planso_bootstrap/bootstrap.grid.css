@@ -1,16 +1,266 @@
 /*!
- * Bootstrap v3.3.1 (http://getbootstrap.com)
+ * Bootstrap v3.3.2 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=9fd563821d4d5f808257)
- * Config saved to config.json and https://gist.github.com/9fd563821d4d5f808257
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=0dd56d77d879effa17a2)
+ * Config saved to config.json and https://gist.github.com/0dd56d77d879effa17a2
  */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
-/* MODIFIED FOR PLANSO FORMS */
+/*
+ * MODIFIED FOR PlanSo Forms (http://forms.planso.de/) 
+ */
+
+.planso-form-builder article,
+.planso-form-builder aside,
+.planso-form-builder details,
+.planso-form-builder figcaption,
+.planso-form-builder figure,
+.planso-form-builder footer,
+.planso-form-builder header,
+.planso-form-builder hgroup,
+.planso-form-builder main,
+.planso-form-builder menu,
+.planso-form-builder nav,
+.planso-form-builder section,
+.planso-form-builder summary {
+  display: block;
+}
+.planso-form-builder audio,
+.planso-form-builder canvas,
+.planso-form-builder progress,
+.planso-form-builder video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+.planso-form-builder audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+.planso-form-builder [hidden],
+.planso-form-builder template {
+  display: none;
+}
+.planso-form-builder a:active,
+.planso-form-builder a:hover {
+  outline: 0;
+}
+.planso-form-builder abbr[title] {
+  border-bottom: 1px dotted;
+}
+.planso-form-builder b,
+.planso-form-builder strong {
+  font-weight: bold;
+}
+.planso-form-builder dfn {
+  font-style: italic;
+}
+.planso-form-builder h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+.planso-form-builder mark {
+  background: #ff0;
+  color: #000;
+}
+.planso-form-builder small {
+  font-size: 80%;
+}
+.planso-form-builder sub,
+.planso-form-builder sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.planso-form-builder sup {
+  top: -0.5em;
+}
+.planso-form-builder sub {
+  bottom: -0.25em;
+}
+.planso-form-builder img {
+  border: 0;
+}
+.planso-form-builder svg:not(:root) {
+  overflow: hidden;
+}
+.planso-form-builder figure {
+  margin: 1em 40px;
+}
+.planso-form-builder hr {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  height: 0;
+}
+.planso-form-builder pre {
+  overflow: auto;
+}
+.planso-form-builder code,
+.planso-form-builder kbd,
+.planso-form-builder pre,
+.planso-form-builder samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+.planso-form-builder button,
+.planso-form-builder input,
+.planso-form-builder optgroup,
+.planso-form-builder select,
+.planso-form-builder textarea {
+  font: inherit;
+  margin: 0;
+}
+.planso-form-builder button {
+  overflow: visible;
+}
+.planso-form-builder button,
+.planso-form-builder select {
+  text-transform: none;
+}
+.planso-form-builder button,
+.planso-form-builder input[type="button"],
+.planso-form-builder input[type="reset"],
+.planso-form-builder input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+.planso-form-builder button[disabled],
+.planso-form-builder input[disabled] {
+  cursor: default;
+}
+.planso-form-builder button::-moz-focus-inner,
+.planso-form-builder input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+.planso-form-builder input {
+  line-height: normal;
+}
+.planso-form-builder input[type="checkbox"],
+.planso-form-builder input[type="radio"] {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+}
+.planso-form-builder input[type="number"]::-webkit-inner-spin-button,
+.planso-form-builder input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+.planso-form-builder input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.planso-form-builder input[type="search"]::-webkit-search-cancel-button,
+.planso-form-builder input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+.planso-form-builder fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+.planso-form-builder legend {
+  border: 0;
+  padding: 0;
+}
+.planso-form-builder textarea {
+  overflow: auto;
+}
+.planso-form-builder optgroup {
+  font-weight: bold;
+}
+.planso-form-builder table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.planso-form-builder td,
+.planso-form-builder th {
+  padding: 0;
+}
+.planso-form-builder * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.planso-form-builder *:before,
+.planso-form-builder *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.planso-form-builder input,
+.planso-form-builder button,
+.planso-form-builder select,
+.planso-form-builder textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.planso-form-builder figure {
+  margin: 0;
+}
+.planso-form-builder img {
+  vertical-align: middle;
+}
+.planso-form-builder .img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.planso-form-builder .img-rounded {
+  border-radius: 6px;
+}
+.planso-form-builder .img-thumbnail {
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+.planso-form-builder .img-circle {
+  border-radius: 50%;
+}
+.planso-form-builder hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eeeeee;
+}
+.planso-form-builder .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.planso-form-builder .sr-only-focusable:active,
+.planso-form-builder .sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
 .planso-form-builder .container {
   margin-right: auto;
   margin-left: auto;
@@ -678,34 +928,21 @@
     margin-left: 0%;
   }
 }
-
 .planso-form-builder .clearfix:before,
 .planso-form-builder .clearfix:after,
-.planso-form-builder .dl-horizontal dd:before,
-.planso-form-builder .dl-horizontal dd:after,
 .planso-form-builder .container:before,
 .planso-form-builder .container:after,
 .planso-form-builder .container-fluid:before,
 .planso-form-builder .container-fluid:after,
 .planso-form-builder .row:before,
-.planso-form-builder .row:after,
-.planso-form-builder .form-horizontal .form-group:before,
-.planso-form-builder .form-horizontal .form-group:after,
-.planso-form-builder .btn-toolbar:before,
-.planso-form-builder .btn-toolbar:after,
-.planso-form-builder .btn-group-vertical > .btn-group:before,
-.planso-form-builder .btn-group-vertical > .btn-group:after {
+.planso-form-builder .row:after {
   content: " ";
   display: table;
 }
 .planso-form-builder .clearfix:after,
-.planso-form-builder .dl-horizontal dd:after,
 .planso-form-builder .container:after,
 .planso-form-builder .container-fluid:after,
-.planso-form-builder .row:after,
-.planso-form-builder .form-horizontal .form-group:after,
-.planso-form-builder .btn-toolbar:after,
-.planso-form-builder .btn-group-vertical > .btn-group:after {
+.planso-form-builder .row:after {
   clear: both;
 }
 .planso-form-builder .center-block {
@@ -719,7 +956,26 @@
 .planso-form-builder .pull-left {
   float: left !important;
 }
-
+.planso-form-builder .hide {
+  display: none !important;
+}
+.planso-form-builder .show {
+  display: block !important;
+}
+.planso-form-builder .invisible {
+  visibility: hidden;
+}
+.planso-form-builder .text-hide {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.planso-form-builder .hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
 .planso-form-builder .affix {
   position: fixed;
 }
@@ -750,14 +1006,14 @@
   .planso-form-builder .visible-xs {
     display: block !important;
   }
-  .planso-form-builder table.visible-xs {
+  table.planso-form-builder .visible-xs {
     display: table;
   }
-  .planso-form-builder tr.visible-xs {
+  tr.planso-form-builder .visible-xs {
     display: table-row !important;
   }
-  .planso-form-builder th.visible-xs,
-  .planso-form-builder td.visible-xs {
+  th.planso-form-builder .visible-xs,
+  td.planso-form-builder .visible-xs {
     display: table-cell !important;
   }
 }
@@ -780,14 +1036,14 @@
   .planso-form-builder .visible-sm {
     display: block !important;
   }
-  .planso-form-builder table.visible-sm {
+  table.planso-form-builder .visible-sm {
     display: table;
   }
-  .planso-form-builder tr.visible-sm {
+  tr.planso-form-builder .visible-sm {
     display: table-row !important;
   }
-  .planso-form-builder th.visible-sm,
-  .planso-form-builder td.visible-sm {
+  th.planso-form-builder .visible-sm,
+  td.planso-form-builder .visible-sm {
     display: table-cell !important;
   }
 }
@@ -935,15 +1191,18 @@
 }
 
 
+
 .planso-form-builder .input-group {
   display: table;
   width:100%;
 }
 .planso-form-builder .input-group .input-group-addon {
-  display: table-cell;
-  padding:0 15px;
-  width:30px;
+	display: table-cell;
+	padding: 0 7.5px;
+	width: 15px;
+	text-align: center;
 }
 .planso-form-builder .input-group .form-control{
   width:100%;
+  display: table-cell;
 }
