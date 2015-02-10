@@ -50,6 +50,8 @@ function ps_echo_form($atts, $content= ''){
 add_shortcode( 'psfb', 'ps_echo_form'  );
 
 
+add_filter('widget_text', 'do_shortcode'); 
+
 // Original Referrer 
 function psfb_set_session_values() 
 {

@@ -21,8 +21,10 @@
 	}
 	
 	if(!isset($framework['bootstrap'])){
-		wp_enqueue_style( 'bootstrap',plugins_url( '/css/bootstrap/css/bootstrap.min.css', dirname(__FILE__) ) );
-		wp_enqueue_style( 'bootstrap-theme',plugins_url( '/css/bootstrap/css/bootstrap-theme.min.css', dirname(__FILE__) ) );
+	//	wp_enqueue_style( 'bootstrap',plugins_url( '/css/bootstrap/css/bootstrap.min.css', dirname(__FILE__) ) );
+	//	wp_enqueue_style( 'bootstrap-theme',plugins_url( '/css/bootstrap/css/bootstrap-theme.min.css', dirname(__FILE__) ) );
+		
+		wp_enqueue_style( 'bootstrap-grid',plugins_url( '/css/planso_bootstrap/bootstrap.grid.css', dirname(__FILE__) ) );
 		
 		wp_register_script( 'bootstrap-collapse',plugins_url( '/js/bootstrap/src/collapse.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
 		wp_register_script( 'bootstrap-transition',plugins_url( '/js/bootstrap/src/transition.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
@@ -33,7 +35,8 @@
 	}
 	
 	if(isset($j->planso_style) && $j->planso_style==true){
-		wp_enqueue_style( 'planso-bootstrap',plugins_url( '/css/planso_bootstrap/bootstrap.css', dirname(__FILE__) ) );
+		//wp_enqueue_style( 'planso-bootstrap',plugins_url( '/css/planso_bootstrap/bootstrap.css', dirname(__FILE__) ) );
+		wp_enqueue_style( 'bootstrap-form',plugins_url( '/css/planso_bootstrap/bootstrap.form.css', dirname(__FILE__) ) );
 	}
 
 	
@@ -41,15 +44,18 @@
 		if(isset($j->datepicker) && $j->datepicker=='bootstrap-datetimepicker'){
 			//datetimepicker
 			wp_enqueue_style( 'bootstrap-datetimepicker',plugins_url( '/js/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css', dirname(__FILE__) ) );
+			wp_enqueue_style( 'bootstrap-dropdown',plugins_url( '/css/planso_bootstrap/bootstrap.dropdown.css', dirname(__FILE__) ) );
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		} else if(isset($j->datepicker) && $j->datepicker=='jquery-ui-datepicker'){
 			wp_enqueue_style( 'bootstrap-datetimepicker',plugins_url( '/css/jquery-ui/jquery-ui.min.css', dirname(__FILE__) ) );
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		} else if(isset($j->datepicker) && $j->datepicker=='bootstrap-datepicker-eternicode'){
+			wp_enqueue_style( 'bootstrap-dropdown',plugins_url( '/css/planso_bootstrap/bootstrap.dropdown.css', dirname(__FILE__) ) );
 			wp_enqueue_style( 'bootstrap-datepicker',plugins_url( '/js/bootstrap/eternicode-bootstrap-datepicker/css/datepicker.css', dirname(__FILE__) ) );
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		} else if(isset($j->datepicker) && $j->datepicker=='bootstrap-datepicker') {
 			//datepicker
+			wp_enqueue_style( 'bootstrap-dropdown',plugins_url( '/css/planso_bootstrap/bootstrap.dropdown.css', dirname(__FILE__) ) );
 			wp_enqueue_style( 'bootstrap-datepicker',plugins_url( '/js/bootstrap/eyecon-bootstrap-datepicker/css/datepicker.css', dirname(__FILE__) ) );
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		}

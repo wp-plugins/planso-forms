@@ -129,3 +129,12 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 7. Customize form fields with your own css classes and styles. This way you can alter the design to suit very special needs.
 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
+
+== Changelog ==
+
+= 1.0.4 =
+* Fixed styling issues with several Themes, especially with the Genesis Framework
+
+= 1.0.3 =
+* Added drop down menu to WordPress RichTextEditor for easier integration of forms
+* Added option to choose from 3 different Datepicker Frameworks

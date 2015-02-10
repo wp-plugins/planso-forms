@@ -1750,7 +1750,7 @@ jQuery.fn.setCursorPosition = function(position){
 				</div>
 				<br class="clear">
 				
-				<section class="col-md-9">
+				<section class="col-md-12">
 					
 					<div class="row">
 						<div class="col-md-6">
