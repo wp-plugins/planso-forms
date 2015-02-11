@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the PlanSo Form Builder package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2015-02-10 12:15:39+0000\n"
+"PO-Revision-Date: 2015-02-11 12:38:42+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -10,609 +10,695 @@ msgstr ""
 "X-Generator: GlotPress/0.1\n"
 "Project-Id-Version: PlanSo Form Builder\n"
 
-#: includes/edit.php:75 includes/vars.inc.php:46
+#: planso-forms/includes/edit.php:1454
+msgid "Admin email"
+msgstr ""
+
+#: planso-forms/includes/edit.php:1453
+msgid "Form fields"
+msgstr ""
+
+#: planso-forms-pro/planso-forms-pro.php:111
+#: planso-forms-pro/planso-forms-pro.php:124
+msgid "Send as HTML email"
+msgstr ""
+
+#: planso-forms/includes/edit.php:1455
+msgid "User email"
+msgstr ""
+
+#: planso-forms/includes/edit.php:1456
+msgid "Thankyou page"
+msgstr ""
+
+#: planso-forms/includes/edit.php:1458
+msgid "PlanSo Forms Pro"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:298
+msgid "Upgrade to PlanSo Forms Pro and get:"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:306
+msgid "All Free Features"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:307
+msgid "HTML Email & Tracking Information"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:308
+msgid "Zapier.com & Pushover.net Integration"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:309
+msgid "Google Analytics Conversion Tracking"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:310
+msgid "1 Year Priority Support  & Updates"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:311
+msgid "No reference to PlanSo"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:312
+msgid "And much more.."
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:316
+msgid "Upgrade now"
+msgstr ""
+
+#: planso-forms/includes/vars.inc.php:319
+msgid "Check out PlanSo Forms Pro before upgrading"
+msgstr ""
+
+#: planso-forms/includes/form.php:393
+msgid "powered by"
+msgstr ""
+
+#: planso-forms-pro/planso-forms-pro.php:143
+msgid "PlanSo Forms Pro settings"
+msgstr ""
+
+#: planso-forms-pro/planso-forms-pro.php:150
+msgid "Pushover.net User Token"
+msgstr ""
+
+#: planso-forms-pro/planso-forms-pro.php:158
+msgid "Zapier Webhook Url"
+msgstr ""
+
+#: planso-forms-pro/planso-forms-pro.php:170
+msgid "Add Zapier Webhook Url"
+msgstr ""
+
+#: planso-forms/includes/edit.php:76 planso-forms/includes/vars.inc.php:48
 msgid "Search"
 msgstr ""
 
-#: includes/edit.php:65 includes/vars.inc.php:38
+#: planso-forms/includes/edit.php:66 planso-forms/includes/vars.inc.php:40
 msgid "Month"
 msgstr ""
 
-#: includes/edit.php:1794
+#: planso-forms/includes/edit.php:1831
 msgid "Depending on your theme you might want to choose a different datepicker for date fields."
 msgstr ""
 
-#: includes/edit.php:1784
+#: planso-forms/includes/edit.php:1821
 msgid "Select the Datepicker that best fits your theme"
 msgstr ""
 
-#: includes/edit.php:64 includes/vars.inc.php:37
+#: planso-forms/includes/edit.php:65 planso-forms/includes/vars.inc.php:39
 msgid "Week"
 msgstr ""
 
-#: includes/edit.php:76 includes/vars.inc.php:47
+#: planso-forms/includes/edit.php:77 planso-forms/includes/vars.inc.php:49
 msgid "Hidden"
 msgstr ""
 
-#: includes/submit.php:24
+#: planso-forms/includes/submit.php:24
 msgid "Honeypot is not empty"
 msgstr "Honeypot no está vacío"
 
-#: includes/submit.php:37
+#: planso-forms/includes/submit.php:37
 msgid "Salt missmatch"
 msgstr "Salt no corresponde"
 
-#: includes/submit.php:46
+#: planso-forms/includes/submit.php:46
 msgid "Anti spam field was omitted"
 msgstr "Campo anti spam omitido"
 
-#: includes/submit.php:51
+#: planso-forms/includes/submit.php:51
 msgid "Anti spam fields dont match"
 msgstr "Campos anti spam no corresponden"
 
-#: includes/submit.php:110 includes/submit.php:116
+#: planso-forms/includes/submit.php:110 planso-forms/includes/submit.php:116
 msgid "File upload error"
 msgstr "Upload de archivo erróneo"
 
-#: includes/edit.php:1299
+#: planso-forms/includes/edit.php:1320
 msgid "Hide label"
 msgstr "Ocultar nombre"
 
-#: includes/edit.php:1302
+#: planso-forms/includes/edit.php:1323
 msgid "Hide label of field"
 msgstr "Ocultar nombre del campo"
 
-#: includes/edit.php:1305
+#: planso-forms/includes/edit.php:1326
 msgid "Check this to hide the label of the field"
 msgstr "Marca esta casilla para ocultar el nombre del campo"
 
-#: includes/edit.php:1479
+#: planso-forms/includes/edit.php:1514
 msgid "Thank you page"
 msgstr "Página de confirmación o agradecimiento"
 
-#: includes/edit.php:1485
+#: planso-forms/includes/edit.php:1520
 msgid "Thank you page url"
 msgstr "URL de confirmación o agradecimiento"
 
-#: includes/edit.php:1487
+#: planso-forms/includes/edit.php:1522
 msgid "Enter the website address (inkl. http://) of the page the user should be redirected to after successfully submitting the form"
 msgstr "Defina la dirección de la página web (incl. http://) a la que el usuario será dirigido después de enviar el formulario."
 
-#: includes/form.php:114
+#: planso-forms/includes/form.php:114
 msgid "Attention! There has been an error submitting the form. Please check the marked fields below."
 msgstr "Atención! Ha ocurrido un error al enviar el formulario. Por favor verifique los campos. "
 
-#: includes/form.php:120
+#: planso-forms/includes/form.php:120
 msgid "Your submission was successful."
 msgstr "Envío exitoso."
 
-#: includes/edit.php:1420 includes/edit.php:1465 includes/edit.php:1501
-#: includes/edit.php:1642 includes/edit.php:1736 includes/edit.php:1822
+#: planso-forms/includes/edit.php:1441 planso-forms/includes/edit.php:1865
 msgid "Save"
 msgstr "Guardar"
 
-#: includes/edit.php:1812
+#: planso-forms/includes/edit.php:1855
 msgid "Form HTML"
 msgstr "Formulario HTML"
 
-#: includes/edit.php:1817
+#: planso-forms/includes/edit.php:1860
 msgid "JSON"
 msgstr "JSON"
 
-#: includes/edit.php:1821
+#: planso-forms/includes/edit.php:1864
 msgid "Generate"
 msgstr "Generar"
 
-#: index.php:146
+#: planso-forms/index.php:146
 msgid "PlanSo form created."
 msgstr "PlanSo formulario creado"
 
-#: index.php:148
+#: planso-forms/index.php:148
 msgid "PlanSo form saved."
 msgstr "PlanSo formulario guardado"
 
-#: index.php:150
+#: planso-forms/index.php:150
 msgid "PlanSo form deleted."
 msgstr "PlanSo formulario borrado"
 
-#: index.php:208
+#: planso-forms/index.php:208
 msgid "[Copy]"
 msgstr "Copiar"
 
-#: includes/edit.php:13
+#: planso-forms/includes/edit.php:14
 msgid "Add New Form"
 msgstr "Añadir nuevo formulario"
 
-#: includes/edit.php:17
+#: planso-forms/includes/edit.php:18
 msgid "Edit Form"
 msgstr "Editar formulario"
 
-#: includes/edit.php:19 includes/list.php:8
+#: planso-forms/includes/edit.php:20 planso-forms/includes/list.php:8
 msgid "Add New"
 msgstr "Añadir nuevo"
 
-#: includes/edit.php:29
+#: planso-forms/includes/edit.php:30
 msgid "Back to forms"
 msgstr "Volver a formularios"
 
-#: includes/edit.php:1775
+#: planso-forms/includes/edit.php:1812
 msgid "Enable special javascript based anti spam protection"
 msgstr "Activa protección especial anti-spam JavaScript"
 
-#: includes/edit.php:1777
+#: planso-forms/includes/edit.php:1814
 msgid "If checked a special hidden field will be appended to your form via javascript. The form will break for users with javascript disabled!"
 msgstr "Aviso: Activar la protección anti spam JavaScript añade un campo a su formulario vía JavaScript. El formulario no funcionará para usuarios con JavaScript inhabilitado. "
 
-#: includes/list.php:20 includes/list.php:48
+#: planso-forms/includes/list.php:20 planso-forms/includes/list.php:48
 msgid "Title"
 msgstr "Título"
 
-#: includes/list.php:24 includes/list.php:52
+#: planso-forms/includes/list.php:24 planso-forms/includes/list.php:52
 msgid "Shortcode"
 msgstr ""
 
-#: includes/list.php:27 includes/list.php:55
+#: planso-forms/includes/list.php:27 planso-forms/includes/list.php:55
 msgid "Author"
 msgstr "Autor"
 
-#: includes/list.php:117
+#: planso-forms/includes/list.php:117
 msgid "Are you sure you want to delete this form?"
 msgstr "Está seguro que quiere borrar el formulario?"
 
-#: includes/form.php:142
+#: planso-forms/includes/form.php:142
 msgid "Please enable Javascript in your Browser in order to correctly submit this form."
 msgstr "Por favor active JavaScript en su navegador para correctamente enviar el formulario"
 
-#: includes/edit.php:550 includes/form.php:281
+#: planso-forms/includes/edit.php:571 planso-forms/includes/form.php:281
 msgid "Submit"
 msgstr "Enviar"
 
-#: index.php:36
+#: planso-forms/index.php:36
 msgid "Unnamed"
 msgstr "Anónimo"
 
-#: index.php:96
+#: planso-forms/index.php:96
 msgid "PlanSo Form Builder"
 msgstr "PlanSo formularios"
 
-#: index.php:97
+#: planso-forms/index.php:97
 msgid "Create new PlanSo Form"
 msgstr "Crear nuevo PlanSo formulario"
 
-#: index.php:97
+#: planso-forms/index.php:97
 msgid "New Form"
 msgstr "Nuevo formulario"
 
-#: includes/list.php:7
+#: planso-forms/includes/list.php:7 planso-forms/includes/form.php:393
 msgid "PlanSo Forms"
 msgstr "PlanSo formularios"
 
-#: includes/submit.php:92
+#: planso-forms/includes/submit.php:92
 msgid "This field is required"
 msgstr "Este campo es obligatorio"
 
-#: includes/submit.php:97
+#: planso-forms/includes/submit.php:97
 msgid "Invalid E-Mail"
 msgstr "Correo electrónico inválido"
 
-#: includes/submit.php:102
+#: planso-forms/includes/submit.php:102
 msgid "Invalid URL"
 msgstr "URL inválida"
 
-#: includes/submit.php:243 includes/submit.php:316 includes/submit.php:364
+#: planso-forms/includes/submit.php:289 planso-forms/includes/submit.php:383
+#: planso-forms/includes/submit.php:435
 msgid "Your Wordpress Blog"
 msgstr "Tu WordPress Blog"
 
-#: includes/submit.php:362
+#: planso-forms/includes/submit.php:433
 msgid "has been submitted"
 msgstr "Enviado"
 
-#: includes/edit.php:47 includes/vars.inc.php:21
+#: planso-forms/includes/edit.php:48 planso-forms/includes/vars.inc.php:23
 msgid "Predefined fields"
 msgstr "Campos predeterminados"
 
-#: includes/edit.php:48 includes/vars.inc.php:22
+#: planso-forms/includes/edit.php:49 planso-forms/includes/vars.inc.php:24
 msgid "Name"
 msgstr "Nombre y apellidos"
 
-#: includes/edit.php:49 includes/vars.inc.php:23
+#: planso-forms/includes/edit.php:50 planso-forms/includes/vars.inc.php:25
 msgid "First name"
 msgstr "Nombre"
 
-#: includes/edit.php:50 includes/vars.inc.php:24
+#: planso-forms/includes/edit.php:51 planso-forms/includes/vars.inc.php:26
 msgid "Last name"
 msgstr "Apellidos"
 
-#: includes/edit.php:51 includes/vars.inc.php:25
+#: planso-forms/includes/edit.php:52 planso-forms/includes/vars.inc.php:27
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: includes/edit.php:52 includes/vars.inc.php:26
+#: planso-forms/includes/edit.php:53 planso-forms/includes/vars.inc.php:28
 msgid "Landline"
 msgstr "Teléfono fijo"
 
-#: includes/edit.php:53 includes/vars.inc.php:27
+#: planso-forms/includes/edit.php:54 planso-forms/includes/vars.inc.php:29
 msgid "Mobile phone"
 msgstr "Teléfono móvil"
 
-#: includes/edit.php:54 includes/vars.inc.php:28
+#: planso-forms/includes/edit.php:55 planso-forms/includes/vars.inc.php:30
 msgid "Phone"
 msgstr "Teléfono"
 
-#: includes/edit.php:55 includes/vars.inc.php:29
+#: planso-forms/includes/edit.php:56 planso-forms/includes/vars.inc.php:31
 msgid "Generic fields"
 msgstr "Campos genéricos"
 
-#: includes/edit.php:56 includes/vars.inc.php:30
+#: planso-forms/includes/edit.php:57 planso-forms/includes/vars.inc.php:32
 msgid "Text"
 msgstr "Texto"
 
-#: includes/edit.php:57 includes/vars.inc.php:31
+#: planso-forms/includes/edit.php:58 planso-forms/includes/vars.inc.php:33
 msgid "Multiline text"
 msgstr "Campo de texto"
 
-#: includes/edit.php:58 includes/vars.inc.php:32
+#: planso-forms/includes/edit.php:59 planso-forms/includes/vars.inc.php:34
 msgid "Number"
 msgstr "Número"
 
-#: includes/edit.php:59 includes/vars.inc.php:33
+#: planso-forms/includes/edit.php:60 planso-forms/includes/vars.inc.php:35
 msgid "Date and time fields"
 msgstr "Campos de fecha y tiempo"
 
-#: includes/edit.php:60 includes/vars.inc.php:34 includes/list.php:33
-#: includes/list.php:61
+#: planso-forms/includes/edit.php:61 planso-forms/includes/vars.inc.php:36
+#: planso-forms/includes/list.php:33 planso-forms/includes/list.php:61
 msgid "Date"
 msgstr "Fecha"
 
-#: includes/edit.php:61 includes/vars.inc.php:36
+#: planso-forms/includes/edit.php:62 planso-forms/includes/vars.inc.php:38
 msgid "Time"
 msgstr "Hora"
 
-#: includes/edit.php:62 includes/vars.inc.php:35
+#: planso-forms/includes/edit.php:63 planso-forms/includes/vars.inc.php:37
 msgid "Date and time"
 msgstr "Fecha y hora"
 
-#: includes/edit.php:67 includes/vars.inc.php:39
+#: planso-forms/includes/edit.php:68 planso-forms/includes/vars.inc.php:41
 msgid "Select fields"
 msgstr "Campos de selección"
 
-#: includes/edit.php:68 includes/vars.inc.php:40
+#: planso-forms/includes/edit.php:69 planso-forms/includes/vars.inc.php:42
 msgid "Select"
 msgstr "Seleccionar"
 
-#: includes/edit.php:69 includes/vars.inc.php:41
+#: planso-forms/includes/edit.php:70 planso-forms/includes/vars.inc.php:43
 msgid "Multiselect"
 msgstr "Selección múltiple"
 
-#: includes/edit.php:70 includes/vars.inc.php:42
+#: planso-forms/includes/edit.php:71 planso-forms/includes/vars.inc.php:44
 msgid "Radio"
 msgstr "Radio"
 
-#: includes/edit.php:71 includes/vars.inc.php:43
+#: planso-forms/includes/edit.php:72 planso-forms/includes/vars.inc.php:45
 msgid "Checkbox"
 msgstr "Casilla"
 
-#: includes/edit.php:72 includes/vars.inc.php:44
+#: planso-forms/includes/edit.php:73 planso-forms/includes/vars.inc.php:46
 msgid "Special fields"
 msgstr "Campos especiales"
 
-#: includes/edit.php:74 includes/vars.inc.php:45
+#: planso-forms/includes/edit.php:75 planso-forms/includes/vars.inc.php:47
 msgid "Range"
 msgstr "Rango"
 
-#: includes/edit.php:78 includes/vars.inc.php:48
+#: planso-forms/includes/edit.php:79 planso-forms/includes/vars.inc.php:50
 msgid "Single file"
 msgstr "Archivo único"
 
-#: includes/edit.php:79 includes/vars.inc.php:49
+#: planso-forms/includes/edit.php:80 planso-forms/includes/vars.inc.php:51
 msgid "Multiple files"
 msgstr "Archivos múltiples"
 
-#: includes/edit.php:80 includes/vars.inc.php:50
+#: planso-forms/includes/edit.php:81 planso-forms/includes/vars.inc.php:52
 msgid "Url"
 msgstr "URL"
 
-#: includes/edit.php:82 includes/vars.inc.php:51
+#: planso-forms/includes/edit.php:83 planso-forms/includes/vars.inc.php:53
 msgid "Color"
 msgstr "Color"
 
-#: includes/edit.php:84 includes/vars.inc.php:52
+#: planso-forms/includes/edit.php:85 planso-forms/includes/vars.inc.php:54
 msgid "Submit buttons"
 msgstr "Botones de envío"
 
-#: includes/edit.php:86 includes/vars.inc.php:53
+#: planso-forms/includes/edit.php:87 planso-forms/includes/vars.inc.php:55
 msgid "Button"
 msgstr "Botón"
 
-#: includes/edit.php:88
+#: planso-forms/includes/edit.php:89
 msgid "Submit button"
 msgstr "Botón de envío"
 
-#: includes/edit.php:90 includes/vars.inc.php:55
+#: planso-forms/includes/edit.php:91 planso-forms/includes/vars.inc.php:57
 msgid "Submit-Image"
 msgstr "Imagen de envío"
 
-#: includes/edit.php:1120
+#: planso-forms/includes/edit.php:1141
 msgid "Please position the cursor at the position/field where you want to insert the variable"
 msgstr "Por favor posicione el puntero en la posición/campo donde quiere insertar una variable"
 
-#: includes/edit.php:1232 includes/list.php:117
+#: planso-forms/includes/edit.php:1253 planso-forms/includes/list.php:117
 msgid "Delete"
 msgstr "Borrar"
 
-#: includes/edit.php:1233 includes/list.php:79 includes/list.php:97
-#: includes/list.php:109
+#: planso-forms/includes/edit.php:1254 planso-forms/includes/list.php:79
+#: planso-forms/includes/list.php:97 planso-forms/includes/list.php:109
 msgid "Edit"
 msgstr "Editar"
 
-#: includes/edit.php:1234 includes/edit.php:1235
+#: planso-forms/includes/edit.php:1255 planso-forms/includes/edit.php:1256
 msgid "Move"
 msgstr "Mover"
 
-#: includes/edit.php:1243
+#: planso-forms/includes/edit.php:1264
 msgid "Edit field"
 msgstr "Editar campo"
 
-#: includes/edit.php:1252
+#: planso-forms/includes/edit.php:1273
 msgid "Basic"
 msgstr "Básico"
 
-#: includes/edit.php:1253
+#: planso-forms/includes/edit.php:1274
 msgid "Select values"
 msgstr "Valores"
 
-#: includes/edit.php:1254
+#: planso-forms/includes/edit.php:1275
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: includes/edit.php:1263
+#: planso-forms/includes/edit.php:1284
 msgid "Field label"
 msgstr "Nombre del campo"
 
-#: includes/edit.php:1265
+#: planso-forms/includes/edit.php:1286
 msgid "Enter the label that describes the field"
 msgstr "Defina un nombre para el campo"
 
-#: includes/edit.php:1269
+#: planso-forms/includes/edit.php:1290
 msgid "Placeholder"
 msgstr "Espaciador"
 
-#: includes/edit.php:1271
+#: planso-forms/includes/edit.php:1292
 msgid "The placeholder is placed within empty fields and helps your users filling out the form"
 msgstr "El espaciador es posicionado en campos vacíos para ayudar a los usuarios cumplimentar el formulario"
 
-#: includes/edit.php:1275
+#: planso-forms/includes/edit.php:1296
 msgid "Help-Text"
 msgstr "Texto de ayuda"
 
-#: includes/edit.php:1277
+#: planso-forms/includes/edit.php:1298
 msgid "Provide additional help for filling out this field"
 msgstr "Ayude con indicaciones adicionales para cumplimentar este campo"
 
-#: includes/edit.php:1281
+#: planso-forms/includes/edit.php:1302
 msgid "Icon"
 msgstr "Icono"
 
-#: includes/edit.php:1283
+#: planso-forms/includes/edit.php:1304
 msgid "Please enter a Font-Awesome icon class. i.e. &quot;fa-user&quot;. Available Icons are found here: "
 msgstr "Define un ícono Font-Awesome (p.ej. \"fa-user\"); iconos disponibles se encuentran aquí: "
 
-#: includes/edit.php:1289
+#: planso-forms/includes/edit.php:1310
 msgid "Mandatory"
 msgstr "Obligatorio"
 
-#: includes/edit.php:1292
+#: planso-forms/includes/edit.php:1313
 msgid "Mandatory field"
 msgstr "Campo obligatorio"
 
-#: includes/edit.php:1295
+#: planso-forms/includes/edit.php:1316
 msgid "Check this to mark the field as required"
 msgstr "Marca esta casilla para definir el campo como obligatorio"
 
-#: includes/edit.php:1317 includes/edit.php:1337
+#: planso-forms/includes/edit.php:1338 planso-forms/includes/edit.php:1358
 msgid "Label"
 msgstr "Selección"
 
-#: includes/edit.php:1320 includes/edit.php:1340
+#: planso-forms/includes/edit.php:1341 planso-forms/includes/edit.php:1361
 msgid "Value"
 msgstr "Valor"
 
-#: includes/edit.php:1333
+#: planso-forms/includes/edit.php:1354
 msgid "Option value pairs"
 msgstr "Pares de valores"
 
-#: includes/edit.php:1336
+#: planso-forms/includes/edit.php:1357
 msgid "The visible part"
 msgstr "Lo que el usuario ve"
 
-#: includes/edit.php:1339
+#: planso-forms/includes/edit.php:1360
 msgid "The value will be submitted to you"
 msgstr "Valor remitido al administrador"
 
-#: includes/edit.php:1352
+#: planso-forms/includes/edit.php:1373
 msgid "Add option"
 msgstr "Añadir opción"
 
-#: includes/edit.php:1361
+#: planso-forms/includes/edit.php:1382
 msgid "Field variable name"
 msgstr "Nombre de variable de campo"
 
-#: includes/edit.php:1364
+#: planso-forms/includes/edit.php:1385
 msgid "This variable can be used in the emails sent upon submit"
 msgstr "Esta variable podrá ser usada en los correos electrónicos a enviar (ver abajo)"
 
-#: includes/edit.php:1368
+#: planso-forms/includes/edit.php:1389
 msgid "CSS Class"
 msgstr "Clase CSS"
 
-#: includes/edit.php:1370
+#: planso-forms/includes/edit.php:1391
 msgid "Add an individual CSS class name to this field"
 msgstr "Añada una clase CSS individual a este campo"
 
-#: includes/edit.php:1374
+#: planso-forms/includes/edit.php:1395
 msgid "CSS Style"
 msgstr "Estilo CSS"
 
-#: includes/edit.php:1376
+#: planso-forms/includes/edit.php:1397
 msgid "Format this field with custom inline CSS rules"
 msgstr "Formateé este campo con reglas inline CSS"
 
-#: includes/edit.php:1385
+#: planso-forms/includes/edit.php:1406
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: includes/edit.php:1386
+#: planso-forms/includes/edit.php:1407
 msgid "Update"
 msgstr "Actualizar"
 
-#: includes/edit.php:1396 includes/edit.php:1411
+#: planso-forms/includes/edit.php:1417 planso-forms/includes/edit.php:1432
 msgid "Form Title"
 msgstr "Título del formulario"
 
-#: includes/edit.php:1432
+#: planso-forms/includes/edit.php:1472
 msgid "Form settings"
 msgstr "Fomulario"
 
-#: includes/edit.php:1515
+#: planso-forms/includes/edit.php:1545
 msgid "Admin Mail settings"
 msgstr "Correo electrónico para el administrador"
 
-#: includes/edit.php:1569
+#: planso-forms/includes/edit.php:1599
 msgid "Admin mail subject"
 msgstr "Asunto del correo electrónico al administrador"
 
-#: includes/edit.php:1571
+#: planso-forms/includes/edit.php:1601
 msgid "This is the subject of the email sent to you/the admin"
 msgstr "Defina el asunto del correo electrónico enviado al administrador"
 
-#: includes/edit.php:1580
+#: planso-forms/includes/edit.php:1610
 msgid "Admin mail body"
 msgstr "Contenido del correo electrónico al administrador"
 
-#: includes/edit.php:1581
+#: planso-forms/includes/edit.php:1611
 msgid "This is the content of the email sent to you/the admin"
 msgstr "Defina el contenido del correo electrónico enviado al administrador"
 
-#: includes/edit.php:1585
+#: planso-forms/includes/edit.php:1615
 msgid "Admin mail recipient(s)"
 msgstr "Destinatario del correo electrónico al administrador"
 
-#: includes/edit.php:1587
+#: planso-forms/includes/edit.php:1617
 msgid "Enter one or more recipient email address for the admin mail. Devide multiple recipients with ;"
 msgstr "Defina un o varios correo(s) electrónico(s) destinatario(s) para el email al administrador; separe varios destinatarios con ;"
 
-#: includes/edit.php:1591
+#: planso-forms/includes/edit.php:1621
 msgid "Admin mail bcc recipient(s)"
 msgstr "Destinatario BCC del correo electrónico al administrador"
 
-#: includes/edit.php:1593
+#: planso-forms/includes/edit.php:1623
 msgid "Enter one or more bcc email address for the admin mail. Devide multiple recipients with ;"
 msgstr "Defina un o varios correo(s) electrónico(s) destinatario(s) BCC para el email al administrador; separe varios destinatarios con ;"
 
-#: includes/edit.php:1599
+#: planso-forms/includes/edit.php:1629
 msgid "Admin mail from name"
 msgstr "Nombre del remitente/expeditor del correo electrónico al administrador (\"de\")"
 
-#: includes/edit.php:1601
+#: planso-forms/includes/edit.php:1631
 msgid "This is the senders name for the email sent to you/the admin"
 msgstr "Defina el nombre del expeditor del correo electrónico al administrador (\"de\")"
 
-#: includes/edit.php:1606
+#: planso-forms/includes/edit.php:1636
 msgid "Admin mail from email"
 msgstr "Correo electrónico del remitente/expeditor del email al administrador "
 
-#: includes/edit.php:1608
+#: planso-forms/includes/edit.php:1638
 msgid "This is the senders email adress for the email sent to you/the admin"
 msgstr "Defina el correo electrónico del email al administrador"
 
-#: includes/edit.php:1614
+#: planso-forms/includes/edit.php:1644
 msgid "Admin mail reply to address"
 msgstr "Correo electrónico a responder desde el email al administrador"
 
-#: includes/edit.php:1616
+#: planso-forms/includes/edit.php:1646
 msgid "Enter one email address that is used as the reply adress when answering the admin mail."
 msgstr "Defina un correo electrónico predefinido a usar para responder al email al administrador"
 
-#: includes/edit.php:1655
+#: planso-forms/includes/edit.php:1683
 msgid "User Mail settings"
 msgstr "Correo electrónico para el usuario"
 
-#: includes/edit.php:1664
+#: planso-forms/includes/edit.php:1692
 msgid "User mail subject"
 msgstr "Asunto del correo electrónico al usuario"
 
-#: includes/edit.php:1666
+#: planso-forms/includes/edit.php:1694
 msgid "This is the subject of the email sent to the user of the form"
 msgstr "Defina el asunto del correo electrónico enviado al usuario"
 
-#: includes/edit.php:1675
+#: planso-forms/includes/edit.php:1703
 msgid "User mail body"
 msgstr "Contenido del correo electrónico al usuario"
 
-#: includes/edit.php:1677
+#: planso-forms/includes/edit.php:1705
 msgid "This is the content of the email sent to the user of the form"
 msgstr "Defina el contenido del correo electrónico enviado al usuario"
 
-#: includes/edit.php:1682
+#: planso-forms/includes/edit.php:1710
 msgid "User mail recipient(s)"
 msgstr "Destinatario del correo electrónico al usuario"
 
-#: includes/edit.php:1684
+#: planso-forms/includes/edit.php:1712
 msgid "Enter one or more recipient email address for the user mail. Devide multiple recipients with ;"
 msgstr "Defina un o varios correo(s) electrónico(s) destinatario(s) para el email al usuario; separe varios destinatarios con ;"
 
-#: includes/edit.php:1688
+#: planso-forms/includes/edit.php:1716
 msgid "User mail bcc recipient(s)"
 msgstr "Destinatario BCC del correo electrónico al administrador"
 
-#: includes/edit.php:1690
+#: planso-forms/includes/edit.php:1718
 msgid "Enter one or more bcc email address for the user mail. Devide multiple recipients with ;"
 msgstr "Defina un o varios correo(s) electrónico(s) destinatario(s) BCC para el email al usuario; separe varios destinatarios con ;"
 
-#: includes/edit.php:1696
+#: planso-forms/includes/edit.php:1724
 msgid "User mail from name"
 msgstr "Nombre del remitente/expeditor del correo electrónico al usuario (\"de\")"
 
-#: includes/edit.php:1698
+#: planso-forms/includes/edit.php:1726
 msgid "This is the senders name for the email sent to the user"
 msgstr "Defina el nombre del expeditor del correo electrónico al usuario (\"de\")"
 
-#: includes/edit.php:1703
+#: planso-forms/includes/edit.php:1731
 msgid "User mail from email"
 msgstr "Correo electrónico del remitente/expeditor del email al usuario"
 
-#: includes/edit.php:1705
+#: planso-forms/includes/edit.php:1733
 msgid "This is the senders email adress for the email sent to the user"
 msgstr "Defina el correo electrónico del email al usuario"
 
-#: includes/edit.php:1711
+#: planso-forms/includes/edit.php:1739
 msgid "User mail reply to address"
 msgstr "Correo electrónico a responder desde el email al usuario"
 
-#: includes/edit.php:1713
+#: planso-forms/includes/edit.php:1741
 msgid "Enter one email address that is used as the reply adress when answering the user mail."
 msgstr "Defina un correo electrónico predefinido a usar para responder al email al usuario"
 
-#: includes/edit.php:1749
+#: planso-forms/includes/edit.php:1457 planso-forms/includes/edit.php:1786
 msgid "Additional settings"
 msgstr "Ajustes adicionales"
 
-#: includes/edit.php:1761
+#: planso-forms/includes/edit.php:1798
 msgid "Get good karma and spread some link love"
 msgstr "Reciba buen Karma, repartiendo amor para PlanSo formularios"
 
-#: includes/edit.php:1768
+#: planso-forms/includes/edit.php:1805
 msgid "Include special Stylesheet based on bootstrap 3.0 if your form does not look good"
 msgstr "Incluye el Stylesheet especial basado en Bootstrap 3.0 para optimizar el diseño de tu formulario"
 
-#: includes/vars.inc.php:54
+#: planso-forms/includes/vars.inc.php:56
 msgid "Submit-Button"
 msgstr "Botón de enviar"
 
-#: index.php:320 includes/list.php:84 includes/list.php:102
+#: planso-forms/index.php:320 planso-forms/includes/list.php:84
+#: planso-forms/includes/list.php:102
 msgid "Unnamed form"
 msgstr "Formulario sin nombre"
 
-#: includes/list.php:113
+#: planso-forms/includes/list.php:113
 msgid "Copy"
 msgstr "Copiar"

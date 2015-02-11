@@ -152,11 +152,57 @@ if(count($errors)<1){
 				$recipients = str_replace('['.$k.']',$v,$recipients);
 				$bcc = str_replace('['.$k.']',$v,$bcc);
 			}
+			foreach($psfb_mail_tracking_map as $k=>$v){
+				$content = str_replace('['.$v.']',$_REQUEST[$k],$content);
+			}
+			
+			/********** Automatischer Mail Body **********/
+			if(trim($content)==''){
+				if(isset($mail->html_mail) && $mail->html_mail==true){
+					$content .= '<h1>'.$subject.'</h1>';
+		  		$content .= '<table>';
+		  	}
+				foreach($mail_replace as $k=>$v){
+					if(!empty($v) && trim($v)!=''){
+						if(isset($mail->html_mail) && $mail->html_mail==true){
+			  			$content .= '<tr><td>'.$k.'</td><td>'.$v.'</td></tr>';
+			  		} else {
+							$content .= $k.': '.$v."\r\n";
+						}
+					}
+				}
+				
+				if(isset($mail->html_mail) && $mail->html_mail==true){
+					foreach($psfb_mail_tracking_map as $k=>$v){
+						$content .= '<tr><td>'.ucwords($v).'</td><td>'.$_REQUEST[$k].'</td></tr>';
+					}
+				}
+				
+				if(isset($mail->html_mail) && $mail->html_mail==true){
+		  		$content .= '</table>';
+		  	}
+			}
+			
 			
 			//vars.inc.php
-			$content .= $powered_by_txt_email;
+			if(isset($mail->html_mail) && $mail->html_mail==true){
+  			//$content .= PSFB_POWERED_BY_HTML;
+  		} else {
+				$content .= PSFB_POWERED_BY_TXT;
+			}
 			
 			
+			if(isset($mail->html_mail) && $mail->html_mail==true){
+  			$email_template = PSFB_HTML_EMAIL_TEMPLATE;
+  			
+  			$email_template = str_replace('<!-- mail_subject -->',$subject,$email_template);
+  			$email_template = str_replace('<!-- mail_body -->',$content,$email_template);
+  			$email_template = str_replace('<!-- mail_charset -->',get_option( 'blog_charset', 'UTF-8'),$email_template);
+  			if(isset($j->link_love) && $j->link_love==true){
+  				$email_template = str_replace('<!-- mail_footer -->',PSFB_POWERED_BY_HTML,$email_template);
+  			}
+  			$content = $email_template;
+  		}
 			
 			$admin_content = $content;
 			$admin_content = apply_filters('psfb_submit_admin_content',$content);
@@ -250,7 +296,11 @@ if(count($errors)<1){
 			}
 			
   		//$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
-			$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
+			if(isset($mail->html_mail) && $mail->html_mail==true){
+  			$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
+  		} else {
+				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
+			}
 			//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 			//$headers[] = 'Cc: iluvwp@wordpress.org'; // note you can just use a simple email address
 			if(strstr($bcc,';')){
@@ -309,7 +359,24 @@ if(count($errors)<1){
 			}
 			
 			//vars.inc.php
-			$content .= $powered_by_txt_email;
+			if(isset($mail->html_mail) && $mail->html_mail==true){
+  			//$content .= PSFB_POWERED_BY_HTML;
+  		} else {
+				$content .= PSFB_POWERED_BY_TXT;
+			}
+			
+			
+			if(isset($mail->html_mail) && $mail->html_mail==true){
+  			$email_template = PSFB_HTML_EMAIL_TEMPLATE;
+  			
+  			$email_template = str_replace('<!-- mail_subject -->',$subject,$email_template);
+  			$email_template = str_replace('<!-- mail_body -->',$content,$email_template);
+  			$email_template = str_replace('<!-- mail_charset -->',get_option( 'blog_charset', 'UTF-8'),$email_template);
+  			if(isset($j->link_love) && $j->link_love==true){
+  				$email_template = str_replace('<!-- mail_footer -->',PSFB_POWERED_BY_HTML,$email_template);
+  			}
+  			$content = $email_template;
+  		}
 			
 			$headers = array();
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
@@ -323,7 +390,11 @@ if(count($errors)<1){
 			}
 			//$attachments = array( WP_CONTENT_DIR . '/uploads/file_to_attach.zip' );
   		//$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
-			$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
+  		if(isset($mail->html_mail) && $mail->html_mail==true){
+  			$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
+  		} else {
+				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
+			}
 			//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
 			//$headers[] = 'Cc: iluvwp@wordpress.org'; // note you can just use a simple email address
 			if(strstr($bcc,';')){

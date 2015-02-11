@@ -390,7 +390,7 @@ EOF;
 	$out .= '</form>';
 	
 	if(isset($j->link_love) && !empty($j->link_love) && $j->link_love==true){
-		$out .= '<p style="text-align:right;"><small>'.__('powered by <a href="http://www.planso.de/">PlanSo Form Builder</a>','psfbldr').'</small></p>';
+		$out .= '<p style="text-align:right;"><small>'.__('powered by','psfbldr').' <a href="http://forms.planso.de/">'.__('PlanSo Forms','psfbldr').'</a></small></p>';
 	}
 	$_SESSION['psfb_errors'][$atts['id']] = null;
 	$_SESSION['psfb_values'][$atts['id']] = null;

@@ -4,6 +4,7 @@
 if ( ! defined( 'ABSPATH' ) )
 	die( '-1' );
 
+require_once( dirname(__FILE__).'/vars.inc.php' );
 
 ?><div class="wrap">
 
@@ -61,8 +62,8 @@ var fieldtypes = {
 	time : {label:'<?php echo __('Time','psfbldr'); ?>',type:'time',icon:'fa-clock-o'},
 	datetime : {label:'<?php echo __('Date and time','psfbldr'); ?>',type:'datetime',icon:'fa-calendar'},
 /*
-	week : {label:'<?php echo __('Woche','psfbldr'); ?>',type:'week'},
-	month : {label:'<?php echo __('Monat','psfbldr'); ?>',type:'month'},
+	week : {label:'<?php echo __('Week','psfbldr'); ?>',type:'week'},
+	month : {label:'<?php echo __('Month','psfbldr'); ?>',type:'month'},
 */
 	divider_select : {label:'<?php echo __('Select fields','psfbldr'); ?>', type:'divider'},
 	select : {label:'<?php echo __('Select','psfbldr'); ?>',type:'select',icon:'fa-caret-square-o-down'},
@@ -72,8 +73,8 @@ var fieldtypes = {
 	divider_special : {label:'<?php echo __('Special fields','psfbldr'); ?>', type:'divider'},
 /*
 	range : {label:'<?php echo __('Range','psfbldr'); ?>',type:'range',min:true,max:true,step:true},
-	search : {label:'<?php echo __('Suche','psfbldr'); ?>',type:'search'},
-	hidden : {label:'<?php echo __('Versteckt','psfbldr'); ?>',type:'hidden'},
+	search : {label:'<?php echo __('Search','psfbldr'); ?>',type:'search'},
+	hidden : {label:'<?php echo __('Hidden','psfbldr'); ?>',type:'hidden'},
 */
 	file : {label:'<?php echo __('Single file','psfbldr'); ?>',type:'file',icon:'fa-file'},
 	multifile : {label:'<?php echo __('Multiple files','psfbldr'); ?>',type:'file',multiple:true,icon:'fa-folder-open'},
@@ -156,6 +157,12 @@ jQuery(document).ready(function($){
 	
 	if( $('#psfb_json').val().length>0 && $('#psfb_json').val().indexOf('[{') != -1){
 		var jf = JSON.parse( $('#psfb_json').val() );
+		if(typeof jf.mails!='undefined' && typeof jf.mails.user_mail!='undefined' && typeof jf.mails.user_mail.html_mail!='undefined' && jf.mails.user_mail.html_mail==true){
+			$('#psfb_user_mail_html').prop('checked','checked');
+		}
+		if(typeof jf.mails!='undefined' && typeof jf.mails.admin_mail!='undefined' && typeof jf.mails.admin_mail.html_mail!='undefined' && jf.mails.admin_mail.html_mail==true){
+			$('#psfb_admin_mail_html').prop('checked','checked');
+		}
 		if(typeof jf.link_love!='undefined' && jf.link_love==true){
 			$('#ps_link_love').prop('checked','checked');
 		}
@@ -360,6 +367,20 @@ jQuery(document).ready(function($){
 		jj.mails.user_mail.recipients = $('#user_mail_recipients').val().split(';');
 		jj.mails.user_mail.bcc = $('#user_mail_bcc').val().split(';');
 		
+		if( $('#psfb_admin_mail_html').length>0 ){
+			if( $('#psfb_admin_mail_html').is(':checked') ){
+				jj.mails.admin_mail.html_mail = true;
+			} else {
+				jj.mails.admin_mail.html_mail = false;
+			}
+		}
+		if( $('#psfb_user_mail_html').length>0){
+			if( $('#psfb_user_mail_html').is(':checked') ){
+				jj.mails.user_mail.html_mail = true;
+			} else {
+				jj.mails.user_mail.html_mail = false;
+			}
+		}
 		if( $('#ps_link_love').is(':checked') ){
 			jj.link_love = true;
 		} else {
@@ -1423,6 +1444,25 @@ jQuery.fn.setCursorPosition = function(position){
 	</div>
 </section>
 
+
+
+ <div role="tabpanel">
+				
+	  <!-- Nav tabs -->
+	  <ul class="nav nav-tabs" role="tablist">
+	    <li role="presentation" class="active"><a href="#psfb_tab_form_stages" aria-controls="form_stage" role="tab" data-toggle="tab"><?php echo __('Form fields','psfbldr'); ?></a></li>
+	    <li role="presentation"><a href="#psfb_tab_admin_email" aria-controls="admin_email" role="tab" data-toggle="tab"><?php echo __('Admin email','psfbldr'); ?></a></li>
+	    <li role="presentation"><a href="#psfb_tab_user_email" aria-controls="user_email" role="tab" data-toggle="tab"><?php echo __('User email','psfbldr'); ?></a></li>
+	    <li role="presentation"><a href="#psfb_tab_thankyou_page" aria-controls="thankyou_page" role="tab" data-toggle="tab"><?php echo __('Thankyou page','psfbldr'); ?></a></li>
+	    <li role="presentation"><a href="#psfb_tab_additional_settings" aria-controls="additional_settings" role="tab" data-toggle="tab"><?php echo __('Additional settings','psfbldr'); ?></a></li>
+	  	<li role="presentation"><a href="#psfb_tab_pro" aria-controls="psfb_pro" role="tab" data-toggle="tab"><?php echo __('PlanSo Forms Pro','psfbldr'); ?></a></li>
+	  </ul>
+  
+  	<div class="tab-content">
+  
+      <div class="form_stage tab-pane active" id="psfb_tab_form_stages" role="tabpanel">
+			
+
 <section class="container-fluid postbox "><!-- container-fluid -->
 	<section class="row">
 			
@@ -1459,16 +1499,11 @@ jQuery.fn.setCursorPosition = function(position){
 
 <?php do_action( 'psfb_edit_after_form_stage' ); ?>
 
-<section class="container-fluid">
-	<div class="row">
-		<div class="form-group">
-			<button class="psfb_save_perform btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
-			<div style="clear:both;"></div>
-		</div>
-	</div>
-</section>
 
 
+			</div>
+			<div class="thankyou_page tab-pane" id="psfb_tab_thankyou_page" role="tabpanel">
+			
 
 <section class="container-fluid postbox "><!-- container-fluid -->
 	<section class="row">
@@ -1495,16 +1530,11 @@ jQuery.fn.setCursorPosition = function(position){
 
 <?php do_action( 'psfb_edit_after_thankyoupage' ); ?>
 
-<section class="container-fluid">
-	<div class="row">
-		<div class="form-group">
-			<button class="psfb_save_perform btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
-			<div style="clear:both;"></div>
-		</div>
-	</div>
-</section>
 
 
+			</div>
+			<div class="admin_email tab-pane" id="psfb_tab_admin_email" role="tabpanel">
+			
 
 <section class="container-fluid postbox ps_user_mail_wrapper"><!-- container-fluid -->
 	<section class="row">
@@ -1616,6 +1646,7 @@ jQuery.fn.setCursorPosition = function(position){
 					    <p class="help-block"><?php echo __('Enter one email address that is used as the reply adress when answering the admin mail.','psfbldr'); ?></p>
 					  </div>
 						
+						<?php do_action( 'psfb_edit_after_admin_mail_reply_to' ); ?>
 						
 						
 					</div>
@@ -1636,15 +1667,12 @@ jQuery.fn.setCursorPosition = function(position){
 
 <?php do_action( 'psfb_edit_after_admin_mail' ); ?>
 
-<section class="container-fluid">
-	<div class="row">
-		<div class="form-group">
-			<button class="psfb_save_perform btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
-			<div style="clear:both;"></div>
-		</div>
-	</div>
-</section>
 
+
+
+			</div>
+			<div class="user_email tab-pane" id="psfb_tab_user_email" role="tabpanel">
+			
 
 <section class="container-fluid postbox "><!-- container-fluid -->
 	<section class="row">
@@ -1713,6 +1741,8 @@ jQuery.fn.setCursorPosition = function(position){
 					    <p class="help-block"><?php echo __('Enter one email address that is used as the reply adress when answering the user mail.','psfbldr'); ?></p>
 					  </div>
 						
+						<?php do_action( 'psfb_edit_after_user_mail_reply_to' ); ?>
+						
 					</div>
 					
 				</section>
@@ -1730,15 +1760,22 @@ jQuery.fn.setCursorPosition = function(position){
 
 <?php do_action( 'psfb_edit_after_user_mail' ); ?>
 
-<section class="container-fluid">
-	<div class="row">
-		<div class="form-group">
-			<button class="psfb_save_perform btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
-			<div style="clear:both;"></div>
-		</div>
-	</div>
-</section>
 
+
+
+			</div>
+			<div class="psfb_pro tab-pane" id="psfb_tab_pro" role="tabpanel">
+				
+				<?php do_action( 'psfb_edit_pro_settings' ); ?>
+				<?php 
+				if(!defined('PLANSO_FORMS_PRO')){
+					echo $psfb_pro_teaser;
+				}
+			//	echo psfb_globals::pro_teaser;
+				?>
+			</div>
+			<div class="additional_settings tab-pane" id="psfb_tab_additional_settings" role="tabpanel">
+			
 
 <section class="container-fluid postbox "><!-- container-fluid -->
 	<section class="row">
@@ -1782,7 +1819,7 @@ jQuery.fn.setCursorPosition = function(position){
 							
 							<div class="form-group">
 						    <label for="psfb_datepicker"><?php echo __('Select the Datepicker that best fits your theme','psfbldr'); ?></label>
-					    	<select id="psfb_datepicker" name="psfb_datepicker">
+					    	<select id="psfb_datepicker" name="psfb_datepicker" class="form-control">
 					    		<option value="bootstrap-datetimepicker">Bootstrap DateTimePicker (Eonasdan)</option>
 					    		<option value="bootstrap-datepicker-eternicode">Bootstrap Datepicker(Eternicode)</option>
 					    		<option value="jquery-ui-datepicker">jQuery UI Datepicker</option>
@@ -1805,6 +1842,12 @@ jQuery.fn.setCursorPosition = function(position){
 </section>
 
 <?php do_action( 'psfb_edit_after_additional_settings' ); ?>
+
+
+			</div>
+		</div><!-- tab-content -->
+	</div><!-- tabpanel -->
+
 
 <form method="post" class="psfb_submit_form" action="<?php echo esc_url( add_query_arg( array( 'post' => $post_id ), menu_page_url( 'ps-form-builder', false ) ) ); ?>">
 <input type="hidden" name="action" value="save"/>

@@ -54,11 +54,13 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 * Font-Awesome Icons for input groups
 * Select from different datepickers within form builder
 * Multiple form recipients of autoresponder email
+* Easy to use form builder
 * Multiple bcc recipients
 * Works with any theme
 
 = Example use cases =
-* Contact forms
+* Simple Contact forms
+* Complex Contact forms
 * Registration forms
 * Invitation forms
 * Calendar forms
@@ -131,6 +133,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.0.6 =
+* Changed form builder forms edit page to tabbed layout
 
 = 1.0.5 =
 * Fixed additional styling issues
