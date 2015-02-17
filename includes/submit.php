@@ -216,9 +216,6 @@ if(count($errors)<1){
 				if(!is_dir($wp_upload_dir['basedir'].'/planso-forms/')){
 					mkdir( $wp_upload_dir['basedir'].'/planso-forms/',0777 );
 				}
-				//dirname(dirname(__FILE__)) == plugin root
-				//$upload_dir = dirname(dirname(__FILE__)).'/uploads/'.session_id();
-				//mkdir( $upload_dir,0777 );
 				
 				$upload_dir = $wp_upload_dir['basedir'].'/planso-forms/'.session_id();
 				$upload_url = $wp_upload_dir['baseurl'].'/planso-forms/'.session_id();
@@ -230,19 +227,6 @@ if(count($errors)<1){
 					if(isset($_FILES[$f])){
 						if(is_array($_FILES[$f]['tmp_name'])){
 							foreach($_FILES[$f]['tmp_name'] as $key => $tmp_name){
-								/*
-								Array ( 
-									[Multiple_files] => Array ( 
-										[name] => Array ( 
-											[0] => 
-										)
-										[type] => Array ( [0] => )
-										[tmp_name] => Array ( [0] => )
-										[error] => Array ( [0] => 4 )
-										[size] => Array ( [0] => 0 )
-									)
-								)
-								*/
 								if($_FILES[$f]['error'][$key]==UPLOAD_ERR_OK){
 									$has_attachments = true;
 							    $file_name = $_FILES[$f]['name'][$key];
@@ -286,7 +270,7 @@ if(count($errors)<1){
 
 			
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
-				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'form-builder@planso.de' ).'>';
+				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'noreply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
 			} else {
 				if(trim($from_name)!=''){
 					$headers[] = 'From: "'.trim($from_name).'" <'.trim($from_email).'>';
@@ -295,14 +279,11 @@ if(count($errors)<1){
 				}
 			}
 			
-  		//$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
 			if(isset($mail->html_mail) && $mail->html_mail==true){
   			$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
   		} else {
 				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
 			}
-			//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
-			//$headers[] = 'Cc: iluvwp@wordpress.org'; // note you can just use a simple email address
 			if(strstr($bcc,';')){
 				$bcca = eplode(';',$bcc);
 			} else {
@@ -321,18 +302,12 @@ if(count($errors)<1){
 				
 				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>$attachments));
 				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers'], $filtered_mail_contents['attachments'] );
-				//wp_mail( explode(';',$recipients), $subject, $content, $headers, $attachments );
-			/*
-				foreach($attachments as $f){
-					unlink($f);
-				}
-				rmdir($upload_dir);
-			*/
+				
 			} else {
 				
 				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>array()));
 				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers']);//, $attachments );
-				//wp_mail( explode(';',$recipients), $subject, $content, $headers);//, $attachments );
+				
 			}
 		}
 		
@@ -380,7 +355,7 @@ if(count($errors)<1){
 			
 			$headers = array();
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
-				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'form-builder@planso.de' ).'>';
+				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'noreply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
 			} else {
 				if(trim($from_name)!=''){
 					$headers[] = 'From: "'.trim($from_name).'" <'.trim($from_email).'>';
@@ -388,15 +363,11 @@ if(count($errors)<1){
 					$headers[] = 'From: '.trim($from_email);
 				}
 			}
-			//$attachments = array( WP_CONTENT_DIR . '/uploads/file_to_attach.zip' );
-  		//$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
   		if(isset($mail->html_mail) && $mail->html_mail==true){
   			$headers[] = 'Content-Type: text/html; charset='.get_option( 'blog_charset', 'UTF-8');
   		} else {
 				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
 			}
-			//$headers[] = 'Cc: John Q Codex <jqc@wordpress.org>';
-			//$headers[] = 'Cc: iluvwp@wordpress.org'; // note you can just use a simple email address
 			if(strstr($bcc,';')){
 				$bcca = eplode(';',$bcc);
 			} else {
@@ -422,29 +393,29 @@ if(count($errors)<1){
 	}
 	
 	if(isset($j->pushover_user)){
-		curl_setopt_array(
-			$ch = curl_init(), 
-			array(
-			  CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-			  CURLOPT_POSTFIELDS => array(
-			    "token" => "aM5ZE5xttJQDnNkABYjwLdxpBUQzBv",
-			    "user" => $j->pushover_user,
-			    "message" => $admin_content,
-			    "title" => $psform->post_title.' '.__('has been submitted','psfbldr'),
-			    "url" =>  $_POST['psfb_pageurl'],
-			    "url_title" => get_option( 'blogname', __('Your Wordpress Blog','psfbldr'))
-			  ),
-			  CURLOPT_SAFE_UPLOAD => true,
-			  CURLOPT_RETURNTRANSFER => true,
-			)
-		);
+		
+		$options = array(
+		  CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+		  CURLOPT_POSTFIELDS => array(
+		    "token" => "aM5ZE5xttJQDnNkABYjwLdxpBUQzBv",
+		    "user" => $j->pushover_user,
+		    "message" => $admin_content,
+		    "title" => $psform->post_title.' '.__('has been submitted','psfbldr'),
+		    "url" =>  $_POST['psfb_pageurl'],
+		    "url_title" => get_option( 'blogname', __('Your Wordpress Blog','psfbldr'))
+		  ),
+		  CURLOPT_SAFE_UPLOAD => true,
+		  CURLOPT_RETURNTRANSFER => true,
+		); 
+
+    $ch      = curl_init(); 
+    curl_setopt_array($ch,$options); 
+		
 		$result = curl_exec($ch);
 		curl_close($ch);
 	}
 	
 	if(isset($j->zapier_url) && count($j->zapier_url)>0){
-		
-		//zapier url muss array werden damit mehrere zaps durchgeführt werden können
 		if(is_array($j->zapier_url)){
 			$zurl = $j->zapier_url;
 		} else if(is_object($j->zapier_url)){
@@ -493,8 +464,7 @@ if(count($errors)<1){
 			rmdir($upload_dir);
 		}
 	}
-	//print_r($zmail_replace);
-	//exit($result);
+	
 	
 	$page_detail_atts = array(
 		'id' => $psform->ID,

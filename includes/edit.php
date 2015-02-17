@@ -7,7 +7,9 @@ if ( ! defined( 'ABSPATH' ) )
 require_once( dirname(__FILE__).'/vars.inc.php' );
 
 ?><div class="wrap">
-
+<div style="float:right;">
+	<a href="https://wordpress.org/support/view/plugin-reviews/planso-forms?rate=5#postform" target="_blank" class="btn btn-success btn-xs"><i class="fa fa-heart"></i> <?php echo __('Like PlanSo Forms? Post a review!','psfbldr'); ?></a>
+</div>
 <h2><?php
 	
 	if ( !isset($_REQUEST['post']) || empty($_REQUEST['post']) || $_REQUEST['post'] == -1 ) {

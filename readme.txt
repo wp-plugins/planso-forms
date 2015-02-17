@@ -134,6 +134,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.0.7 =
+* Fixed translation errors
+
 = 1.0.6 =
 * Changed form builder forms edit page to tabbed layout
 

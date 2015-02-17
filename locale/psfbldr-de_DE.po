@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the PlanSo Form Builder package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2015-02-11 12:44:40+0000\n"
+"PO-Revision-Date: 2015-02-17 14:05:16+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -57,7 +57,7 @@ msgstr "Google Analytics Conversion Tracking"
 
 #: planso-forms/includes/vars.inc.php:310
 msgid "1 Year Priority Support  & Updates"
-msgstr "1 Jahr Prioryty Support & Updates"
+msgstr "1 Jahr Priority Support & Updates"
 
 #: planso-forms/includes/vars.inc.php:311
 msgid "No reference to PlanSo"
@@ -89,11 +89,11 @@ msgstr "Pushover.net User Token"
 
 #: planso-forms-pro/planso-forms-pro.php:158
 msgid "Zapier Webhook Url"
-msgstr "Zapier Webhook Url"
+msgstr "Zapier Webhook URL"
 
 #: planso-forms-pro/planso-forms-pro.php:170
 msgid "Add Zapier Webhook Url"
-msgstr "Neue Zapier Webhook Url hinzufügen"
+msgstr "Neue Zapier Webhook URL hinzufügen"
 
 #: planso-forms/includes/edit.php:76 planso-forms/includes/vars.inc.php:48
 msgid "Search"
@@ -105,7 +105,7 @@ msgstr "Monat"
 
 #: planso-forms/includes/edit.php:1831
 msgid "Depending on your theme you might want to choose a different datepicker for date fields."
-msgstr "Je nach Theme können Sie hier einen individuellen Datepicker auswählen"
+msgstr "Je nach Theme, können Sie hier einen individuellen Datepicker auswählen"
 
 #: planso-forms/includes/edit.php:1821
 msgid "Select the Datepicker that best fits your theme"
@@ -432,7 +432,7 @@ msgstr "Editieren"
 
 #: planso-forms/includes/edit.php:1255 planso-forms/includes/edit.php:1256
 msgid "Move"
-msgstr " "
+msgstr "Bewegen "
 
 #: planso-forms/includes/edit.php:1264
 msgid "Edit field"
