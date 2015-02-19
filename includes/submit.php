@@ -404,11 +404,14 @@ if(count($errors)<1){
 		    "url" =>  $_POST['psfb_pageurl'],
 		    "url_title" => get_option( 'blogname', __('Your Wordpress Blog','psfbldr'))
 		  ),
-		  CURLOPT_SAFE_UPLOAD => true,
-		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_SAFE_UPLOAD => 1,
+		  CURLOPT_RETURNTRANSFER => 1,
+      CURLOPT_HEADER         => 0,
+      CURLOPT_USERAGENT      => "PlanSo Forms"
 		); 
 
     $ch      = curl_init(); 
+    curl_setopt($curl, 19913, 1); 
     curl_setopt_array($ch,$options); 
 		
 		$result = curl_exec($ch);
@@ -436,18 +439,19 @@ if(count($errors)<1){
 		foreach($zurl as $url){
 			$options = array( 
 					CURLOPT_URL => $url,
-	        CURLOPT_RETURNTRANSFER => true,         // return response 
-	        CURLOPT_HEADER         => false,        // don't return headers 
+	        CURLOPT_RETURNTRANSFER => 1,         // return response 
+	        CURLOPT_HEADER         => 0,        // don't return headers 
 	        CURLOPT_USERAGENT      => "PlanSo Forms",     // who am i 
 	        CURLOPT_CONNECTTIMEOUT => 60,          // timeout on connect 
 	        CURLOPT_TIMEOUT        => 60,          // timeout on response 
 	        CURLOPT_POST            => 1,            // i am sending post data 
 	           CURLOPT_POSTFIELDS     => $zmail_replace,    // this are my post vars 
 	        CURLOPT_SSL_VERIFYHOST => 0,            // don't verify ssl 
-	        CURLOPT_SSL_VERIFYPEER => false        // 
+	        CURLOPT_SSL_VERIFYPEER => 0        // 
 	    ); 
 	
 	    $ch      = curl_init(); 
+	    curl_setopt($curl, 19913, 1); 
 	    curl_setopt_array($ch,$options); 
 			
 			$result = curl_exec($ch);

@@ -2,7 +2,7 @@
 Contributors: Stephan Helbig, PabloFernandezGarcia
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms
 Requires at least: 3.9
-Tested up to: 4.1
+Tested up to: 4.1.1
 Stable tag: trunk
 
 PlanSo Forms makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize fields with icons, etc.
@@ -133,6 +133,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.0.8 =
+* Tested and updated for WordPress 4.1.1
 
 = 1.0.7 =
 * Fixed translation errors

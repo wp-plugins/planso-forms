@@ -277,7 +277,7 @@ jQuery(document).ready(function($){
 				}catch(e){}
 				
 				var  required = $(this).find('#field'+mid+'').prop('required');
-				if (typeof required != typeof 'undefined' && (required == true || required=='true' || required=='required')) {
+				if (typeof required != 'undefined' && (required == true || required=='true' || required=='required')) {
 					required = true;
 					label = label.replace('*','');
 				} else {
@@ -285,14 +285,14 @@ jQuery(document).ready(function($){
 				}
 				
 				var  hide_label = $(this).find('#field'+mid+'').data('hide_label');
-				if (typeof hide_label != typeof 'undefined' && (hide_label == true || hide_label=='true' || hide_label=='1')) {
+				if (typeof hide_label != 'undefined' && (hide_label == true || hide_label=='true' || hide_label=='1')) {
 					hide_label = true;
 				} else {
 					hide_label = false;
 				}
 				
 				var  style = $(this).find('#field'+mid+'').attr('style');
-				if (typeof style !== typeof undefined && style !== false) {
+				if (typeof style !== 'undefined' && style !== false) {
 					
 				} else {
 					style = '';
@@ -301,6 +301,11 @@ jQuery(document).ready(function($){
 				var icon = '';
 				if( $(this).find('.input-group').length > 0 ){
 					icon = $(this).find('.input-group span.fa').attr('class').replace('fa ','');
+				}
+				
+				var  cond = $(this).find('#field'+mid+'').data('condition');
+				if (typeof cond != 'undefined') {
+					j[rind][ind].condition = cond;
 				}
 				
 				j[rind][ind].label = label;
@@ -550,6 +555,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
     	if(mytype=='submit' || (typeof j.src=='undefined' || j.src=='')){
     		row += 'btn btn-primary';
     	}
+    	
 	    if(typeof j.class!='undefined' && j.class!=''){
 	    	if(j.class.indexOf('btn-primary')!=-1){
 	    		j.class = j.class.replace(/btn-primary/g,'',j.class);
@@ -641,6 +647,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    	row += j.class;
 	    }
 	    row += '"';
+	    
     	if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
 	    	row += ' multiple="multiple"';
 	    }
@@ -731,17 +738,20 @@ function ps_field_drop( event, ui, target, j, createcol ){
   
   row += '</div>';
   
-  
-  //$( this ).append( row );
+  //console.log(row_mode);
   if(row_mode=='plain'){
   	row += '</div>';//end row
   	$( '.form_builder_stage' ).append( row );
+  	$( '.form_builder_stage' ).find('.form-group :input').last().data('condition',j.condition);
   } else if(row_mode=='plain_col'){
   	$( '.form_builder_stage .row:last-child' ).append( row );
+  	$( '.form_builder_stage .row:last-child' ).find('.form-group :input').last().data('condition',j.condition);
   	var colcnt = $( '.form_builder_stage .row:last-child .field_container' ).length;
   	$( '.form_builder_stage .row:last-child .field_container' ).attr('class','field_container').addClass('col-md-'+ Math.floor( 12 / colcnt) +'');
+  	$( '.form_builder_stage .row:last-child .field_container' ).find('.form-group :input').last().data('condition',j.condition);
   } else {
   	$( row ).insertAfter( $(target) );
+  	$(target).find('.form-group :input').last().data('condition',j.condition);
   }
   
   ps_manage_form_vars();
@@ -934,6 +944,69 @@ function ps_field_drop( event, ui, target, j, createcol ){
   		$('.selectoptionstab').hide();
   	}
   	
+  	$('.add_conditionset').unbind('click').click(function(){
+			var h = $('.condition_set_template').html();
+			$('.condition_content').append(h);
+			$('.condition_content .delete_conditionset:last').unbind('click').click(function(){
+				$(this).closest('.condition_set').remove();
+			});
+			
+	  	$('.add_conditionoption').unbind('click').click(function(){
+				var h = $('.condition_template').html();
+				$(this).closest('.condition_set').find('.condition_set_content').append(h);
+				$('.condition_set_content .delete_conditionoption').unbind('click').click(function(){
+					$(this).closest('.row').remove();
+				});
+			});
+			$('.add_conditionoption:last').trigger('click');
+		});
+		var h = '';
+		$('.form_builder_stage .form-group').each(function(){
+			var cname = $(this).find('label:first').html();
+			var cvalue = $(this).find(':input').attr('name');
+			if(typeof cname!='undefined' && cname!=''){
+				
+			} else {
+				if(typeof cvalue!='undefined' && cvalue!=''){
+					cname = cvalue;
+				}
+			}
+			if(typeof cvalue!='undefined' && cvalue!='' && cvalue!='undefined'){
+				h += '<option value="'+cvalue+'">'+cname+'</option>';
+			}
+		});
+		$('.condition_template .condition_field_select').html(h);
+  	
+  	$('.condition_content').html('');
+		var cond = $(this).closest('.field_container').find('.form-group :input').data('condition');
+		if(typeof cond!='undefined'){
+			if( $.type(cond)=='object'){
+				var c = cond;
+			} else {
+				var c = JSON.parse(cond);
+			}
+			
+			if(typeof c.groups!='undefined' && c.groups.length > 0){
+				$.each(c.groups,function(k,v){
+					$('.add_conditionset').trigger('click');
+					$('.condition_set_type:last').val( v.groupOp );
+					$('.condition_set_action:last').val( v.groupAction );
+					
+					$('.condition_set_content:last').html('');
+					if(typeof v.rules != 'undefined' && v.rules.length > 0){
+						$.each(v.rules, function(kk,vv){
+							$('.add_conditionoption:last').trigger('click');
+							$('.condition_field_select:last').val( vv.field );
+							$('.condition_field_condition:last').val( vv.op );
+							$('.condition_field_value:last').val( vv.data );
+						});
+					}
+				});
+			}
+		}
+  	
+  	
+  	
   	$('#fieldeditor').modal('show').data('type',$(this).closest('.field_container').data('type') ).data('id',$(this).closest('.field_container').data('id') );
   	$('#fieldeditor a:first').tab('show');
   	/************ SAVE BUTTON *********/
@@ -998,6 +1071,33 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		
   		}
   		$('.field_container[data-id="'+myID+'"]').find('.form-group .help-block').html( $('#field_helptext').val() );
+  		
+  		
+  		if( $('.condition_wrapper .condition_set').length > 0){
+  			var c = {};
+  			c.groups = [];
+  			var i = 0;
+  			$('.condition_wrapper .condition_set').each(function(){
+  				c.groups[i] = {};
+  				c.groups[i].groupOp = $(this).find('.condition_set_type').val();
+  				c.groups[i].groupAction = $(this).find('.condition_set_action').val();
+  				if( $('.condition_wrapper .condition_set_content .form-group').length > 0){
+  					c.groups[i].rules = [];
+  					var ii = 0;
+  					$(this).find('.condition_set_content .form-group').each(function(){
+  						c.groups[i].rules[ii] = {};
+  						c.groups[i].rules[ii].field = $(this).find('.condition_field_select').val();
+  						c.groups[i].rules[ii].op = $(this).find('.condition_field_condition').val();
+  						c.groups[i].rules[ii].data = $(this).find('.condition_field_value').val();
+  						ii ++;
+  					});
+  				}
+  				i ++;
+  			});
+  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',JSON.stringify(c) );
+  		} else {
+  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',null).removeData('condition');
+  		}
   		
   		if( $.inArray(mytype,selectfields)!= -1 ){
 	    	//selectfield
@@ -1399,6 +1499,7 @@ jQuery.fn.setCursorPosition = function(position){
 						    <p class="help-block"><?php echo __('Format this field with custom inline CSS rules','psfbldr'); ?></p>
 						  </div>
 						  
+						  <?php do_action( 'psfb_edit_modal_advanced_after_style' ); ?>
 		        	<!-- prefill value from get/post -->
 		        </div><!-- ende expert -->
 		      </div>

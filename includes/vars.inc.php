@@ -305,6 +305,7 @@ $psfb_pro_teaser = '
 					<ul class="fa-ul">
 						<li><i class="fa-li fa fa-check-square"></i>'. __('All Free Features','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('HTML Email & Tracking Information','psfbldr').'</li>
+						<li><i class="fa-li fa fa-check-square"></i>'. __('Conditional logic for intelligent field handling','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Zapier.com & Pushover.net Integration','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Google Analytics Conversion Tracking','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('1 Year Priority Support  & Updates','psfbldr').'</li>

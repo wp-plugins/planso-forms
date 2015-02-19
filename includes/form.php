@@ -94,7 +94,9 @@
 	wp_register_script( 'planso_form_builder', plugins_url( '/js/planso-form-builder.js', dirname(__FILE__) ), array('jquery'), '1', true );
 	
 	wp_enqueue_script( 'planso_form_builder' );
-		
+	
+	do_action('psfb_form_enqueue_scripts');
+	
 	require(dirname(__FILE__).'/vars.inc.php');
 	require_once(dirname(__FILE__).'/scripts.inc.php');
 	
@@ -160,6 +162,17 @@ EOF;
 				$fieldinfo = $fieldtypes[$mytype];
 				$fieldtype = $fieldinfo['type'];
 				
+				if(isset($col->condition) && !empty($col->condition)){
+					if(is_object($col->condition)){
+						$condition = $col->condition;
+					} else {
+						$condition = json_decode($col->condition);
+					}
+					//exit(print_r($condition,true));
+				} else {
+					$condition = false;
+				}
+				
 				if(!isset($col->name) || empty($col->name)){
 					$col->name = $col->label;
 				}
@@ -167,11 +180,46 @@ EOF;
 				
 				
 				$out .= '<div class="col-md-'.$colcnt.'">';
-				$out .= '<div class="form-group';
+				$out .= '<div class="form-group psfb-single-container';
 				if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name]) ){
 					$out .= ' has-error';
 				}
-				$out .= '">';
+				$out .= '"';
+				
+				if($condition!=false){
+					/*
+					stdClass Object ( [groups] => Array ( [0] => stdClass Object ( [groupOp] => AND [groupAction] => show [rules] => Array ( [0] => stdClass Object ( [field] => Anrede [op] => eq [data] => Herr )[1] => stdClass Object ( [field] => Vorname [op] => eq [data] => Paul )))))
+					*/
+					$cshow = false;
+					foreach($condition->groups as $c){
+						if($c->groupAction == 'hide'){
+							$cshow = true;
+							$groupshow = true;
+							foreach($c->rules as $rule){
+								if($c->groupOp=='AND'){
+									if( isset($_SESSION['psfb_values'][$atts['id']][$rule->field]) ){
+										//check if value exists
+									}
+								} else if($c->groupOp=='OR'){
+									
+								}
+							}
+						} else if($c->groupAction == 'hide'){
+							$cshow = false;
+						}
+					}
+					if(!$cshow){
+						$out .= ' style="display:none;"';
+						$out .= ' data-formgroupid="'.$atts['id'].'_'.$cnt.'"';
+						$out .= ' data-conditionalgroup="true"';
+					}
+				}
+				
+				$out .= '>';
+				
+				if($condition!=false){
+					$out .= '<textarea class="psfb_condition_content" style="display:none;" data-id="psfield_'.$atts['id'].'_'.$cnt.'">'.json_encode($condition).'</textarea>';
+				}
 				
 				//$out .= 'hide_label:'.$col->type.' '.print_r($col->hide_label,true).'<br/>';
 				if( strstr('submit',$col->type) || strstr('button',$col->type) ){
