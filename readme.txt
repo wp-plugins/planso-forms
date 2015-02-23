@@ -13,7 +13,7 @@ PlanSo Forms makes it easy to create professional forms. Build forms and manage 
 
 [youtube http://www.youtube.com/watch?v=pKlgQH5VCck]
 
-[Check out PlanSo Forms Pro and Expert](http://forms.planso.de/ "PlanSo Forms - Professional forms easy as 1-2-3")
+[Check out PlanSo Forms Pro and Expert](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link "PlanSo Forms - Professional forms easy as 1-2-3")
 
 = Overview =
 
@@ -84,6 +84,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 > PlanSo Forms Pro comes with the following features.<br />
 >
 > HTML-Emails.<br />
+> Conditional Logic<br />
 > No reference to PlanSo Forms in emails<br />
 > Google Analytics Integration<br />
 > Pushover.net Integration<br />
@@ -98,7 +99,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 There are three easy ways to install PlanSo Forms:
 
 **Uploading .zip file via WordPress**  
-Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.latest-stable.zip) file. Log on to your WordPress admin account. Select Plugins on the left hand options, click Add New and Upload Plugin. Either drag the downloaded .zip file into the upload area or choose the .zip file from the download directory and click Install Now. After the installation click Activate Plugin and after a few seconds you will find a new option on the left hand menu named Planso Forms.
+Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.zip) file. Log on to your WordPress admin account. Select Plugins on the left hand options, click Add New and Upload Plugin. Either drag the downloaded .zip file into the upload area or choose the .zip file from the download directory and click Install Now. After the installation click Activate Plugin and after a few seconds you will find a new option on the left hand menu named Planso Forms.
 
 **Uploading the plugin via FTP**  
 Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.latest-stable.zip) file and extract its contents to a local folder. Go to your FTP client and browse on your hosting server to /your_wp_installation/wp-content/plugins/. Upload the extracted planso-forms folder into this directory. Afterwards log on to your WordPress admin account. Select Plugins on the left hand options, click Installed Plugins and Activate the PlanSo Forms Plugin. After a few seconds you will find a new option on the left hand menu named Planso Forms.
@@ -133,6 +134,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.0.9 =
+* Fixed issue with [PlanSo Forms Pro](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link) extension
+* Added CSS Class to mandatory field marks, wich enables custom styling of marks
 
 = 1.0.8 =
 * Tested and updated for WordPress 4.1.1

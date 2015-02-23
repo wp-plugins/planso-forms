@@ -404,14 +404,12 @@ if(count($errors)<1){
 		    "url" =>  $_POST['psfb_pageurl'],
 		    "url_title" => get_option( 'blogname', __('Your Wordpress Blog','psfbldr'))
 		  ),
-		  CURLOPT_SAFE_UPLOAD => 1,
 		  CURLOPT_RETURNTRANSFER => 1,
       CURLOPT_HEADER         => 0,
       CURLOPT_USERAGENT      => "PlanSo Forms"
 		); 
 
     $ch      = curl_init(); 
-    curl_setopt($curl, 19913, 1); 
     curl_setopt_array($ch,$options); 
 		
 		$result = curl_exec($ch);
@@ -451,7 +449,6 @@ if(count($errors)<1){
 	    ); 
 	
 	    $ch      = curl_init(); 
-	    curl_setopt($curl, 19913, 1); 
 	    curl_setopt_array($ch,$options); 
 			
 			$result = curl_exec($ch);

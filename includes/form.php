@@ -236,7 +236,7 @@ EOF;
 						$out .= $col->label;
 						
 						if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-							$out .= '*';
+							$out .= '<span class="psfb_required_mark">*</span>';
 						}
 						
 						if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name])){
