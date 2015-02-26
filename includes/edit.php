@@ -536,9 +536,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	}
 	  }
 	} else {
+		//INTRODUCE new mytype property to be absolutely sure
 		var mytype = j.type;
 		$.each(fieldtypes,function(k,v){
-			if( v.type == j.type){
+			if( v.type == j.type && k.indexOf('html_')!=-1){
 				mytype = k;
 			}
 		});

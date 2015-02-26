@@ -136,6 +136,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.1.2 =
+* Fixed a bug in the form builder that could lead to regular select dropdowns beeing displayed as multiselect dropdowns
+
 = 1.1.1 =
 * Bug that caused a problem loading conditional logic of PlanSo Forms Pro fixed
 
