@@ -136,6 +136,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.1.1 =
+* Bug that caused a problem loading conditional logic of PlanSo Forms Pro fixed
+
 = 1.1.0 =
 * New Feature: Drag HTML blocks into your forms as easy as adding form fields
 * Improved translations

@@ -1160,7 +1160,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		$('.condition_template .condition_field_select').html(h);
   	
   	$('.condition_content').html('');
-  	if( $.inArray(mytype,htmlfields)!=-1){
+  	if( $.inArray(mytype,htmlfields) != -1){
 			var cond = $(this).closest('.field_container').find('.psfb_html_content').data('condition');
 		} else {
 			var cond = $(this).closest('.field_container').find('.form-group :input').data('condition');
@@ -1316,13 +1316,13 @@ function ps_field_drop( event, ui, target, j, createcol ){
   				}
   				i ++;
   			});
-  			if( $.inArray(mytype,htmlfields) ){
+  			if( $.inArray(mytype,htmlfields) != -1 ){
   				$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').data('condition',JSON.stringify(c) );
   			} else {
   				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',JSON.stringify(c) );
   			}
   		} else {
-  			if( $.inArray(mytype,htmlfields) ){
+  			if( $.inArray(mytype,htmlfields) != -1 ){
   				$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').data('condition',null).removeData('condition');
   			} else {
   				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',null).removeData('condition');
