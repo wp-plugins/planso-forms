@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.0.9
+ * Version: 1.1.0
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -95,7 +95,7 @@ function ps_form_builder_admin_menu() {
 	
 	$edit = add_menu_page( __('PlanSo Form Builder','psfbldr'), __('PlanSo Form Builder','psfbldr'), 'manage_options', 'ps-form-builder', 'ps_form_builder_list' );
 	add_submenu_page( 'ps-form-builder', __('Create new PlanSo Form','psfbldr'), __('New Form','psfbldr'), 'manage_options', 'ps-form-builder-new', 'ps_form_builder_options');
-	
+	do_action( 'psfb_admin_menu' );
 	add_action( 'load-' . $edit, 'psfb_load_contact_form_admin' );
 }
 
@@ -163,6 +163,12 @@ function psfb_save_form(){
 	$id = $_REQUEST['post'];
 	$title = $_REQUEST['title'];
 	$post_content = $_REQUEST['json'];
+	
+	$filtered_contents = apply_filters('psfb_before_save_to_db',array('id'=>$id,'title'=>$title,'post_content'=>$post_content));
+	
+	$id = $filtered_contents['id'];
+	$title = $filtered_contents['title'];
+	$post_content = $filtered_contents['post_content'];
 	
 	if ( !isset($id) || empty($id) || $id == -1 ) {
 		$id = wp_insert_post( array(

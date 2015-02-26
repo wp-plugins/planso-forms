@@ -18,6 +18,12 @@ $selectfields = array(
 	'radio',
 	'multiselect'
 );	
+$htmlfields = array(
+	'html_div',
+	'html_hr',
+	'html_header',
+	'html_paragraph'
+);	
 
 $fieldtypes = array(
 	'divider_templates' => array('label'=> __('Predefined fields','psfbldr'),'type'=>'divider'),
@@ -51,6 +57,14 @@ $fieldtypes = array(
 	'multifile' => array('label'=>__('Multiple files','psfbldr'),'type'=>'file','multiple'=>true),
 	'url' => array('label'=>__('Url','psfbldr'),'type'=>'url'),
 	'color' => array('label'=>__('Color','psfbldr'),'type'=>'color'),
+	
+	'divider_html' => array('label' => __('HTML Tags','psfbldr'), 'type' => 'divider'),
+	
+	'html_div' => array('label' => __('HTML Code','psfbldr'), 'type'=>'div','wrap'=>true,'icon'=>'fa-terminal'),
+	'html_hr' => array('label' => __('Horizontal Divider','psfbldr'), 'type'=>'hr','wrap'=>false,'icon'=>'fa-minus'),
+	'html_header' => array('label' => __('Headline','psfbldr'), 'type'=>'h','options'=>array(1,2,3,4,5,6),'wrap'=>true,'icon'=>'fa-header'),
+	'html_paragraph' => array('label' => __('Paragraph','psfbldr'), 'type'=>'p','wrap'=>true,'icon'=>'fa-paragraph'),
+	
 	'divider_buttons' => array('label'=>__('Submit buttons','psfbldr'),'type'=>'divider'),
 	'button' => array('label'=>__('Button','psfbldr'),'type'=>'button'),
 	'submit' => array('label'=>__('Submit-Button','psfbldr'),'type'=>'submit'),

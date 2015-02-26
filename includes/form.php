@@ -159,6 +159,11 @@ EOF;
 			foreach($row as $col){
 				$cnt ++;
 				$mytype = $col->type;
+				foreach($fieldtypes as $k => $v){
+					if($v['type']==$col->type){
+						$mytype = $k;
+					}
+				}
 				$fieldinfo = $fieldtypes[$mytype];
 				$fieldtype = $fieldinfo['type'];
 				
@@ -221,93 +226,102 @@ EOF;
 					$out .= '<textarea class="psfb_condition_content" style="display:none;" data-id="psfield_'.$atts['id'].'_'.$cnt.'">'.json_encode($condition).'</textarea>';
 				}
 				
-				//$out .= 'hide_label:'.$col->type.' '.print_r($col->hide_label,true).'<br/>';
-				if( strstr('submit',$col->type) || strstr('button',$col->type) ){
+				
+				//HTML BLOCK
+				if( in_array($mytype,$htmlfields)){
 					
-					if(isset($col->force_label) && $col->force_label == true){
-						$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
-						$out .= '&nbsp;';
-						$out .= '</label>';
+					$tag = $col->type;
+					if(isset($fieldinfo['options']) && !empty($fieldinfo['options'])){
+						if(isset($col->option) && !empty($col->option)){
+							$tag .= $col->option;
+						} else {
+							$tag .= $fieldinfo['options'][0];
+						}
 					}
-				} else {
-					if( !isset($col->hide_label) || $col->hide_label==false || $col->hide_label==''  ){
-						$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
-						
-						$out .= $col->label;
-						
-						if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-							$out .= '<span class="psfb_required_mark">*</span>';
-						}
-						
-						if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name])){
-							$out .= ' <small class="bg-danger">('.$_SESSION['psfb_errors'][$atts['id']][$col->name]['message'].')</small>';
-						}
-						$out .= '</label>';
-						
-					}
-				}
-				
-				if(isset($col->icon) && !empty($col->icon)){
-					$out .= '<div class="input-group">';
-			  	$out .= '<div class="input-group-addon">';
-			  	if( strstr($col->icon,'fa-') ){
-			  		$out .= '<span class="fa '.$col->icon.'"></span>';
-			  	} else {
-			  		$out .= $col->icon;
-			  	}
-			  	$out .= '</div>';
-				}
-				
-				if(!in_array($col->type,$specialfields)){
-					if(strstr($col->type,'file')){
-						$out .= '<input type="file"';
-						if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){
-							$out .= ' multiple="multiple"';
-						}
-						if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-							$out .= ' required="required"';
-						}
-						$out .= ' name="'.$col->name.'';
-						if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){
-							$out .= '[]';
-						}
-						$out .= '"';
-						if(isset($col->placeholder))$out .= ' placeholder="'.$col->placeholder.'"';
-						$out .= ' class="form-control';
-						if(isset($col->class))$out .= ' '.$col->class.'';
-						$out .= '" id="psfield_'.$atts['id'].'_'.$cnt.'"';
+					if($fieldinfo['wrap'] == true){
+						$out .= '<'.$tag;
 						if(isset($col->style))$out .= ' style="'.$col->style.'"';
-						$out .= '/>';
+						if(isset($col->class))$out .= ' class="'.$col->class.'"';
+						$out .= '>';
+						$out .= $col->content;
+						$out .= '</'.$tag.'>';
 					} else {
-						$out .= '<input type="'.$fieldtype.'"';
-						if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){
-							$out .= ' multiple="multiple"';
-						}
-						if(strstr($fieldtype,'date')){
-							$out .= ' data-psfb_datepicker="'.$j->datepicker.'"';
-						}
-						if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
-							$out .= ' value="'.$_SESSION['psfb_values'][$atts['id']][$col->name].'"';
-						}
-						if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-							$out .= ' required="required"';
-						}
-						$out .= ' name="'.$col->name.'"';
-						if(isset($col->placeholder))$out .= ' placeholder="'.$col->placeholder.'"';
-						$out .= ' class="form-control ';
-						if(isset($col->class))$out .= ''.$col->class.'';
-						$out .= '"';
-						$out .= ' id="psfield_'.$atts['id'].'_'.$cnt.'"';
+						$out .= '<'.$tag.'';
 						if(isset($col->style))$out .= ' style="'.$col->style.'"';
-						$out .= '/>';
+						if(isset($col->class))$out .= ' class="'.$col->class.'"';
+						$out .= '>';
 					}
-				} else {
 					
-					if(!in_array($col->type,$selectfields)){
-						//textarea, submit, ect
+				} else {
+					//FIELD BLOCK
+					//$out .= 'hide_label:'.$col->type.' '.print_r($col->hide_label,true).'<br/>';
+					if( strstr('submit',$col->type) || strstr('button',$col->type) ){
 						
-						if($col->type=='textarea'){
-							$out .= '<textarea';
+						if(isset($col->force_label) && $col->force_label == true){
+							$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
+							$out .= '&nbsp;';
+							$out .= '</label>';
+						}
+					} else {
+						if( !isset($col->hide_label) || $col->hide_label==false || $col->hide_label==''  ){
+							$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
+							
+							$out .= $col->label;
+							
+							if(isset($col->required) && ($col->required=='required' || $col->required==true)){
+								$out .= '<span class="psfb_required_mark">*</span>';
+							}
+							
+							if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name])){
+								$out .= ' <small class="bg-danger">('.$_SESSION['psfb_errors'][$atts['id']][$col->name]['message'].')</small>';
+							}
+							$out .= '</label>';
+							
+						}
+					}
+					
+					if(isset($col->icon) && !empty($col->icon)){
+						$out .= '<div class="input-group">';
+				  	$out .= '<div class="input-group-addon">';
+				  	if( strstr($col->icon,'fa-') ){
+				  		$out .= '<span class="fa '.$col->icon.'"></span>';
+				  	} else {
+				  		$out .= $col->icon;
+				  	}
+				  	$out .= '</div>';
+					}
+					
+					if(!in_array($col->type,$specialfields)){
+						if(strstr($col->type,'file')){
+							$out .= '<input type="file"';
+							if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){
+								$out .= ' multiple="multiple"';
+							}
+							if(isset($col->required) && ($col->required=='required' || $col->required==true)){
+								$out .= ' required="required"';
+							}
+							$out .= ' name="'.$col->name.'';
+							if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){
+								$out .= '[]';
+							}
+							$out .= '"';
+							if(isset($col->placeholder))$out .= ' placeholder="'.$col->placeholder.'"';
+							$out .= ' class="form-control';
+							if(isset($col->class))$out .= ' '.$col->class.'';
+							$out .= '" id="psfield_'.$atts['id'].'_'.$cnt.'"';
+							if(isset($col->style))$out .= ' style="'.$col->style.'"';
+							$out .= '/>';
+						} else {
+							$out .= '<input type="'.$fieldtype.'"';
+							if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){
+								$out .= ' multiple="multiple"';
+							}
+							if(strstr($fieldtype,'date')){
+								$out .= ' data-psfb_datepicker="'.$j->datepicker.'"';
+							}
+							if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
+								$out .= ' value="'.$_SESSION['psfb_values'][$atts['id']][$col->name].'"';
+							}
 							if(isset($col->required) && ($col->required=='required' || $col->required==true)){
 								$out .= ' required="required"';
 							}
@@ -318,115 +332,137 @@ EOF;
 							$out .= '"';
 							$out .= ' id="psfield_'.$atts['id'].'_'.$cnt.'"';
 							if(isset($col->style))$out .= ' style="'.$col->style.'"';
-							$out .= '>';
-							
-							if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
-								$out .= $_SESSION['psfb_values'][$atts['id']][$col->name];
-							}
-							$out .= '</textarea>';
-						} else if(strstr($col->type,'submit')){
-							if($col->type=='submit'){
-								if(!isset($col->label) || empty($col->label))$col->label = __('Submit','psfbldr');
-								$out .= '<button type="submit" class="btn btn-primary '.$col->class.'" id="psfield_'.$atts['id'].'_'.$cnt.'" style="'.$col->style.'">'.$col->label.'</button>';
-							} else if($col->type=='submitimage'){
-								$out .= '<input type="image" src="'.$col->src.'" class="'.$col->class.'" id="psfield_'.$atts['id'].'_'.$cnt.'" style="'.$col->style.'"/>';
-							}
+							$out .= '/>';
 						}
 					} else {
-						//select,radio,checkbox, etc
-						$opts = $col->select_options;
-						if($col->type=='select' || $col->type=='multiselect'){
-							$out .= '<select';
-							if($col->type=='multiselect'){
-								$out .= ' multiple="multiple"';
-							}
-							if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-								$out .= ' required="required"';
-							}
-							$out .= ' name="'.$col->name.'';
-							if($col->type=='multiselect'){
-							$out .= '[]';
-							}
-							$out .= '" class="form-control';
-							if(isset($col->class))$out .= ' '.$col->class.'';
-							$out .= '" id="psfield_'.$atts['id'].'_'.$cnt.'"';
-							if(isset($col->style))$out .= ' style="'.$col->style.'"';
-							$out .= '>';
-							foreach($opts as $opt){
-								if(trim($opt->val)==''){
-									$opt->val = $opt->label;
-								}
-								$out .= '<option value="'.$opt->val.'"';
-								if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
-									$out .= ' selected="selected"';
-								}
-								$out .= '>'.$opt->label.'</option>';
-							}
-							$out .= '</select>';
-						} else if($col->type == 'radio'){
-							$ocnt = 0;
-							$out .= '<div class="radio_wrapper">';
-							if(!isset($col->name) || empty($col->name)){
-								$col->name = $col->label;
-							}
-							foreach($opts as $opt){
-								$ocnt ++;
-								if($opt->val==''){
-									$opt->val = $opt->label;
-								}
-								//$out .= '<div class="radio_wrapper">';
-								$out .= '<label class="radio-inline ';
-								if(isset($col->class))$out .= ''.$col->class.'';
-								$out .= '"';
-								if(isset($col->style))$out .= ' style="'.$col->style.'"';
-								$out .= '>';
-								$out .= '<input';
+						
+						if(!in_array($col->type,$selectfields)){
+							//textarea, submit, ect
+							
+							if($col->type=='textarea'){
+								$out .= '<textarea';
 								if(isset($col->required) && ($col->required=='required' || $col->required==true)){
 									$out .= ' required="required"';
 								}
-								if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
-									$out .= ' checked="checked"';
-								}
-								$out .= ' type="radio" value="'.$opt->val.'" name="'.$col->name.'" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
-								$out .= $opt->label;
-								$out .= '</label>';
-								//$out .= '</div>';
-							}
-							$out .= '</div>';
-						} else if($col->type == 'checkbox'){
-							$ocnt = 0;
-							$out .= '<div class="checkbox_wrapper">';
-							foreach($opts as $opt){
-								$ocnt ++;
-								if($opt->val==''){
-									$opt->val = $opt->label;
-								}
-								$out .= '<label class="checkbox-inline ';
+								$out .= ' name="'.$col->name.'"';
+								if(isset($col->placeholder))$out .= ' placeholder="'.$col->placeholder.'"';
+								$out .= ' class="form-control ';
 								if(isset($col->class))$out .= ''.$col->class.'';
 								$out .= '"';
+								$out .= ' id="psfield_'.$atts['id'].'_'.$cnt.'"';
 								if(isset($col->style))$out .= ' style="'.$col->style.'"';
 								$out .= '>';
-								$out .= '<input';
-								//if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name.'_'.$ocnt])){
-								if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && is_array($_SESSION['psfb_values'][$atts['id']][$col->name]) && in_array($opt->val,$_SESSION['psfb_values'][$atts['id']][$col->name])){
-									$out .= ' checked="checked"';
+								
+								if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
+									$out .= $_SESSION['psfb_values'][$atts['id']][$col->name];
 								}
-								$out .= ' type="checkbox" value="'.$opt->val.'" name="'.$col->name.'[]" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
-								$out .= $opt->label;
-								$out .= '</label>';
+								$out .= '</textarea>';
+							} else if(strstr($col->type,'submit')){
+								if($col->type=='submit'){
+									if(!isset($col->label) || empty($col->label))$col->label = __('Submit','psfbldr');
+									$out .= '<button type="submit" class="btn btn-primary '.$col->class.'" id="psfield_'.$atts['id'].'_'.$cnt.'" style="'.$col->style.'">'.$col->label.'</button>';
+								} else if($col->type=='submitimage'){
+									$out .= '<input type="image" src="'.$col->src.'" class="'.$col->class.'" id="psfield_'.$atts['id'].'_'.$cnt.'" style="'.$col->style.'"/>';
+								}
 							}
-							$out .= '</div>';
+						} else {
+							//select,radio,checkbox, etc
+							$opts = $col->select_options;
+							if($col->type=='select' || $col->type=='multiselect'){
+								$out .= '<select';
+								if($col->type=='multiselect'){
+									$out .= ' multiple="multiple"';
+								}
+								if(isset($col->required) && ($col->required=='required' || $col->required==true)){
+									$out .= ' required="required"';
+								}
+								$out .= ' name="'.$col->name.'';
+								if($col->type=='multiselect'){
+								$out .= '[]';
+								}
+								$out .= '" class="form-control';
+								if(isset($col->class))$out .= ' '.$col->class.'';
+								$out .= '" id="psfield_'.$atts['id'].'_'.$cnt.'"';
+								if(isset($col->style))$out .= ' style="'.$col->style.'"';
+								$out .= '>';
+								foreach($opts as $opt){
+									if(trim($opt->val)==''){
+										$opt->val = $opt->label;
+									}
+									$out .= '<option value="'.$opt->val.'"';
+									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
+										$out .= ' selected="selected"';
+									}
+									$out .= '>'.$opt->label.'</option>';
+								}
+								$out .= '</select>';
+							} else if($col->type == 'radio'){
+								$ocnt = 0;
+								$out .= '<div class="radio_wrapper">';
+								if(!isset($col->name) || empty($col->name)){
+									$col->name = $col->label;
+								}
+								foreach($opts as $opt){
+									$ocnt ++;
+									if($opt->val==''){
+										$opt->val = $opt->label;
+									}
+									//$out .= '<div class="radio_wrapper">';
+									$out .= '<label class="radio-inline ';
+									if(isset($col->class))$out .= ''.$col->class.'';
+									$out .= '"';
+									if(isset($col->style))$out .= ' style="'.$col->style.'"';
+									$out .= '>';
+									$out .= '<input';
+									if(isset($col->required) && ($col->required=='required' || $col->required==true)){
+										$out .= ' required="required"';
+									}
+									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
+										$out .= ' checked="checked"';
+									}
+									$out .= ' type="radio" value="'.$opt->val.'" name="'.$col->name.'" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
+									$out .= $opt->label;
+									$out .= '</label>';
+									//$out .= '</div>';
+								}
+								$out .= '</div>';
+							} else if($col->type == 'checkbox'){
+								$ocnt = 0;
+								$out .= '<div class="checkbox_wrapper">';
+								foreach($opts as $opt){
+									$ocnt ++;
+									if($opt->val==''){
+										$opt->val = $opt->label;
+									}
+									$out .= '<label class="checkbox-inline ';
+									if(isset($col->class))$out .= ''.$col->class.'';
+									$out .= '"';
+									if(isset($col->style))$out .= ' style="'.$col->style.'"';
+									$out .= '>';
+									$out .= '<input';
+									//if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name.'_'.$ocnt])){
+									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && is_array($_SESSION['psfb_values'][$atts['id']][$col->name]) && in_array($opt->val,$_SESSION['psfb_values'][$atts['id']][$col->name])){
+										$out .= ' checked="checked"';
+									}
+									$out .= ' type="checkbox" value="'.$opt->val.'" name="'.$col->name.'[]" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
+									$out .= $opt->label;
+									$out .= '</label>';
+								}
+								$out .= '</div>';
+							}
 						}
 					}
-				}
+					
+					if(isset($col->icon) && !empty($col->icon)){
+						$out .= '</div>';//input-group
+					}
+					
+					if(isset($col->help_text) && !empty($col->help_text)){
+						$out .= '<p class="help-block">'.$col->help_text.'</p>';
+					}
+					
+				}//if not html
 				
-				if(isset($col->icon) && !empty($col->icon)){
-					$out .= '</div>';//input-group
-				}
-				
-				if(isset($col->help_text) && !empty($col->help_text)){
-					$out .= '<p class="help-block">'.$col->help_text.'</p>';
-				}
 				$out .= '</div>';//form-group
 				$out .= '</div>';//col-md
 			}

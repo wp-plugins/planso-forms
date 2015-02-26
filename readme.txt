@@ -42,6 +42,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 * Multilingual form builder
 * Form field icons
 * Intuitive drag-n-drop
+* Form builder with HTML blocks
 * Autoresponder emails after form submission
 * Email attachments submitted via a form
 * File submissions within forms
@@ -83,7 +84,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 > #### PlanSo Forms Pro
 > PlanSo Forms Pro comes with the following features.<br />
 >
-> HTML-Emails.<br />
+> HTML-Emails<br />
 > Conditional Logic<br />
 > No reference to PlanSo Forms in emails<br />
 > Google Analytics Integration<br />
@@ -134,6 +135,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.1.0 =
+* New Feature: Drag HTML blocks into your forms as easy as adding form fields
+* Improved translations
 
 = 1.0.9 =
 * Fixed issue with [PlanSo Forms Pro](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link) extension

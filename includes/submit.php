@@ -456,6 +456,10 @@ if(count($errors)<1){
 		}
 	}
 	//print_r($attachments);
+	
+	$filtered = apply_filters('psfb_submit_before_clean_attachments',array('j'=>$j,'mail_replace'=>$mail_replace,'attachments'=>$attachments));
+	$attachments = $filtered['attachments'];
+	
 	/** CLEAN UPLOADED ATTACHMENTS **/
 	if(!isset($j->clean_attachments) || $j->clean_attachments==true){
 		if($has_attachments && count($attachments)>0){
@@ -465,6 +469,7 @@ if(count($errors)<1){
 			rmdir($upload_dir);
 		}
 	}
+	
 	
 	
 	$page_detail_atts = array(

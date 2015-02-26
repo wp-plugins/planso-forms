@@ -84,6 +84,13 @@ var fieldtypes = {
 /*
 	color : {label:'<?php echo __('Color','psfbldr'); ?>',type:'color'},
 */
+	divider_html : {label:'<?php echo __('HTML Tags','psfbldr'); ?>', type:'divider'},
+	
+	html_div : {label:'<?php echo __('HTML Code','psfbldr'); ?>', type:'div',wrap:true,icon:'fa-terminal'},
+	html_hr : {label:'<?php echo __('Horizontal Divider','psfbldr'); ?>', type:'hr',wrap:false,icon:'fa-minus'},
+	html_header : {label:'<?php echo __('Headline','psfbldr'); ?>', type:'h',options:[1,2,3,4,5,6],wrap:true,icon:'fa-header'},
+	html_paragraph : {label:'<?php echo __('Paragraph','psfbldr'); ?>', type:'p',wrap:true,icon:'fa-paragraph'},
+	
 	divider_buttons : {label:'<?php echo __('Submit buttons','psfbldr'); ?>', type:'divider'},
 /*
 	button : {label:'<?php echo __('Button','psfbldr'); ?>',type:'button'},
@@ -103,6 +110,12 @@ var specialfields = [
 	'textarea',
 	'submit',
 	'submitimage'
+];	
+var htmlfields = [
+	'html_hr',
+	'html_header',
+	'html_paragraph',
+	'html_div'
 ];	
 var selectfields = [
 	'select',
@@ -254,69 +267,119 @@ jQuery(document).ready(function($){
 				j[rind][ind].type = mytype;
 				j[rind][ind].id = mid;
 				
-				if(mytype.indexOf('submit')!=-1){
-					var label = $(this).find('#field'+mid+'').attr('value');
-				} else {
-					var label = $(this).find('label[for="field'+mid+'"]').html();
-				}
-				var help_text = $(this).find('.help-block').html();
-				
-				var myclass = '';
-				try{
-					myclass = $(this).find('#field'+mid+'').attr('class').replace('form-control','');
-				}catch(e){}
+				if( $.inArray(mytype,htmlfields) != -1){
 					
-				var placeholder = '';
-				try{
-					placeholder = $(this).find('#field'+mid+'').attr('placeholder');
-				}catch(e){}
+					var tag_details = fieldtypes[mytype];
+					j[rind][ind].type=tag_details.type;
+					var tag = tag_details.type;
+					if(typeof tag_details.options != 'undefined' && tag_details.options.length>0){
+						j[rind][ind].option = tag_details.options[0];
+						tag += tag_details.options[0];
+					}
 					
-				var name = '';
-				try{
-					name = $(this).find('#field'+mid+'').attr('name');
-				}catch(e){}
-				
-				var  required = $(this).find('#field'+mid+'').prop('required');
-				if (typeof required != 'undefined' && (required == true || required=='true' || required=='required')) {
-					required = true;
-					label = label.replace('*','');
-				} else {
-					required = false;
-				}
-				
-				var  hide_label = $(this).find('#field'+mid+'').data('hide_label');
-				if (typeof hide_label != 'undefined' && (hide_label == true || hide_label=='true' || hide_label=='1')) {
-					hide_label = true;
-				} else {
-					hide_label = false;
-				}
-				
-				var  style = $(this).find('#field'+mid+'').attr('style');
-				if (typeof style !== 'undefined' && style !== false) {
 					
+					if(typeof tag_details.wrap != 'undefined' && tag_details.wrap===true){
+						j[rind][ind].content = $(this).find('#field'+mid+'').find(tag).first().html();
+					} else {
+						
+					}
+					
+					var myclass = '';
+					try{
+						myclass = $(this).find('#field'+mid+'').find(tag).first().attr('class').replace('form-control','');
+					}catch(e){}
+					
+					var style = '';
+					try{
+						style = $(this).find('#field'+mid+'').find(tag).first().attr('style');
+					}catch(e){}
+						
+						
 				} else {
-					style = '';
-				}
 				
-				var icon = '';
-				if( $(this).find('.input-group').length > 0 ){
-					icon = $(this).find('.input-group span.fa').attr('class').replace('fa ','');
+					if(mytype.indexOf('submit')!=-1){
+						var label = $(this).find('#field'+mid+'').attr('value');
+					} else {
+						var label = $(this).find('label[for="field'+mid+'"]').html();
+					}
+					var help_text = $(this).find('.help-block').html();
+					
+					var myclass = '';
+					try{
+						myclass = $(this).find('#field'+mid+'').attr('class').replace('form-control','');
+					}catch(e){}
+						
+					var placeholder = '';
+					try{
+						placeholder = $(this).find('#field'+mid+'').attr('placeholder');
+					}catch(e){}
+						
+					var name = '';
+					try{
+						name = $(this).find('#field'+mid+'').attr('name');
+					}catch(e){}
+					
+					var  required = $(this).find('#field'+mid+'').prop('required');
+					if (typeof required != 'undefined' && (required == true || required=='true' || required=='required')) {
+						required = true;
+						label = label.replace('*','');
+					} else {
+						required = false;
+					}
+					
+					var  hide_label = $(this).find('#field'+mid+'').data('hide_label');
+					if (typeof hide_label != 'undefined' && (hide_label == true || hide_label=='true' || hide_label=='1')) {
+						hide_label = true;
+					} else {
+						hide_label = false;
+					}
+					
+					var  style = $(this).find('#field'+mid+'').attr('style');
+					if (typeof style !== 'undefined' && style !== false) {
+						
+					} else {
+						style = '';
+					}
+					
+					var icon = '';
+					if( $(this).find('.input-group').length > 0 ){
+						icon = $(this).find('.input-group span.fa').attr('class').replace('fa ','');
+					}
+					
+					
 				}
-				
 				var  cond = $(this).find('#field'+mid+'').data('condition');
 				if (typeof cond != 'undefined') {
 					j[rind][ind].condition = cond;
 				}
 				
-				j[rind][ind].label = label;
-				j[rind][ind].help_text = help_text;
-				j[rind][ind].class = myclass;
-				j[rind][ind].style = style;
-				j[rind][ind].required = required;
-				j[rind][ind].hide_label = hide_label;
-				j[rind][ind].placeholder = placeholder;
-				j[rind][ind].icon = icon;
-				j[rind][ind].name = name;
+				if(typeof label != 'undefined'){
+					j[rind][ind].label = label;
+				}
+				if(typeof help_text != 'undefined'){
+					j[rind][ind].help_text = help_text;
+				}
+				if(typeof myclass != 'undefined'){
+					j[rind][ind].class = myclass;
+				}
+				if(typeof style != 'undefined'){
+					j[rind][ind].style = style;
+				}
+				if(typeof required != 'undefined'){
+					j[rind][ind].required = required;
+				}
+				if(typeof hide_label != 'undefined'){
+					j[rind][ind].hide_label = hide_label;
+				}
+				if(typeof placeholder != 'undefined'){
+					j[rind][ind].placeholder = placeholder;
+				}
+				if(typeof icon != 'undefined'){
+					j[rind][ind].icon = icon;
+				}
+				if(typeof name != 'undefined'){
+					j[rind][ind].name = name;
+				}
 				
 				
 				
@@ -418,6 +481,7 @@ jQuery(document).ready(function($){
 		if( $('input.pushover_user').length > 0){
 			jj.pushover_user =  $('input.pushover_user').val();
 		}
+		<?php do_action('psfb_edit_js_before_save_json'); ?>
 		
 		$('#psfb_title').val( $('.psfb_title_input').val() );
 		$('#psfb_json').val( JSON.stringify( jj ) );
@@ -434,7 +498,7 @@ jQuery(document).ready(function($){
 		
 	});
 	
-	
+	<?php do_action('psfb_edit_js_document_ready'); ?>
 });
 function ps_remove_dropareas(){
 	var $ = jQuery;
@@ -473,6 +537,12 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  }
 	} else {
 		var mytype = j.type;
+		$.each(fieldtypes,function(k,v){
+			if( v.type == j.type){
+				mytype = k;
+			}
+		});
+		
 		var myLabel = j.label;
 		if(target==0){
 	  	var row_mode = 'plain';
@@ -486,6 +556,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
   while( $('#field'+dynID).length > 0 ){
   	dynID ++;
   }
+  //console.log(mytype);
   var myFieldType = fieldtypes[mytype];
   //var myLabel = myFieldType.label;
   //console.log(target);
@@ -499,7 +570,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
   
   row += '<div class="form-group">';
   
-  if(mytype != 'submit' && mytype!='submitimage'){
+  if(mytype != 'submit' && mytype!='submitimage' && mytype.substr(0,5)!='html_'){
   	
 	  row += '<label for="field'+dynID+'" class="field_label"';
 	  if(typeof j.hide_label!='undefined' && j.hide_label==true){
@@ -513,220 +584,278 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		row += '</label>';
 	}
 	
-	
-  if( $.inArray(mytype,specialfields)!= -1 ){
-    //special cases
-    if(mytype == 'textarea'){
-    	row += '<textarea id="field'+dynID+'" class="form-control';
-	    if(typeof j.class!='undefined' && j.class!=''){
-	    	row += j.class;
+  if( $.inArray(mytype,htmlfields)!= -1 ){
+		
+		var tag_details = fieldtypes[mytype];
+		//console.log(tag_details);
+		row += '<div class="psfb_html_content" id="field'+dynID+'" data-tag="'+tag_details.type+'"';
+		if(typeof tag_details.options != 'undefined'){
+			row += ' data-options="'+JSON.stringify(tag_details.options)+'"';
+		}
+		row += '>';
+		if(typeof tag_details.wrap != 'undefined' && tag_details.wrap===true){
+			row += '<'+tag_details.type+'';
+			
+			if(typeof tag_details.options != 'undefined'){
+				if(typeof j.option != 'undefined'){
+					row += j.option;
+				} else {
+					row += tag_details.options[0];
+				}
+			}
+	    if(typeof j.style!='undefined' && j.style!=''){
+	    	row += ' style="'+j.style+'"';
 	    }
-	    row += '"';
+	    if(typeof j.class!='undefined' && j.class!=''){
+	    	row += ' class="'+j.class+'"';
+	    }
+			row += '>';
+			if(typeof j.content != 'undefined'){
+				row += j.content;
+			} else {
+				row += '<?php echo __('YOUR CONTENT GOES HERE','psfbldr'); ?>';
+			}
+			row += '</'+tag_details.type+'';
+			if(typeof tag_details.options != 'undefined'){
+				if(typeof j.option != 'undefined'){
+					row += j.option;
+				} else {
+					row += tag_details.options[0];
+				}
+			}
+			row += '>';
+			
+		} else {
+			row += '<'+tag_details.type+'';
+			
+	    if(typeof j.style!='undefined' && j.style!=''){
+	    	row += ' style="'+j.style+'"';
+	    }
+	    if(typeof j.class!='undefined' && j.class!=''){
+	    	row += ' class="'+j.class+'"';
+	    }
+	    row += '/>';
+		}
+		
+		
+		row += '</div>';
+    	
+		
+  } else {
+  	if( $.inArray(mytype,specialfields)!= -1 ){
+	    //special cases
+	    if(mytype == 'textarea'){
+	    	row += '<textarea id="field'+dynID+'" class="form-control';
+		    if(typeof j.class!='undefined' && j.class!=''){
+		    	row += j.class;
+		    }
+		    row += '"';
+		    if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
+		    	row += ' required="required"';
+		    }
+		    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+		    	row += ' data-hide_label="true"';
+		    }
+		    if(typeof j.style!='undefined' && j.style!=''){
+		    	row += ' style="'+j.style+'"';
+		    }
+		    if(typeof j.cols!='undefined' && j.cols!=''){
+		    	row += ' cols="'+j.cols+'"';
+		    }
+		    if(typeof j.rows!='undefined' && j.rows!=''){
+		    	row += ' rows="'+j.rows+'"';
+		    }
+		    if(typeof j.placeholder!='undefined' && j.placeholder!='' && j.placeholder!='undefined'){
+		    	row += ' placeholder="'+j.placeholder+'"';
+		    }
+		    
+		    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
+		    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+		    } else {
+		    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+		    }
+		    row += '></textarea>';
+		    
+	    } else if(mytype == 'submit' || mytype=='submitimage'){
+	    	
+	    	row += '<input type="'+myFieldType.type+'" id="field'+dynID+'"';
+	    	row += ' class="';
+	    	if(mytype=='submit' || (typeof j.src=='undefined' || j.src=='')){
+	    		row += 'btn btn-primary';
+	    	}
+	    	
+		    if(typeof j.class!='undefined' && j.class!=''){
+		    	if(j.class.indexOf('btn-primary')!=-1){
+		    		j.class = j.class.replace(/btn-primary/g,'',j.class);
+		    	}
+		    	if(j.class.indexOf('btn ')!=-1){
+		    		j.class = j.class.replace(/btn /g,'',j.class);
+		    	}
+		    	row += ' '+j.class;
+		    }
+		    row += '"';
+		    
+		    if(typeof j.force_label!='undefined' && (j.force_label==true || j.force_label=='true' || j.force_label=='1')){
+		    	row += ' data-force_label="true"';
+		    }
+		    if(typeof j.style!='undefined' && j.style!=''){
+		    	row += ' style="'+j.style+'"';
+		    }
+		    if(typeof j.label!='undefined' && j.label!=''){
+		    	row += ' value="'+j.label+'"';
+		    } else {
+		    	row += ' value="<?php echo __('Submit','psfbldr'); ?>"';
+		    }
+		    if(mytype=='submitimage' && typeof j.src!='undefined' && j.src!=''){
+		    	row += ' src="'+j.src+'"';
+		    }
+		    row += '>';
+	    } else if(mytype == 'radio'){
+	    	
+	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
+	    		row += '<div class="radio_wrapper">';
+					row += '<label class="radio-inline"><input type="radio" name="optionsfield'+dynID+'" value="">';
+					row += myLabel+' 1';
+					row += '</label>';
+					//row += '</div>';
+	    		//row += '<div class="radio">';
+					row += '<label class="radio-inline"><input type="radio" name="optionsfield'+dynID+'" value="">';
+					row += myLabel+' 2';
+					row += '</label>';
+					row += '</div>';
+				} else {
+					//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
+					row += '<div class="radio_wrapper">';
+					$.each(j.select_options,function(key,value){
+						row += '<label class="radio-inline"><input type="radio"  value="'+value.val+'"';
+						//name="optionsfield'+dynID+'"
+				    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
+				    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+				    } else {
+				    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+				    }
+						row += '>';
+						row += value.label;
+						row += '</label>';
+					});
+					row += '</div>';
+				}
+	    } else if(mytype == 'checkbox'){
+	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
+		    	row += '<div class="checkbox_wrapper">';
+					row += '<label class="checkbox-inline"><input type="checkbox" value="">';
+					row += myLabel+' 1';
+					row += '</label>';
+				//	row += '</div>';
+		    //	row += '<div class="checkbox">';
+					row += '<label class="checkbox-inline"><input type="checkbox" value="">';
+					row += myLabel+' 2';
+					row += '</label>';
+					row += '</div>';
+				} else {
+					//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
+					row += '<div class="checkbox_wrapper">';
+					$.each(j.select_options,function(key,value){
+						row += '<label class="checkbox-inline"><input type="checkbox"';
+						
+				    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
+				    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+				    } else {
+				    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+				    }
+						row += ' value="'+value.val+'">';
+						row += value.label;
+						row += '</label>';
+					});
+					row += '</div>';
+				}
+	    } else if(mytype == 'select' || mytype == 'multiselect'){
+	    	row += '<select id="field'+dynID+'" class="form-control';
+		    if(typeof j.class!='undefined' && j.class!=''){
+		    	row += j.class;
+		    }
+		    row += '"';
+		    
+	    	if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
+		    	row += ' multiple="multiple"';
+		    }
+		    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+		    	row += ' data-hide_label="true"';
+		    }
+		    if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
+		    	row += ' required="required"';
+		    }
+		    if(typeof j.style!='undefined' && j.style!=''){
+		    	row += ' style="'+j.style+'"';
+		    }
+		    
+		    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
+		    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+		    } else {
+		    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+		    }
+	    	row += '>';
+	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
+		    	row += '<option value="">'+myLabel+'</option>';
+		    } else {
+		    	$.each(j.select_options,function(key,value){
+		    		row += '<option value="'+value.val+'">'+value.label+'</option>';
+		    	});
+		    }
+		    row += '</select>';
+	    }
+	  } else {
+	  	
+	  	//input group
+	  	
+	    if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
+	    	//console.log(j.icon);
+		  	row += '<div class="input-group">';
+		  	row += '<div class="input-group-addon">';
+		  	row += '<span class="fa '+j.icon+'"></span>';
+		  	row += '</div>';
+	  	}
+	  	console.log(myFieldType);
+	    row += '<input id="field'+dynID+'" type="'+ myFieldType.type +'"';
+	    if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
+	    	row += ' multiple="multiple"';
+	    }
 	    if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
 	    	row += ' required="required"';
 	    }
 	    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
 	    	row += ' data-hide_label="true"';
 	    }
-	    if(typeof j.style!='undefined' && j.style!=''){
+	    row += ' class="form-control';
+	    if(typeof j.class!='undefined' && j.class!='' && j.class!='undefined'){
+	    	row += j.class;
+	    }
+	    row += '"';
+	    
+	    if(typeof j.style!='undefined' && j.style!='' && j.style!='undefined'){
 	    	row += ' style="'+j.style+'"';
 	    }
-	    if(typeof j.cols!='undefined' && j.cols!=''){
-	    	row += ' cols="'+j.cols+'"';
+	    if(typeof j.min!='undefined' && j.min!='' && j.min!='undefined'){
+	    	row += ' min="'+j.min+'"';
 	    }
-	    if(typeof j.rows!='undefined' && j.rows!=''){
-	    	row += ' rows="'+j.rows+'"';
+	    if(typeof j.max!='undefined' && j.max!='' && j.max!='undefined'){
+	    	row += ' max="'+j.max+'"';
 	    }
 	    if(typeof j.placeholder!='undefined' && j.placeholder!='' && j.placeholder!='undefined'){
 	    	row += ' placeholder="'+j.placeholder+'"';
 	    }
-	    
 	    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
 	    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 	    } else {
 	    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-	    }
-	    row += '></textarea>';
-	    
-    } else if(mytype == 'submit' || mytype=='submitimage'){
-    	
-    	row += '<input type="'+myFieldType.type+'" id="field'+dynID+'"';
-    	row += ' class="';
-    	if(mytype=='submit' || (typeof j.src=='undefined' || j.src=='')){
-    		row += 'btn btn-primary';
-    	}
-    	
-	    if(typeof j.class!='undefined' && j.class!=''){
-	    	if(j.class.indexOf('btn-primary')!=-1){
-	    		j.class = j.class.replace(/btn-primary/g,'',j.class);
-	    	}
-	    	if(j.class.indexOf('btn ')!=-1){
-	    		j.class = j.class.replace(/btn /g,'',j.class);
-	    	}
-	    	row += ' '+j.class;
-	    }
-	    row += '"';
-	    
-	    if(typeof j.force_label!='undefined' && (j.force_label==true || j.force_label=='true' || j.force_label=='1')){
-	    	row += ' data-force_label="true"';
-	    }
-	    if(typeof j.style!='undefined' && j.style!=''){
-	    	row += ' style="'+j.style+'"';
-	    }
-	    if(typeof j.label!='undefined' && j.label!=''){
-	    	row += ' value="'+j.label+'"';
-	    } else {
-	    	row += ' value="<?php echo __('Submit','psfbldr'); ?>"';
-	    }
-	    if(mytype=='submitimage' && typeof j.src!='undefined' && j.src!=''){
-	    	row += ' src="'+j.src+'"';
 	    }
 	    row += '>';
-    } else if(mytype == 'radio'){
-    	
-    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
-    		row += '<div class="radio_wrapper">';
-				row += '<label class="radio-inline"><input type="radio" name="optionsfield'+dynID+'" value="">';
-				row += myLabel+' 1';
-				row += '</label>';
-				//row += '</div>';
-    		//row += '<div class="radio">';
-				row += '<label class="radio-inline"><input type="radio" name="optionsfield'+dynID+'" value="">';
-				row += myLabel+' 2';
-				row += '</label>';
-				row += '</div>';
-			} else {
-				//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
-				row += '<div class="radio_wrapper">';
-				$.each(j.select_options,function(key,value){
-					row += '<label class="radio-inline"><input type="radio"  value="'+value.val+'"';
-					//name="optionsfield'+dynID+'"
-			    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
-			    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-			    } else {
-			    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-			    }
-					row += '>';
-					row += value.label;
-					row += '</label>';
-				});
-				row += '</div>';
-			}
-    } else if(mytype == 'checkbox'){
-    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
-	    	row += '<div class="checkbox_wrapper">';
-				row += '<label class="checkbox-inline"><input type="checkbox" value="">';
-				row += myLabel+' 1';
-				row += '</label>';
-			//	row += '</div>';
-	    //	row += '<div class="checkbox">';
-				row += '<label class="checkbox-inline"><input type="checkbox" value="">';
-				row += myLabel+' 2';
-				row += '</label>';
-				row += '</div>';
-			} else {
-				//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
-				row += '<div class="checkbox_wrapper">';
-				$.each(j.select_options,function(key,value){
-					row += '<label class="checkbox-inline"><input type="checkbox"';
-					
-			    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
-			    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-			    } else {
-			    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-			    }
-					row += ' value="'+value.val+'">';
-					row += value.label;
-					row += '</label>';
-				});
-				row += '</div>';
-			}
-    } else if(mytype == 'select' || mytype == 'multiselect'){
-    	row += '<select id="field'+dynID+'" class="form-control';
-	    if(typeof j.class!='undefined' && j.class!=''){
-	    	row += j.class;
-	    }
-	    row += '"';
 	    
-    	if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
-	    	row += ' multiple="multiple"';
-	    }
-	    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
-	    	row += ' data-hide_label="true"';
-	    }
-	    if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
-	    	row += ' required="required"';
-	    }
-	    if(typeof j.style!='undefined' && j.style!=''){
-	    	row += ' style="'+j.style+'"';
-	    }
-	    
-	    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
-	    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-	    } else {
-	    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-	    }
-    	row += '>';
-    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
-	    	row += '<option value="">'+myLabel+'</option>';
-	    } else {
-	    	$.each(j.select_options,function(key,value){
-	    		row += '<option value="'+value.val+'">'+value.label+'</option>';
-	    	});
-	    }
-	    row += '</select>';
-    }
-  } else {
-  	
-  	//input group
-  	
-    if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
-    	//console.log(j.icon);
-	  	row += '<div class="input-group">';
-	  	row += '<div class="input-group-addon">';
-	  	row += '<span class="fa '+j.icon+'"></span>';
-	  	row += '</div>';
-  	}
-  	//console.log(myFieldType);
-    row += '<input id="field'+dynID+'" type="'+ myFieldType.type +'"';
-    if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
-    	row += ' multiple="multiple"';
-    }
-    if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
-    	row += ' required="required"';
-    }
-    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
-    	row += ' data-hide_label="true"';
-    }
-    row += ' class="form-control';
-    if(typeof j.class!='undefined' && j.class!='' && j.class!='undefined'){
-    	row += j.class;
-    }
-    row += '"';
-    
-    if(typeof j.style!='undefined' && j.style!='' && j.style!='undefined'){
-    	row += ' style="'+j.style+'"';
-    }
-    if(typeof j.min!='undefined' && j.min!='' && j.min!='undefined'){
-    	row += ' min="'+j.min+'"';
-    }
-    if(typeof j.max!='undefined' && j.max!='' && j.max!='undefined'){
-    	row += ' max="'+j.max+'"';
-    }
-    if(typeof j.placeholder!='undefined' && j.placeholder!='' && j.placeholder!='undefined'){
-    	row += ' placeholder="'+j.placeholder+'"';
-    }
-    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
-    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-    } else {
-    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-    }
-    row += '>';
-    
-    if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
-   		row += '</div>';//input-group
-   	}
-  }
+	    if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
+	   		row += '</div>';//input-group
+	   	}
+	  }
+	}
   
   row += '<p class="help-block">';
   if(typeof j.help_text!='undefined' && j.help_text!='' && j.help_text!='undefined'){
@@ -742,16 +871,33 @@ function ps_field_drop( event, ui, target, j, createcol ){
   if(row_mode=='plain'){
   	row += '</div>';//end row
   	$( '.form_builder_stage' ).append( row );
-  	$( '.form_builder_stage' ).find('.form-group :input').last().data('condition',j.condition);
+  	if( $.inArray(mytype,htmlfields)!=-1){
+  		$( '.form_builder_stage' ).find('.psfb_html_content').last().data('condition',j.condition);
+  	} else {
+  		$( '.form_builder_stage' ).find('.form-group :input').last().data('condition',j.condition);
+  	}
   } else if(row_mode=='plain_col'){
   	$( '.form_builder_stage .row:last-child' ).append( row );
-  	$( '.form_builder_stage .row:last-child' ).find('.form-group :input').last().data('condition',j.condition);
+  	if( $.inArray(mytype,htmlfields)!=-1){
+	  	$( '.form_builder_stage .row:last-child' ).find('.psfb_html_content').last().data('condition',j.condition);
+	  } else {
+	  	$( '.form_builder_stage .row:last-child' ).find('.form-group :input').last().data('condition',j.condition);
+	  }
   	var colcnt = $( '.form_builder_stage .row:last-child .field_container' ).length;
   	$( '.form_builder_stage .row:last-child .field_container' ).attr('class','field_container').addClass('col-md-'+ Math.floor( 12 / colcnt) +'');
-  	$( '.form_builder_stage .row:last-child .field_container' ).find('.form-group :input').last().data('condition',j.condition);
+  	if( $.inArray(mytype,htmlfields)!=-1){
+  		$( '.form_builder_stage .row:last-child .field_container' ).find('.psfb_html_content').last().data('condition',j.condition);
+  	} else {
+  		$( '.form_builder_stage .row:last-child .field_container' ).find('.form-group :input').last().data('condition',j.condition);
+  	}
   } else {
   	$( row ).insertAfter( $(target) );
-  	$(target).find('.form-group :input').last().data('condition',j.condition);
+  	if( $.inArray(mytype,htmlfields)!=-1){
+  		$(target).find('.psfb_html_content').last().data('condition',j.condition);
+  	} else {
+  		$(target).find('.form-group :input').last().data('condition',j.condition);
+  	}
+  	
   }
   
   ps_manage_form_vars();
@@ -804,145 +950,181 @@ function ps_field_drop( event, ui, target, j, createcol ){
   	
   	var mytype = $(this).closest('.field_container').data('type');
   	
-  	if(mytype.indexOf('submit')!=-1){
-  		$('#field_label').val( $(this).closest('.field_container').find('.form-group :input').attr('value') );
-  	} else {
-	  	$('#field_label').val( $(this).closest('.field_container').find('.form-group .field_label').html().replace('*','') );
-	  }
-	  if( $('#field_label').val()=='undefined'){
-  		$('#field_label').val('');
-  	}
-  	$('#field_label').unbind('change').change(function(){
-  		$('#field_name').val( $(this).val().replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_') );
-  	});
-  	$('#field_helptext').val( $(this).closest('.field_container').find('.form-group .help-block').html() );
-  	if( $('#field_helptext').val()=='undefined'){
-  		$('#field_helptext').val('');
-  	}
-  	$('#field_placeholder').val( $(this).closest('.field_container').find('.form-group :input').attr('placeholder') );
-  	if( $('#field_placeholder').val()=='undefined'){
-  		$('#field_placeholder').val('');
-  	}
-  	$('#field_cssstyle').val( $(this).closest('.field_container').find('.form-group :input').attr('style') );
-  	if( $('#field_cssstyle').val()=='undefined'){
-  		$('#field_cssstyle').val('');
-  	}
-  	var cssclass = $(this).closest('.field_container').find('.form-group :input').attr('class');
-  	if(typeof cssclass!='undefined'){
-  		if(cssclass.indexOf('form-control')!=-1){
-  			cssclass=cssclass.replace('form-control','');
-  		}
-  		if(cssclass.indexOf('btn btn-primary')!=-1){
-  			cssclass=cssclass.replace('btn btn-primary','');
-  		}
-  	} else {
-  		cssclass = '';
-  	}
-  	$('#field_cssclass').val( cssclass );
-  	if( $('#field_cssclass').val()=='undefined'){
-  		$('#field_cssclass').val('');
-  	}
-  	$('#field_name').val( $(this).closest('.field_container').find('.form-group :input').attr('name') );
-  	if( $('#field_name').val()=='undefined'){
-  		$('#field_name').val('');
-  	}
-  	$('#field_name_orig').val( $('#field_name').val() );
   	
-  	
-  	
-  	var req = $(this).closest('.field_container').find('.form-group :input').prop('required');
-  	//console.log(req);
-  	if(typeof req!='undefined' && (req == 'required' || req==true || req=='true') ){
-  		req = true;
-  		$('#field_required').prop('checked',true);
-  	} else {
-  		req = false;
-  		$('#field_required').prop('checked',false);
-  	}
-  	
-  	var hide_label = $(this).closest('.field_container').find('.form-group :input').data('hide_label');
-  	//console.log(req);
-  	if(typeof hide_label!='undefined' && (hide_label == '1' || hide_label==true || hide_label=='true') ){
-  		hide_label = true;
-  		$('#field_hide_label').prop('checked',true);
-  	} else {
-  		hide_label = false;
-  		$('#field_hide_label').prop('checked',false);
-  	}
-  	
-  	$('#field_icon').val('');
-  	if( $(this).closest('.field_container').find('.input-group').length > 0){
-  		$('#field_icon').val( $(this).closest('.field_container').find('.input-group .fa').attr('class').replace('fa ','') );
-  	}
-  	
-  	
-  	if( $.inArray(mytype,noiconfields)!= -1  ){
-  		$('.field_icon_wrapper').hide();
-  	} else {
-  		$('.field_icon_wrapper').show();
-  	}
-  	if( $.inArray(mytype,noplaceholderfields)!= -1  ){
-  		$('.field_placeholder_wrapper').hide();
-  	} else {
-  		$('.field_placeholder_wrapper').show();
-  	}
+  	if( $.inArray(mytype,htmlfields)!=-1){
   		
-  	if( $.inArray(mytype,selectfields)!= -1 ){
-    	//selectfield
-    	
-    	$('.selectoptionstab').show();
-    	$('.selectoptions_content').html('');
-    	if(mytype == 'select' || mytype == 'multiselect'){
-  			$(this).closest('.field_container').find('option').each(function(){
-  				var h = $('.selectoptions_template').html();
-  				$('.selectoptions_content').append(h);
-  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
-  				$('.selectoptions_content .field_option_label:last').val( $(this).text() );
-  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
-  					$(this).closest('.row').remove();
-  				});
-  			});
-  		} else if(mytype == 'radio'){
-  			$(this).closest('.field_container').find('input[type="radio"]').each(function(){
-  				var h = $('.selectoptions_template').html();
-  				$('.selectoptions_content').append(h);
-  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
-  				$('.selectoptions_content .field_option_label:last').val( $(this).parent().text() );
-  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
-  					$(this).closest('.row').remove();
-  				});
-  			});
-  		} else if(mytype == 'checkbox'){
-  			$(this).closest('.field_container').find('input[type="checkbox"]').each(function(){
-  				var h = $('.selectoptions_template').html();
-  				$('.selectoptions_content').append(h);
-  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
-  				$('.selectoptions_content .field_option_label:last').val( $(this).parent().text() );
-  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
-  					$(this).closest('.row').remove();
-  				});
-  			});
+  		
+  		var tag_details = fieldtypes[mytype];
+			if(typeof tag_details.wrap!='undefined' && tag_details.wrap===true){
+  			var tag = tag_details.type;
+  			if(typeof tag_details.options!='undefined'){
+  				//ACHTUNG AUSWAHL BEREITSTELLEN
+  				tag += tag_details.options[0];
+  			}
+  			$('#field_html_content').val( $(this).closest('.field_container').find('.psfb_html_content').find(tag).first().html() );
   		}
-  		$('.selectoptions_content').sortable({
-  			appendTo: document.body,
-		  	axis: 'y',
-		  	containment: 'parent',
-		  	forceHelperSize: true,
-		  	tolerance: 'pointer',
-		  	cursor:'ns-resize',
-		  	items:'>div'
-  		});
-  		$('.add_selectoption').unbind('click').click(function(){
-  			var h = $('.selectoptions_template').html();
-  			$('.selectoptions_content').append(h);
-				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
-					$(this).closest('.row').remove();
-				});
-  		});
+  		
+	  	$('#field_cssstyle').val( $(this).closest('.field_container').find('.psfb_html_content').find(tag).first().attr('style') );
+	  	if( $('#field_cssstyle').val()=='undefined'){
+	  		$('#field_cssstyle').val('');
+	  	}
+  		var cssclass = $(this).closest('.field_container').find('.psfb_html_content').find(tag).first().attr('class');
+	  	if(typeof cssclass!='undefined'){
+	  		if(cssclass.indexOf('psfb_html_content')!=-1){
+	  			cssclass=cssclass.replace('psfb_html_content','');
+	  		}
+	  	} else {
+	  		cssclass = '';
+	  	}
+	  	$('#field_cssclass').val( cssclass );
+	  	if( $('#field_cssclass').val()=='undefined'){
+	  		$('#field_cssclass').val('');
+	  	}
+  		
+  		
   		
   	} else {
-  		$('.selectoptionstab').hide();
-  	}
+	  	
+	  	if(mytype.indexOf('submit')!=-1){
+	  		$('#field_label').val( $(this).closest('.field_container').find('.form-group :input').attr('value') );
+	  	} else {
+		  	$('#field_label').val( $(this).closest('.field_container').find('.form-group .field_label').html().replace('*','') );
+		  }
+		  if( $('#field_label').val()=='undefined'){
+	  		$('#field_label').val('');
+	  	}
+	  	$('#field_label').unbind('change').change(function(){
+	  		$('#field_name').val( $(this).val().replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_') );
+	  	});
+	  	$('#field_helptext').val( $(this).closest('.field_container').find('.form-group .help-block').html() );
+	  	if( $('#field_helptext').val()=='undefined'){
+	  		$('#field_helptext').val('');
+	  	}
+	  	$('#field_placeholder').val( $(this).closest('.field_container').find('.form-group :input').attr('placeholder') );
+	  	if( $('#field_placeholder').val()=='undefined'){
+	  		$('#field_placeholder').val('');
+	  	}
+	  	$('#field_cssstyle').val( $(this).closest('.field_container').find('.form-group :input').attr('style') );
+	  	if( $('#field_cssstyle').val()=='undefined'){
+	  		$('#field_cssstyle').val('');
+	  	}
+	  	var cssclass = $(this).closest('.field_container').find('.form-group :input').attr('class');
+	  	if(typeof cssclass!='undefined'){
+	  		if(cssclass.indexOf('form-control')!=-1){
+	  			cssclass=cssclass.replace('form-control','');
+	  		}
+	  		if(cssclass.indexOf('btn btn-primary')!=-1){
+	  			cssclass=cssclass.replace('btn btn-primary','');
+	  		}
+	  	} else {
+	  		cssclass = '';
+	  	}
+	  	$('#field_cssclass').val( cssclass );
+	  	if( $('#field_cssclass').val()=='undefined'){
+	  		$('#field_cssclass').val('');
+	  	}
+	  	$('#field_name').val( $(this).closest('.field_container').find('.form-group :input').attr('name') );
+	  	if( $('#field_name').val()=='undefined'){
+	  		$('#field_name').val('');
+	  	}
+	  	$('#field_name_orig').val( $('#field_name').val() );
+	  	
+	  	
+	  	
+	  	var req = $(this).closest('.field_container').find('.form-group :input').prop('required');
+	  	//console.log(req);
+	  	if(typeof req!='undefined' && (req == 'required' || req==true || req=='true') ){
+	  		req = true;
+	  		$('#field_required').prop('checked',true);
+	  	} else {
+	  		req = false;
+	  		$('#field_required').prop('checked',false);
+	  	}
+	  	
+	  	var hide_label = $(this).closest('.field_container').find('.form-group :input').data('hide_label');
+	  	//console.log(req);
+	  	if(typeof hide_label!='undefined' && (hide_label == '1' || hide_label==true || hide_label=='true') ){
+	  		hide_label = true;
+	  		$('#field_hide_label').prop('checked',true);
+	  	} else {
+	  		hide_label = false;
+	  		$('#field_hide_label').prop('checked',false);
+	  	}
+	  	
+	  	$('#field_icon').val('');
+	  	if( $(this).closest('.field_container').find('.input-group').length > 0){
+	  		$('#field_icon').val( $(this).closest('.field_container').find('.input-group .fa').attr('class').replace('fa ','') );
+	  	}
+	  	
+	  	
+	  	if( $.inArray(mytype,noiconfields)!= -1  ){
+	  		$('.field_icon_wrapper').hide();
+	  	} else {
+	  		$('.field_icon_wrapper').show();
+	  	}
+	  	if( $.inArray(mytype,noplaceholderfields)!= -1  ){
+	  		$('.field_placeholder_wrapper').hide();
+	  	} else {
+	  		$('.field_placeholder_wrapper').show();
+	  	}
+	  		
+	  	if( $.inArray(mytype,selectfields)!= -1 ){
+	    	//selectfield
+	    	
+	    	$('.selectoptionstab').show();
+	    	$('.selectoptions_content').html('');
+	    	if(mytype == 'select' || mytype == 'multiselect'){
+	  			$(this).closest('.field_container').find('option').each(function(){
+	  				var h = $('.selectoptions_template').html();
+	  				$('.selectoptions_content').append(h);
+	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
+	  				$('.selectoptions_content .field_option_label:last').val( $(this).text() );
+	  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
+	  					$(this).closest('.row').remove();
+	  				});
+	  			});
+	  		} else if(mytype == 'radio'){
+	  			$(this).closest('.field_container').find('input[type="radio"]').each(function(){
+	  				var h = $('.selectoptions_template').html();
+	  				$('.selectoptions_content').append(h);
+	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
+	  				$('.selectoptions_content .field_option_label:last').val( $(this).parent().text() );
+	  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
+	  					$(this).closest('.row').remove();
+	  				});
+	  			});
+	  		} else if(mytype == 'checkbox'){
+	  			$(this).closest('.field_container').find('input[type="checkbox"]').each(function(){
+	  				var h = $('.selectoptions_template').html();
+	  				$('.selectoptions_content').append(h);
+	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
+	  				$('.selectoptions_content .field_option_label:last').val( $(this).parent().text() );
+	  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
+	  					$(this).closest('.row').remove();
+	  				});
+	  			});
+	  		}
+	  		$('.selectoptions_content').sortable({
+	  			appendTo: document.body,
+			  	axis: 'y',
+			  	containment: 'parent',
+			  	forceHelperSize: true,
+			  	tolerance: 'pointer',
+			  	cursor:'ns-resize',
+			  	items:'>div'
+	  		});
+	  		$('.add_selectoption').unbind('click').click(function(){
+	  			var h = $('.selectoptions_template').html();
+	  			$('.selectoptions_content').append(h);
+					$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
+						$(this).closest('.row').remove();
+					});
+	  		});
+	  		
+	  	} else {
+	  		$('.selectoptionstab').hide();
+	  	}
+	  }//end if not html
   	
   	$('.add_conditionset').unbind('click').click(function(){
 			var h = $('.condition_set_template').html();
@@ -978,7 +1160,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		$('.condition_template .condition_field_select').html(h);
   	
   	$('.condition_content').html('');
-		var cond = $(this).closest('.field_container').find('.form-group :input').data('condition');
+  	if( $.inArray(mytype,htmlfields)!=-1){
+			var cond = $(this).closest('.field_container').find('.psfb_html_content').data('condition');
+		} else {
+			var cond = $(this).closest('.field_container').find('.form-group :input').data('condition');
+		}
 		if(typeof cond!='undefined'){
 			if( $.type(cond)=='object'){
 				var c = cond;
@@ -1008,70 +1194,106 @@ function ps_field_drop( event, ui, target, j, createcol ){
   	
   	
   	$('#fieldeditor').modal('show').data('type',$(this).closest('.field_container').data('type') ).data('id',$(this).closest('.field_container').data('id') );
-  	$('#fieldeditor a:first').tab('show');
+  	
+		if( $.inArray(mytype,htmlfields)!=-1){
+			$('#fieldeditor .basicstab').hide();
+			$('#fieldeditor .selectoptionstab').hide();
+			var tag_details = fieldtypes[mytype];
+ 			if(typeof tag_details.wrap!='undefined' && tag_details.wrap===true){
+				$('#fieldeditor .basicshtmltab').show();
+			$('#fieldeditor a[href="#tab-basicshtml"]').tab('show');
+			} else {
+				$('#fieldeditor .basicshtmltab').hide();
+				$('#fieldeditor a[href="#tab-expert"]').tab('show');
+			}
+		} else {
+			$('#fieldeditor .basicshtmltab').hide();
+			$('#fieldeditor .basicstab').show();
+			$('#fieldeditor a[href="#tab-basics"]').tab('show');
+		}
+		//$('#fieldeditor li a:visible').first().tab('show');
+  	//$('#fieldeditor a:first').tab('show');
   	/************ SAVE BUTTON *********/
   	$('#fieldeditor .savefield').unbind('click').click(function(){
   		var myID = $('#fieldeditor').data('id');
   		var mytype = $('#fieldeditor').data('type');
   		
-  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('placeholder',$('#field_placeholder').val());
-  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('style',$('#field_cssstyle').val());
-  		
-  		if(mytype.indexOf('submit')!=-1){
-  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('value',$('#field_label').val());
-  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class', 'btn btn-primary '+$('#field_cssclass').val() );
-  			
+  		if( $.inArray(mytype,htmlfields)!=-1){
+  			var tag_details = fieldtypes[mytype];
+  			if(typeof tag_details.wrap!='undefined' && tag_details.wrap===true){
+	  			var tag = tag_details.type;
+	  			if(typeof tag_details.options!='undefined'){
+	  				//ACHTUNG AUSWAHL BEREITSTELLEN
+	  				tag += tag_details.options[0];
+	  			}
+	  			$('.field_container[data-id="'+myID+'"] .psfb_html_content').find(tag).html( $('#field_html_content').val() );
+	  		}
+	  		
+	  		$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').find(tag).first().attr('style', $('#field_cssstyle').val() );
+	  		$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').find(tag).first().attr('class', $('#field_cssclass').val() );
+	  			
+	  		
+	  		//ende if html
   		} else {
-  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('name',$('#field_name').val());
-  			
-  			if( $('#field_name_orig').val()!=$('#field_name').val() ){
-  				//achtung variablen sind nicht mehr identisch - evtl. alert oder automatisch tauschen (alter wert gegen neuen wert?
-  				
-  				$('#admin_mail_content').val( $('#admin_mail_content').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				$('#user_mail_content').val( $('#user_mail_content').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				
-  				$('#admin_mail_subject').val( $('#admin_mail_subject').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				$('#user_mail_subject').val( $('#user_mail_subject').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				
-  				$('#admin_mail_recipients').val( $('#admin_mail_recipients').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				$('#user_mail_recipients').val( $('#user_mail_recipients').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				
-  				$('#admin_mail_bcc').val( $('#admin_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				$('#user_mail_bcc').val( $('#user_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				
-  				$('#admin_mail_from_name').val( $('#admin_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				$('#user_mail_from_name').val( $('#user_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				
-  				$('#admin_mail_from_email').val( $('#admin_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				$('#user_mail_from_email').val( $('#user_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				
-  				$('#admin_mail_reply_to').val( $('#admin_mail_reply_to').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  				$('#user_mail_reply_to').val( $('#user_mail_reply_to').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-  			}
-  			
-  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class','form-control '+ $('#field_cssclass').val() );
-  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('#field_label').val() );
 	  		
-	  		if($('#field_required').is(':checked')==1){
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('required','required');
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').append( '*' );
+	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('placeholder',$('#field_placeholder').val());
+	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('style',$('#field_cssstyle').val());
+	  		
+	  		if(mytype.indexOf('submit')!=-1){
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('value',$('#field_label').val());
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class', 'btn btn-primary '+$('#field_cssclass').val() );
+	  			
 	  		} else {
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').removeAttr('required');
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html().replace('*','') );
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('name',$('#field_name').val());
+	  			
+	  			if( $('#field_name_orig').val()!=$('#field_name').val() ){
+	  				//achtung variablen sind nicht mehr identisch - evtl. alert oder automatisch tauschen (alter wert gegen neuen wert?
+	  				
+	  				$('#admin_mail_content').val( $('#admin_mail_content').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				$('#user_mail_content').val( $('#user_mail_content').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				
+	  				$('#admin_mail_subject').val( $('#admin_mail_subject').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				$('#user_mail_subject').val( $('#user_mail_subject').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				
+	  				$('#admin_mail_recipients').val( $('#admin_mail_recipients').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				$('#user_mail_recipients').val( $('#user_mail_recipients').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				
+	  				$('#admin_mail_bcc').val( $('#admin_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				$('#user_mail_bcc').val( $('#user_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				
+	  				$('#admin_mail_from_name').val( $('#admin_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				$('#user_mail_from_name').val( $('#user_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				
+	  				$('#admin_mail_from_email').val( $('#admin_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				$('#user_mail_from_email').val( $('#user_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				
+	  				$('#admin_mail_reply_to').val( $('#admin_mail_reply_to').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				$('#user_mail_reply_to').val( $('#user_mail_reply_to').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  			}
+	  			
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class','form-control '+ $('#field_cssclass').val() );
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('#field_label').val() );
+		  		
+		  		if($('#field_required').is(':checked')==1){
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('required','required');
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').append( '*' );
+		  		} else {
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').removeAttr('required');
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html().replace('*','') );
+		  		}
+		  		
+		  		
+		  		if($('#field_hide_label').is(':checked')==1){
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',true);
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').hide();
+		  		} else {
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',false);
+		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').show();
+		  		}
+		  		
 	  		}
-	  		
-	  		
-	  		if($('#field_hide_label').is(':checked')==1){
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',true);
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').hide();
-	  		} else {
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',false);
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').show();
-	  		}
-	  		
-  		}
-  		$('.field_container[data-id="'+myID+'"]').find('.form-group .help-block').html( $('#field_helptext').val() );
-  		
+	  		$('.field_container[data-id="'+myID+'"]').find('.form-group .help-block').html( $('#field_helptext').val() );
+	  	} //ende if not html	
   		
   		if( $('.condition_wrapper .condition_set').length > 0){
   			var c = {};
@@ -1094,9 +1316,17 @@ function ps_field_drop( event, ui, target, j, createcol ){
   				}
   				i ++;
   			});
-  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',JSON.stringify(c) );
+  			if( $.inArray(mytype,htmlfields) ){
+  				$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').data('condition',JSON.stringify(c) );
+  			} else {
+  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',JSON.stringify(c) );
+  			}
   		} else {
-  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',null).removeData('condition');
+  			if( $.inArray(mytype,htmlfields) ){
+  				$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').data('condition',null).removeData('condition');
+  			} else {
+  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',null).removeData('condition');
+  			}
   		}
   		
   		if( $.inArray(mytype,selectfields)!= -1 ){
@@ -1372,9 +1602,10 @@ jQuery.fn.setCursorPosition = function(position){
 				
 				  <!-- Nav tabs -->
 				  <ul class="nav nav-tabs" role="tablist">
-				    <li role="presentation" class="active"><a href="#tab-basics" aria-controls="basics" role="tab" data-toggle="tab"><?php echo __('Basic','psfbldr'); ?></a></li>
+				    <li role="presentation" class="active basicstab"><a href="#tab-basics" aria-controls="basics" role="tab" data-toggle="tab"><?php echo __('Basic','psfbldr'); ?></a></li>
+				    <li role="presentation" class="basicshtmltab"><a href="#tab-basicshtml" aria-controls="basicshtml" role="tab" data-toggle="tab"><?php echo __('Basic','psfbldr'); ?></a></li>
 				    <li role="presentation" class="selectoptionstab"><a href="#tab-selectoptions" aria-controls="selectoptions" role="tab" data-toggle="tab"><?php echo __('Select values','psfbldr'); ?></a></li>
-				    <li role="presentation"><a href="#tab-expert" aria-controls="profile" role="tab" data-toggle="tab"><?php echo __('Advanced','psfbldr'); ?></a></li>
+				    <li role="presentation" class="experttab"><a href="#tab-expert" aria-controls="profile" role="tab" data-toggle="tab"><?php echo __('Advanced','psfbldr'); ?></a></li>
 				  </ul>
         
         	<div class="tab-content">
@@ -1431,6 +1662,16 @@ jQuery.fn.setCursorPosition = function(position){
 						</div>
 						  
 		        </div><!-- ende basics -->
+		        <div class="basicshtml tab-pane" id="tab-basicshtml" role="tabpanel">
+		        	
+						  
+						  <div class="form-group">
+						    <label for="field_html_content"><?php echo __('Content','psfbldr'); ?></label>
+						    <textarea id="field_html_content" class="form-control"></textarea>
+						    <p class="help-block"><?php echo __('Enter your content here. You can use HTML tags to enrich this block.','psfbldr'); ?></p>
+						  </div>
+						  
+		        </div><!-- ende basicshtml -->
 		        <div class="selectoptions tab-pane" id="tab-selectoptions" role="tabpanel">
 		        	<div class="selectoptions_template" style="display:none;">
 		        		
@@ -1559,6 +1800,7 @@ jQuery.fn.setCursorPosition = function(position){
 	    <li role="presentation"><a href="#psfb_tab_thankyou_page" aria-controls="thankyou_page" role="tab" data-toggle="tab"><?php echo __('Thankyou page','psfbldr'); ?></a></li>
 	    <li role="presentation"><a href="#psfb_tab_additional_settings" aria-controls="additional_settings" role="tab" data-toggle="tab"><?php echo __('Additional settings','psfbldr'); ?></a></li>
 	  	<li role="presentation"><a href="#psfb_tab_pro" aria-controls="psfb_pro" role="tab" data-toggle="tab"><?php echo __('PlanSo Forms Pro','psfbldr'); ?></a></li>
+	  	<?php do_action( 'psfb_edit_tabs_link' ); ?>
 	  </ul>
   
   	<div class="tab-content">
@@ -1948,6 +2190,7 @@ jQuery.fn.setCursorPosition = function(position){
 
 
 			</div>
+			<?php do_action( 'psfb_edit_tabs_content' ); ?>
 		</div><!-- tab-content -->
 	</div><!-- tabpanel -->
 
