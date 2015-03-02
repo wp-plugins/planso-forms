@@ -14,7 +14,6 @@ if(!function_exists('validate_url')){
 	}
 }
 
-
 /**** ANTI SPAM ****/
 
 //honeypot
@@ -73,10 +72,18 @@ if(isset($j->fields) && count($j->fields)>0){
 			}
 			$col->name = preg_replace("/[^A-Za-z0-9_]+/", '_', $col->name);
 			
+			if(trim($col->name)==''){
+				$col->name = 'field'.$cnt;
+			}
+			
 			if(isset($_POST[$col->name])){
 				if(is_array($_POST[$col->name])){
-					$tmp = implode(', ',$_POST[$col->name]);
-					$_POST[$col->name] = $tmp;
+					if(count($_POST[$col->name])>0){
+						$tmp = implode(', ',$_POST[$col->name]);
+						$_POST[$col->name] = $tmp;
+					} else {
+						$_POST[$col->name] = '';
+					}
 				}
 				$_POST[$col->name] = trim($_POST[$col->name]);
 			  $_POST[$col->name] = stripslashes($_POST[$col->name]);
@@ -128,7 +135,6 @@ if(isset($j->fields) && count($j->fields)>0){
 		}
 	}
 }
-
 if(count($errors)<1){
 	
 	if(isset($j->mails)){
@@ -165,16 +171,16 @@ if(count($errors)<1){
 				foreach($mail_replace as $k=>$v){
 					if(!empty($v) && trim($v)!=''){
 						if(isset($mail->html_mail) && $mail->html_mail==true){
-			  			$content .= '<tr><td>'.$k.'</td><td>'.$v.'</td></tr>';
+			  			$content .= '<tr><td>'.trim(str_replace('_',' ',$k)).'</td><td>'.$v.'</td></tr>';
 			  		} else {
-							$content .= $k.': '.$v."\r\n";
+							$content .= trim(str_replace('_',' ',$k)).': '.$v."\r\n";
 						}
 					}
 				}
 				
 				if(isset($mail->html_mail) && $mail->html_mail==true){
 					foreach($psfb_mail_tracking_map as $k=>$v){
-						$content .= '<tr><td>'.ucwords($v).'</td><td>'.$_REQUEST[$k].'</td></tr>';
+						$content .= '<tr><td>'.ucwords(trim(str_replace('_',' ',$v))).'</td><td>'.$_REQUEST[$k].'</td></tr>';
 					}
 				}
 				
@@ -183,6 +189,9 @@ if(count($errors)<1){
 		  	}
 			}
 			
+			if(trim($content)==''){
+				$content = __('Nothing submitted','psfbldr');
+			}
 			
 			//vars.inc.php
 			if(isset($mail->html_mail) && $mail->html_mail==true){

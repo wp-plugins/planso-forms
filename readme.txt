@@ -136,6 +136,11 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.1.4 =
+* Fixed bug where radio and checkboxes could not be marked as required
+* Fixed bug where radio and checkbox labels could not be hidden
+* Fixed bug that caused field values not to be transfered in emails when the field name was left blank
+
 = 1.1.2 =
 * Fixed a bug in the form builder that could lead to regular select dropdowns beeing displayed as multiselect dropdowns
 

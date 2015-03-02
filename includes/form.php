@@ -183,6 +183,10 @@ EOF;
 				}
 				$col->name = preg_replace("/[^A-Za-z0-9_]+/", '_', $col->name);
 				
+				if(trim($col->name)==''){
+					$col->name = 'field'.$cnt;
+				}
+				
 				
 				$out .= '<div class="col-md-'.$colcnt.'">';
 				$out .= '<div class="form-group psfb-single-container';

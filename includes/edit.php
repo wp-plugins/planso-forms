@@ -319,7 +319,11 @@ jQuery(document).ready(function($){
 						name = $(this).find('#field'+mid+'').attr('name');
 					}catch(e){}
 					
-					var  required = $(this).find('#field'+mid+'').prop('required');
+					if(mytype=='checkbox' || mytype=='radio'){
+						var required = $(this).find('#field'+mid+'').data('required');
+					} else {
+						var required = $(this).find('#field'+mid+'').prop('required');
+					}
 					if (typeof required != 'undefined' && (required == true || required=='true' || required=='required')) {
 						required = true;
 						label = label.replace('*','');
@@ -714,7 +718,14 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    } else if(mytype == 'radio'){
 	    	
 	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
-	    		row += '<div class="radio_wrapper">';
+	    		row += '<div class="radio_wrapper" id="field'+dynID+'"';
+					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
+			    	row += ' data-required="required"';
+			    }
+			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+			    	row += ' data-hide_label="true"';
+			    }
+			    row += '>';
 					row += '<label class="radio-inline"><input type="radio" name="optionsfield'+dynID+'" value="">';
 					row += myLabel+' 1';
 					row += '</label>';
@@ -726,7 +737,14 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					row += '</div>';
 				} else {
 					//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
-					row += '<div class="radio_wrapper">';
+					row += '<div class="radio_wrapper" id="field'+dynID+'"';
+					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
+			    	row += ' data-required="required"';
+			    }
+			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+			    	row += ' data-hide_label="true"';
+			    }
+			    row += '>';
 					$.each(j.select_options,function(key,value){
 						row += '<label class="radio-inline"><input type="radio"  value="'+value.val+'"';
 						//name="optionsfield'+dynID+'"
@@ -743,7 +761,14 @@ function ps_field_drop( event, ui, target, j, createcol ){
 				}
 	    } else if(mytype == 'checkbox'){
 	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
-		    	row += '<div class="checkbox_wrapper">';
+		    	row += '<div class="checkbox_wrapper" id="field'+dynID+'"';
+					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
+			    	row += ' data-required="required"';
+			    }
+			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+			    	row += ' data-hide_label="true"';
+			    }
+			    row += '>';
 					row += '<label class="checkbox-inline"><input type="checkbox" value="">';
 					row += myLabel+' 1';
 					row += '</label>';
@@ -755,7 +780,15 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					row += '</div>';
 				} else {
 					//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
-					row += '<div class="checkbox_wrapper">';
+					row += '<div class="checkbox_wrapper" id="field'+dynID+'"';
+					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
+			    	row += ' data-required="required"';
+			    }
+			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+			    	row += ' data-hide_label="true"';
+			    }
+			    row += '>';
+			    
 					$.each(j.select_options,function(key,value){
 						row += '<label class="checkbox-inline"><input type="checkbox"';
 						
@@ -1031,8 +1064,13 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	$('#field_name_orig').val( $('#field_name').val() );
 	  	
 	  	
-	  	
-	  	var req = $(this).closest('.field_container').find('.form-group :input').prop('required');
+	  	if( $(this).closest('.field_container').find('.checkbox_wrapper').length > 0 ){
+	  		var req = $(this).closest('.field_container').find('.checkbox_wrapper').data('required');
+	  	} else if( $(this).closest('.field_container').find('.radio_wrapper').length > 0 ){
+	  		var req = $(this).closest('.field_container').find('.radio_wrapper').data('required');
+	  	} else {
+	  		var req = $(this).closest('.field_container').find('.form-group :input').prop('required');
+	  	}
 	  	//console.log(req);
 	  	if(typeof req!='undefined' && (req == 'required' || req==true || req=='true') ){
 	  		req = true;
@@ -1041,8 +1079,13 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		req = false;
 	  		$('#field_required').prop('checked',false);
 	  	}
-	  	
-	  	var hide_label = $(this).closest('.field_container').find('.form-group :input').data('hide_label');
+	  	if( $(this).closest('.field_container').find('.checkbox_wrapper').length > 0 ){
+	  		var hide_label = $(this).closest('.field_container').find('.checkbox_wrapper').data('hide_label');
+	  	} else if( $(this).closest('.field_container').find('.radio_wrapper').length > 0 ){
+	  		var hide_label = $(this).closest('.field_container').find('.radio_wrapper').data('hide_label');
+	  	} else {
+	  		var hide_label = $(this).closest('.field_container').find('.form-group :input').data('hide_label');
+	  	}
 	  	//console.log(req);
 	  	if(typeof hide_label!='undefined' && (hide_label == '1' || hide_label==true || hide_label=='true') ){
 	  		hide_label = true;
@@ -1276,18 +1319,34 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('#field_label').val() );
 		  		
 		  		if($('#field_required').is(':checked')==1){
-		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('required','required');
+		  			if( $('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').length > 0){
+		  				$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').data('required','required');
+		  			} else if( $('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').length > 0){
+		  				$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').data('required','required');
+		  			} else {
+		  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('required','required');
+		  			}
 		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').append( '*' );
 		  		} else {
+		  			$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').data('required',false);
+		  			$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').data('required',false);
 		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').removeAttr('required');
 		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html( $('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').html().replace('*','') );
 		  		}
 		  		
 		  		
 		  		if($('#field_hide_label').is(':checked')==1){
-		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',true);
+		  			if( $('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').length > 0){
+		  				$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').data('hide_label',true);
+		  			} else if( $('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').length > 0){
+		  				$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').data('hide_label',true);
+		  			} else {
+		  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',true);
+		  			}
 		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').hide();
 		  		} else {
+		  			$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').data('hide_label',false);
+		  			$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').data('hide_label',false);
 		  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('hide_label',false);
 		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').show();
 		  		}
