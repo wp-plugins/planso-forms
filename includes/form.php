@@ -450,6 +450,7 @@ EOF;
 									}
 									$out .= ' type="checkbox" value="'.$opt->val.'" name="'.$col->name.'[]" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
 									$out .= $opt->label;
+									
 									$out .= '</label>';
 								}
 								$out .= '</div>';

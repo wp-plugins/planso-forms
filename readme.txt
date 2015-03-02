@@ -136,6 +136,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.1.5 =
+* Fixed bug where checkboxes lost their check state after an unsuccessful form submission
+
 = 1.1.4 =
 * Fixed bug where radio and checkboxes could not be marked as required
 * Fixed bug where radio and checkbox labels could not be hidden

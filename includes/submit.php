@@ -75,36 +75,37 @@ if(isset($j->fields) && count($j->fields)>0){
 			if(trim($col->name)==''){
 				$col->name = 'field'.$cnt;
 			}
-			
+			$post_value = '';
 			if(isset($_POST[$col->name])){
-				if(is_array($_POST[$col->name])){
-					if(count($_POST[$col->name])>0){
-						$tmp = implode(', ',$_POST[$col->name]);
-						$_POST[$col->name] = $tmp;
+				$post_value = $_POST[$col->name];
+				if(is_array($post_value)){
+					if(count($post_value)>0){
+						$tmp = implode(', ',$post_value);
+						$post_value = $tmp;
 					} else {
-						$_POST[$col->name] = '';
+						$post_value = '';
 					}
 				}
-				$_POST[$col->name] = trim($_POST[$col->name]);
-			  $_POST[$col->name] = stripslashes($_POST[$col->name]);
-			  $_POST[$col->name] = htmlspecialchars($_POST[$col->name]);
+				$post_value = trim($post_value);
+			  $post_value = stripslashes($post_value);
+			  $post_value = htmlspecialchars($post_value);
 			}
 			
 			if( isset($col->required) && ($col->required==true || $col->required=='required')){
 				if(!strstr($col->type,'file')){
-					if(!isset($_POST[$col->name]) || empty($_POST[$col->name])){
+					if(!isset($post_value) || empty($post_value)){
 						//fehler - feld muss ausgefüllt sein
 						$errors[$col->name]['error'] = true;
 						$errors[$col->name]['required'] = true;
 						$errors[$col->name]['message'] = __('This field is required','psfbldr');
 					}
 					
-					if($fieldtype=='email' && !is_email($_POST[$col->name])){
+					if($fieldtype=='email' && !is_email($post_value)){
 						$errors[$col->name]['error'] = true;
 						$errors[$col->name]['message'] = __('Invalid E-Mail','psfbldr');
 					}
 					
-					if($fieldtype=='url' && !validate_url($_POST[$col->name])){
+					if($fieldtype=='url' && !validate_url($post_value)){
 						$errors[$col->name]['error'] = true;
 						$errors[$col->name]['message'] = __('Invalid URL','psfbldr');
 					}
@@ -126,11 +127,11 @@ if(isset($j->fields) && count($j->fields)>0){
 				}
 			}//end required
 			
-			$mail_replace[$col->name] = $_POST[$col->name];
+			$mail_replace[$col->name] = $post_value;
 			if(strstr($col->type,'file')){
 				$file_keys[] = $col->name;
 			} else {
-				$zmail_replace[$col->name] = $_POST[$col->name];
+				$zmail_replace[$col->name] = $post_value;
 			}
 		}
 	}
