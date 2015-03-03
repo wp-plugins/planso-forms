@@ -406,13 +406,22 @@ EOF;
 								if(!isset($col->name) || empty($col->name)){
 									$col->name = $col->label;
 								}
+								$orientation = 'horizontal';
+								$wrap_div = false;
+								if(isset($col->orientation) && $col->orientation=='vertical'){
+									$wrap_div = true;
+								}
 								foreach($opts as $opt){
 									$ocnt ++;
 									if($opt->val==''){
 										$opt->val = $opt->label;
 									}
+									if($wrap_div){
+										$out .= '<div class="radio">';
+									}
 									//$out .= '<div class="radio_wrapper">';
-									$out .= '<label class="radio-inline ';
+									$out .= '<label class="';
+									if(!$wrap_div)$out .= 'radio-inline ';
 									if(isset($col->class))$out .= ''.$col->class.'';
 									$out .= '"';
 									if(isset($col->style))$out .= ' style="'.$col->style.'"';
@@ -427,18 +436,29 @@ EOF;
 									$out .= ' type="radio" value="'.$opt->val.'" name="'.$col->name.'" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
 									$out .= $opt->label;
 									$out .= '</label>';
-									//$out .= '</div>';
+									if($wrap_div){
+										$out .= '</div>';
+									}
 								}
 								$out .= '</div>';
 							} else if($col->type == 'checkbox'){
 								$ocnt = 0;
 								$out .= '<div class="checkbox_wrapper">';
+								$orientation = 'horizontal';
+								$wrap_div = false;
+								if(isset($col->orientation) && $col->orientation=='vertical'){
+									$wrap_div = true;
+								}
 								foreach($opts as $opt){
 									$ocnt ++;
 									if($opt->val==''){
 										$opt->val = $opt->label;
 									}
-									$out .= '<label class="checkbox-inline ';
+									if($wrap_div){
+										$out .= '<div class="checkbox">';
+									}
+									$out .= '<label class="';
+									if(!$wrap_div)$out .= 'checkbox-inline ';
 									if(isset($col->class))$out .= ''.$col->class.'';
 									$out .= '"';
 									if(isset($col->style))$out .= ' style="'.$col->style.'"';
@@ -452,6 +472,9 @@ EOF;
 									$out .= $opt->label;
 									
 									$out .= '</label>';
+									if($wrap_div){
+										$out .= '</div>';
+									}
 								}
 								$out .= '</div>';
 							}

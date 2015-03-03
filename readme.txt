@@ -51,10 +51,12 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 * Unlimited combination of form fields
 * Custom CSS classes and styles per form field
 * Individual labels, placeholders and help-texts
+* Batch edit, copy and paste label value pairs
 * Multi file uploads
 * Font-Awesome Icons for input groups
 * Select from different datepickers within form builder
 * Multiple form recipients of autoresponder email
+* Horizontal and vertical alignment of radio and checkbox form fields
 * Easy to use form builder
 * Multiple bcc recipients
 * Works with any theme
@@ -135,6 +137,11 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.1.6 =
+* New option added for radio and checkbox fields that allows you to choose the orientation of these form fields
+* New input mode added for select values of checkbox,radio,select and multiselect form fields. This allows you to batch edit and copy value and label pairs
+* Changed admin form builder style sheet to not interfer with the wordpress admin styles
 
 = 1.1.5 =
 * Fixed bug where checkboxes lost their check state after an unsuccessful form submission

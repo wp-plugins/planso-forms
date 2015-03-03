@@ -321,8 +321,10 @@ jQuery(document).ready(function($){
 					
 					if(mytype=='checkbox' || mytype=='radio'){
 						var required = $(this).find('#field'+mid+'').data('required');
+						var orientation = $(this).find('#field'+mid+'').data('orientation');
 					} else {
 						var required = $(this).find('#field'+mid+'').prop('required');
+						var orientation = false;
 					}
 					if (typeof required != 'undefined' && (required == true || required=='true' || required=='required')) {
 						required = true;
@@ -357,6 +359,9 @@ jQuery(document).ready(function($){
 					j[rind][ind].condition = cond;
 				}
 				
+				if(typeof orientation != 'undefined' && orientation !== false){
+					j[rind][ind].orientation = orientation;
+				}
 				if(typeof label != 'undefined'){
 					j[rind][ind].label = label;
 				}
@@ -716,7 +721,16 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    }
 		    row += '>';
 	    } else if(mytype == 'radio'){
-	    	
+	    	if(typeof j.orientation!='undefined' && j.orientation!==false){
+	    		var orientation = j.orientation;
+	    	} else {
+	    		var orientation = 'horizontal';
+	    	}
+	    	if(orientation=='horizontal'){
+	    		var wrap_div = false;
+	    	} else {
+	    		var wrap_div = true;
+	    	}
 	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
 	    		row += '<div class="radio_wrapper" id="field'+dynID+'"';
 					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
@@ -725,15 +739,42 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
 			    	row += ' data-hide_label="true"';
 			    }
+			    if(typeof j.orientation!='undefined' && j.orientation!==false){
+			    	row += ' data-orientation="'+j.orientation+'"';
+			    } else {
+			    	row += ' data-orientation="horizontal"';
+			    }
 			    row += '>';
-					row += '<label class="radio-inline"><input type="radio" name="optionsfield'+dynID+'" value="">';
+			    
+		   		if(wrap_div){
+						row += '<div class="radio">';
+					}
+					row += '<label';
+					if(!wrap_div){
+						row += ' class="radio-inline"';
+					}
+					row += '><input type="radio" name="optionsfield'+dynID+'" value="">';
 					row += myLabel+' 1';
 					row += '</label>';
-					//row += '</div>';
-	    		//row += '<div class="radio">';
-					row += '<label class="radio-inline"><input type="radio" name="optionsfield'+dynID+'" value="">';
+					
+					
+		   		if(wrap_div){
+						row += '</div>';
+					}
+		   		if(wrap_div){
+						row += '<div class="radio">';
+					}
+					row += '<label';
+					if(!wrap_div){
+						row += ' class="radio-inline"';
+					}
+					row += '><input type="radio" name="optionsfield'+dynID+'" value="">';
 					row += myLabel+' 2';
 					row += '</label>';
+					
+		   		if(wrap_div){
+						row += '</div>';
+					}
 					row += '</div>';
 				} else {
 					//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
@@ -744,9 +785,22 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
 			    	row += ' data-hide_label="true"';
 			    }
+			    if(typeof j.orientation!='undefined' && j.orientation!==false){
+			    	row += ' data-orientation="'+j.orientation+'"';
+			    } else {
+			    	row += ' data-orientation="horizontal"';
+			    }
 			    row += '>';
 					$.each(j.select_options,function(key,value){
-						row += '<label class="radio-inline"><input type="radio"  value="'+value.val+'"';
+						
+			   		if(wrap_div){
+							row += '<div class="radio">';
+						}
+						row += '<label';
+						if(!wrap_div){
+							row += ' class="radio-inline"';
+						}
+						row += '><input type="radio"  value="'+value.val+'"';
 						//name="optionsfield'+dynID+'"
 				    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
 				    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
@@ -756,10 +810,26 @@ function ps_field_drop( event, ui, target, j, createcol ){
 						row += '>';
 						row += value.label;
 						row += '</label>';
+						
+			   		if(wrap_div){
+							row += '</div>';
+						}
 					});
 					row += '</div>';
 				}
 	    } else if(mytype == 'checkbox'){
+	    	if(typeof j.orientation!='undefined' && j.orientation!==false){
+	    		var orientation = j.orientation;
+	    	} else {
+	    		var orientation = 'horizontal';
+	    	}
+	    	if(orientation=='horizontal'){
+	    		var inner_class = 'checkbox-inline';
+	    		var wrap_div = false;
+	    	} else {
+	    		var inner_class = '';
+	    		var wrap_div = true;
+	    	}
 	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
 		    	row += '<div class="checkbox_wrapper" id="field'+dynID+'"';
 					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
@@ -768,15 +838,39 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
 			    	row += ' data-hide_label="true"';
 			    }
+			    if(typeof j.orientation!='undefined' && j.orientation!==false){
+			    	row += ' data-orientation="'+j.orientation+'"';
+			    } else {
+			    	row += ' data-orientation="horizontal"';
+			    }
 			    row += '>';
-					row += '<label class="checkbox-inline"><input type="checkbox" value="">';
+			    
+		   		if(wrap_div){
+						row += '<div class="checkbox">';
+					}
+					row += '<label';
+					if(!wrap_div){
+						row += ' class="checkbox-inline"';
+					}
+					row += '><input type="checkbox" value="">';
 					row += myLabel+' 1';
 					row += '</label>';
-				//	row += '</div>';
-		    //	row += '<div class="checkbox">';
-					row += '<label class="checkbox-inline"><input type="checkbox" value="">';
+					if(wrap_div){
+						row += '</div>';
+					}
+		   		if(wrap_div){
+						row += '<div class="checkbox">';
+					}
+					row += '<label';
+					if(!wrap_div){
+						row += ' class="checkbox-inline"';
+					}
+					row += '><input type="checkbox" value="">';
 					row += myLabel+' 2';
 					row += '</label>';
+					if(wrap_div){
+						row += '</div>';
+					}
 					row += '</div>';
 				} else {
 					//select_options":[{"label":"Radio-Schaltfläche 1","val":""},{"
@@ -787,10 +881,22 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
 			    	row += ' data-hide_label="true"';
 			    }
+			    if(typeof j.orientation!='undefined' && j.orientation!==false){
+			    	row += ' data-orientation="'+j.orientation+'"';
+			    } else {
+			    	row += ' data-orientation="horizontal"';
+			    }
 			    row += '>';
 			    
 					$.each(j.select_options,function(key,value){
-						row += '<label class="checkbox-inline"><input type="checkbox"';
+						if(wrap_div){
+							row += '<div class="checkbox">';
+						}
+						row += '<label';
+						if(!wrap_div){
+							row += ' class="checkbox-inline"';
+						}
+						row += '><input type="checkbox"';
 						
 				    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
 				    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
@@ -800,6 +906,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
 						row += ' value="'+value.val+'">';
 						row += value.label;
 						row += '</label>';
+						if(wrap_div){
+							row += '</div>';
+						}
 					});
 					row += '</div>';
 				}
@@ -849,7 +958,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		  	row += '<span class="fa '+j.icon+'"></span>';
 		  	row += '</div>';
 	  	}
-	  	console.log(myFieldType);
+	  	
 	    row += '<input id="field'+dynID+'" type="'+ myFieldType.type +'"';
 	    if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
 	    	row += ' multiple="multiple"';
@@ -1066,10 +1175,13 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	
 	  	if( $(this).closest('.field_container').find('.checkbox_wrapper').length > 0 ){
 	  		var req = $(this).closest('.field_container').find('.checkbox_wrapper').data('required');
+	  		var orientation = $(this).closest('.field_container').find('.checkbox_wrapper').data('orientation');
 	  	} else if( $(this).closest('.field_container').find('.radio_wrapper').length > 0 ){
 	  		var req = $(this).closest('.field_container').find('.radio_wrapper').data('required');
+	  		var orientation = $(this).closest('.field_container').find('.radio_wrapper').data('orientation');
 	  	} else {
 	  		var req = $(this).closest('.field_container').find('.form-group :input').prop('required');
+	  		var orientation = false;
 	  	}
 	  	//console.log(req);
 	  	if(typeof req!='undefined' && (req == 'required' || req==true || req=='true') ){
@@ -1078,6 +1190,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	} else {
 	  		req = false;
 	  		$('#field_required').prop('checked',false);
+	  	}
+	  	if(typeof orientation!='undefined' && orientation !== false ){
+	  		$('#field_orientation').val( orientation );
 	  	}
 	  	if( $(this).closest('.field_container').find('.checkbox_wrapper').length > 0 ){
 	  		var hide_label = $(this).closest('.field_container').find('.checkbox_wrapper').data('hide_label');
@@ -1110,6 +1225,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		$('.field_placeholder_wrapper').hide();
 	  	} else {
 	  		$('.field_placeholder_wrapper').show();
+	  	}
+	  	if( mytype=='radio' || mytype=='checkbox'){
+	  		$('.field_orientation_wrapper').show();
+	  	} else {
+	  		$('.field_orientation_wrapper').hide();
 	  	}
 	  		
 	  	if( $.inArray(mytype,selectfields)!= -1 ){
@@ -1163,6 +1283,55 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
 						$(this).closest('.row').remove();
 					});
+	  		});
+	  		
+	  		
+	  		$('.toggle_selectoption').unbind('click').click(function(){
+	  			if( $('.selectoptions_content').is(':hidden') ){
+	  				//build rows from textarea
+	  				$('.selectoptions_quick_content').trigger('blur');
+	  				$('.selectoptions_quick_content').hide();
+	  				$('.selectoptions_quick_content_desc').hide();
+	  				$('.add_selectoption').show();
+	  				$('.selectoptions_content').show();
+	  				$('.selectoptions_content_desc').show();
+	  			} else {
+	  				//fill texarea from rows
+	  				var h = '';
+	  				$('.selectoptions_content .row').each(function(i){
+	  					if(i>0)h += '\n';
+	  					h += $(this).find('.field_option_label').val();
+	  					if( $(this).find('.field_option_value').val()!='' ){
+	  						h += '@=';
+	  						h += $(this).find('.field_option_value').val();
+	  					}
+	  				});
+	  				$('.selectoptions_quick_content textarea').val( h );
+	  				$('.selectoptions_content').hide();
+	  				$('.selectoptions_content_desc').hide();
+	  				$('.add_selectoption').hide();
+	  				$('.selectoptions_quick_content').show();
+	  				$('.selectoptions_quick_content_desc').show();
+	  			}
+	  		});
+	  		$('.selectoptions_quick_content textarea').unbind('blur').blur(function(){
+	  			var lines = $(this).val().split('\n');
+	  			
+	  			$('.selectoptions_content').html('');
+	  			
+	  			if(typeof lines != 'undefined' && lines.length > 0){
+	  				
+	  				$.each(lines,function(i,line){
+	  					$('.add_selectoption').trigger('click');
+	  					if(line.indexOf('@=')!=-1){
+	  						var labelval = line.split('@=');
+	  						$('.selectoptions_content .field_option_label:last').val( labelval[0] );
+	  						$('.selectoptions_content .field_option_value:last').val( labelval[1] );
+	  					} else {
+	  						$('.selectoptions_content .field_option_label:last').val( line );
+	  					}
+	  				});
+	  			}
 	  		});
 	  		
 	  	} else {
@@ -1351,6 +1520,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		  			$('.field_container[data-id="'+myID+'"]').find('.form-group .field_label').show();
 		  		}
 		  		
+  				
 	  		}
 	  		$('.field_container[data-id="'+myID+'"]').find('.form-group .help-block').html( $('#field_helptext').val() );
 	  	} //ende if not html	
@@ -1469,6 +1639,24 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		        );
   				
   			}
+  			
+  			if(mytype == 'checkbox' || mytype == 'radio'){
+	  			var orientation = $('#field_orientation').val();
+		  		if(typeof orientation != 'undefined'){
+	  				$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').data('orientation', orientation );
+	  				$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').data('orientation', orientation );
+	  				if(orientation == 'horizontal'){
+	  					//Do nothing - fields have just been built in horizontal mode
+	  					//$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').find('label').addClass('checkbox-inline').unwrap();
+	  					//$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').find('label').addClass('radio-inline').unwrap();
+	  				} else {
+	  					$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').find('label').removeClass('checkbox-inline').wrap('<div class="checkbox"></div>');
+	  					$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').find('label').removeClass('radio-inline').wrap('<div class="radio"></div>');
+	  				}
+	  			}
+	  		}
+  			
+  			
   		} else {
   			//no selectfield
   			if( $('.field_container[data-id="'+myID+'"]').find('.input-group').length>0){
@@ -1697,6 +1885,15 @@ jQuery.fn.setCursorPosition = function(position){
 						    <p class="help-block"><?php echo __('Please enter a Font-Awesome icon class. i.e. &quot;fa-user&quot;. Available Icons are found here: ','psfbldr'); ?><a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">Font-Awesome</a></p>
 						  </div>
 						  
+						  <div class="form-group field_orientation_wrapper">
+						    <label for="field_orientation"><?php echo __('Orientation','psfbldr'); ?></label>
+						    <select id="field_orientation" class="form-control">
+						    	<option value="horizontal"><?php echo __('Horizontal (inline)','psfbldr'); ?></option>
+						    	<option value="vertical"><?php echo __('Vertical (one per line)','psfbldr'); ?></option>
+						    </select>
+						    <p class="help-block"><?php echo __('This lets you choose the orientation of your checkbox and radio fields','psfbldr'); ?></p>
+						  </div>
+						  
 						  <div class="row">
 						  	
 							  <div class="form-group col-md-6">
@@ -1755,7 +1952,7 @@ jQuery.fn.setCursorPosition = function(position){
 		        		
 							  <div class="form-group">
 							    <label for="field_helptext"><?php echo __('Option value pairs','psfbldr'); ?></label>
-								  <div class="row ">
+								  <div class="row selectoptions_content_desc">
 			        			
 			        			<div class="col-md-5" title="<?php echo __('The visible part','psfbldr'); ?>">
 			        				<?php echo __('Label','psfbldr'); ?>
@@ -1768,12 +1965,23 @@ jQuery.fn.setCursorPosition = function(position){
 			        			</div>
 			        			
 			        		</div>
+			        		<div class="row selectoptions_quick_content_desc" style="display:none;">
+			        			
+			        			<div class="col-md-12">
+			        				<?php echo __('Please enter one option per line. If you want to use a value different from the label please divide your label value pairs with &quot;<em>@=</em>&quot; like &quot;mylabel@=myvalue&quot;.','psfbldr'); ?>
+			        			</div>
+			        			
+			        		</div>
 								  
 			        		<div class="selectoptions_content">
 			        			
 			        		</div>
+			        		<div class="selectoptions_quick_content" style="display:none;">
+			        			<textarea class="form-control" rows="10"></textarea>
+			        		</div>
 			        		<div class="selectoptions_option">
 			        			<button class="btn btn-success btn-xs add_selectoption"><span class="glyphicon glyphicon-plus"></span> <?php echo __('Add option','psfbldr'); ?></button>
+			        			<button class="btn btn-default btn-xs toggle_selectoption"><span class="glyphicon glyphicon-random"></span> <?php echo __('Toggle option edit mode','psfbldr'); ?></button>
 			        		</div>
 			        		
 							  </div>
