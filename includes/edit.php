@@ -190,6 +190,9 @@ jQuery(document).ready(function($){
 		if(typeof jf.datepicker!='undefined'){
 			$('#psfb_datepicker').val(jf.datepicker);
 		}
+		if(typeof jf.date_format!='undefined'){
+			$('#psfb_date_format').val(jf.date_format);
+		}
 		var j = jf.fields;
 		//console.log(j);
 		$.each(j,function(k,v){
@@ -476,6 +479,8 @@ jQuery(document).ready(function($){
 			jj.javascript_antispam = false;
 		}
 		jj.datepicker = $('#psfb_datepicker').val();
+		
+		jj.date_format = $('#psfb_date_format').val();
 		
 		jj.thankyou_page_url = $('#thankyou_page_url').val();
 		
@@ -1457,9 +1462,21 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class', 'btn btn-primary '+$('#field_cssclass').val() );
 	  			
 	  		} else {
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('name',$('#field_name').val());
 	  			
-	  			if( $('#field_name_orig').val()!=$('#field_name').val() ){
+	  			var name = $('#field_name').val();
+	  			var new_name = name;
+	  			var wcnt = 1;
+	  			while( $('.field_container .form-group [name="'+new_name+'"]').length > 1){
+	  				new_name = name+'_'+wcnt;
+	  				wcnt ++;
+	  			}
+	  			if(new_name!=name){
+	  				name = new_name;
+	  			}
+	  			
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('name',name);
+	  			
+	  			if( $('#field_name_orig').val()!=name ){
 	  				//achtung variablen sind nicht mehr identisch - evtl. alert oder automatisch tauschen (alter wert gegen neuen wert?
 	  				
 	  				$('#admin_mail_content').val( $('#admin_mail_content').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
@@ -2443,6 +2460,24 @@ jQuery.fn.setCursorPosition = function(position){
 						    
 						    <p class="help-block"><?php echo __('Depending on your theme you might want to choose a different datepicker for date fields.','psfbldr'); ?></p>
 						  </div>
+						  
+						  
+							<div class="form-group">
+						    <label for="psfb_date_format">
+						    	<?php echo __('Date format','psfbldr'); ?>
+						    </label>
+						    	<input type="text" id="psfb_date_format" name="psfb_date_format" class="form-control" value="<?php
+						    	if( isset($j) && isset($j->date_format) && !empty($j->date_format)){
+						    		echo $j->date_format;
+						    	} else {
+						    		echo get_option('date_format');
+						    	}
+						    	
+						    	?>">
+						    	
+						    <p class="help-block"><?php echo __('Enter the date format that you want to be used in datepicker fields.','psfbldr'); ?></p>
+						  </div>
+						  
 							
 						</div>
 					</div>

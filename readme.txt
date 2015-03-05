@@ -138,6 +138,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.1.7 =
+* New option to manually switch date format of datepicker fields
+* Fixed a bug where fields with the same label where treated as one
+
 = 1.1.6 =
 * New option added for radio and checkbox fields that allows you to choose the orientation of these form fields
 * New input mode added for select values of checkbox,radio,select and multiselect form fields. This allows you to batch edit and copy value and label pairs
@@ -163,7 +167,7 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 = 1.0.9 =
 * Fixed issue with [PlanSo Forms Pro](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link) extension
-* Added CSS Class to mandatory field marks, wich enables custom styling of marks
+* Added CSS Class to mandatory field marks, which enables custom styling of marks
 
 = 1.0.8 =
 * Tested and updated for WordPress 4.1.1

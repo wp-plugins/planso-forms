@@ -29,7 +29,7 @@
 					if(planso_form_builder.datepicker == 'bootstrap-datetimepicker'){
 						me.datetimepicker({
 		          locale: planso_form_builder.locale,
-		          format:'l',
+		          format:planso_form_builder.moment_date_format,
 		          useCurrent:false,
 		          showTodayButton:true,
 		          showClear:true,
@@ -45,11 +45,14 @@
 	            }
 			      });
 			    } else if(planso_form_builder.datepicker == 'bootstrap-datepicker'){
-			    	me.bootstrapDP();
+			    	me.bootstrapDP({
+							format:planso_form_builder.eternicode_date_format
+						});
 			    } else if(planso_form_builder.datepicker == 'bootstrap-datepicker-eternicode'){
 			    	
 			    	me.bootstrapDP({
-							language: planso_form_builder.locale
+							language: planso_form_builder.locale,
+							format:planso_form_builder.eternicode_date_format
 						});
 						
 			    } else if(planso_form_builder.datepicker == 'jquery-ui-datepicker'){
