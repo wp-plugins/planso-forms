@@ -137,14 +137,18 @@
 	
 	$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']] = md5('we dont like spam'.time());
 	
-	$out .= '<div style="display:none"><input type="text" name="psfb_hon_as2" value="'.$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']].'"/></div>';
+	$out .= '<div style="display:none"><input type="text" name="psfb_hon_as2" id="psfb_hon_as2_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'" value="'.$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']].'"/></div>';
 	$out .= '<div style="display:none"><input type="text" name="psfb_cnt_check" value="'.$_POST['psfb_global_cnt'].'"/></div>';
 	
 	if(isset($j->javascript_antispam) && $j->javascript_antispam==true){
 		$out .= '<noscript>'.__('Please enable Javascript in your Browser in order to correctly submit this form.','psfbldr').'</noscript>';
-		
+		/*
 		$out .= <<<EOF
 <script type="text/javascript">document.write('<i'+'n'+'p'+'ut ty'+'pe="hi'+'dden" va'+'lu'+'e="{$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']]}" name="psfb_js_as">');</script>
+EOF;
+*/
+		$out .= <<<EOF
+<script type="text/javascript">document.write('<i'+'n'+'p'+'ut ty'+'pe="hi'+'dden" value="'+document.getElementById("psfb_hon_as2_{$atts['id']}_{$_POST['psfb_global_cnt']}").value+'" name="psfb_js_as">');</script>
 EOF;
 	}
 	

@@ -105,7 +105,7 @@ There are three easy ways to install PlanSo Forms:
 Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.zip) file. Log on to your WordPress admin account. Select Plugins on the left hand options, click Add New and Upload Plugin. Either drag the downloaded .zip file into the upload area or choose the .zip file from the download directory and click Install Now. After the installation click Activate Plugin and after a few seconds you will find a new option on the left hand menu named Planso Forms.
 
 **Uploading the plugin via FTP**  
-Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.latest-stable.zip) file and extract its contents to a local folder. Go to your FTP client and browse on your hosting server to /your_wp_installation/wp-content/plugins/. Upload the extracted planso-forms folder into this directory. Afterwards log on to your WordPress admin account. Select Plugins on the left hand options, click Installed Plugins and Activate the PlanSo Forms Plugin. After a few seconds you will find a new option on the left hand menu named Planso Forms.
+Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-forms.zip) file and extract its contents to a local folder. Go to your FTP client and browse on your hosting server to /your_wp_installation/wp-content/plugins/. Upload the extracted planso-forms folder into this directory. Afterwards log on to your WordPress admin account. Select Plugins on the left hand options, click Installed Plugins and Activate the PlanSo Forms Plugin. After a few seconds you will find a new option on the left hand menu named Planso Forms.
 
 **Installing from the WordPress directory**  
 Log on to your WordPress admin account. Select Plugins on the left hand options and click Add New. Search for PlanSo Forms in the search bar and click  Install Now. After the installation click Activate Plugin and after a few seconds you will find a new option on the left hand menu named Planso Forms.
@@ -137,6 +137,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.1.8 =
+* Improved localizations
+* Improved JavaScript Antispam Protection
 
 = 1.1.7 =
 * New option to manually switch date format of datepicker fields
