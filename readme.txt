@@ -138,6 +138,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.1.9 =
+* Fixed an issue with Black Studio TinyMCE Widget Plugin
+* Fixed a bug that caused an error when copying forms with html content
+
 = 1.1.8 =
 * Improved localizations
 * Improved JavaScript Antispam Protection

@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.1.8
+ * Version: 1.1.9
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -206,7 +206,8 @@ function psfb_load_contact_form_admin(){
 	if ( 'copy' == $action ) {
 		
 		$psform = get_post($_REQUEST['post']);
-		
+		$j = json_decode($psform->post_content);
+		$psform->post_content = addslashes(json_encode($j));
 		$id = wp_insert_post(
 			array(
 				'post_type' => 'psfb',
@@ -311,6 +312,7 @@ function psfb_register_tinymce_javascript($plugin_array) {
 function psfb_add_tinymce_button(){
 	
 	$out = '<script type="text/javascript">';
+	$out .= '/* <![CDATA[ */';
 	$out .= 'var planso = {};planso.forms = {};';
 	
 	$out .= 'planso.forms.shortcodes = [';
@@ -333,6 +335,8 @@ function psfb_add_tinymce_button(){
 	}
 	
 	$out .= '];';
-	$out .= '</script><style type="text/css">.mce-i-planso-gears-icon{background-image:url(\''.plugins_url( 'images/planso-logo-gears-transparent-72x72.png', (__FILE__)).'\');}</style>';
+	$out .= '/* ]]> */';
+	$out .= '</script>';
+	$out .= '<style type="text/css">.mce-i-planso-gears-icon{background-image:url(\''.plugins_url( 'images/planso-logo-gears-transparent-72x72.png', (__FILE__)).'\');}</style>';
 	echo $out;
 }
