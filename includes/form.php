@@ -11,12 +11,14 @@
 	
   wp_register_style( 'font-awesome',plugins_url( '/css/font-awesome-4.2.0/css/font-awesome.min.css', dirname(__FILE__) ) ,array() ,'4.2.0');
   wp_enqueue_style( 'font-awesome');
-  foreach($GLOBALS['wp_scripts']->queue as $queue){
-		if(strstr($queue,'bootstrap')){
-			$framework['bootstrap'] = true;
-		}
-		if(strstr($queue,'foundation')){
-			$framework['foundation'] = true;
+  if(isset($GLOBALS['wp_scripts']) && isset($GLOBALS['wp_scripts']->queue)){
+	  foreach($GLOBALS['wp_scripts']->queue as $queue){
+			if(strstr($queue,'bootstrap')){
+				$framework['bootstrap'] = true;
+			}
+			if(strstr($queue,'foundation')){
+				$framework['foundation'] = true;
+			}
 		}
 	}
 	
@@ -47,7 +49,7 @@
 			wp_enqueue_style( 'bootstrap-dropdown',plugins_url( '/css/planso_bootstrap/bootstrap.dropdown.css', dirname(__FILE__) ) );
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		} else if(isset($j->datepicker) && $j->datepicker=='jquery-ui-datepicker'){
-			wp_enqueue_style( 'bootstrap-datetimepicker',plugins_url( '/css/jquery-ui/jquery-ui.min.css', dirname(__FILE__) ) );
+			wp_enqueue_style( 'jquery-datetimepicker',plugins_url( '/css/jquery-ui/jquery-ui.min.css', dirname(__FILE__) ) );
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		} else if(isset($j->datepicker) && $j->datepicker=='bootstrap-datepicker-eternicode'){
 			wp_enqueue_style( 'bootstrap-dropdown',plugins_url( '/css/planso_bootstrap/bootstrap.dropdown.css', dirname(__FILE__) ) );

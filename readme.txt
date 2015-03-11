@@ -138,6 +138,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.2.0 =
+* Fixed an issue where the form could output a php error message under certain server configurations
+
 = 1.1.9 =
 * Fixed an issue with Black Studio TinyMCE Widget Plugin
 * Fixed a bug that caused an error when copying forms with html content
