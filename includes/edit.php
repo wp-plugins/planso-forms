@@ -1167,7 +1167,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	} else {
 	  		cssclass = '';
 	  	}
-	  	$('#field_cssclass').val( cssclass );
+	  	$('#field_cssclass').val( $.trim( cssclass ) );
 	  	if( $('#field_cssclass').val()=='undefined'){
 	  		$('#field_cssclass').val('');
 	  	}
@@ -1455,11 +1455,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
   		} else {
 	  		
 	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('placeholder',$('#field_placeholder').val());
-	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('style',$('#field_cssstyle').val());
+	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('style', $.trim( $('#field_cssstyle').val() ) );
 	  		
 	  		if(mytype.indexOf('submit')!=-1){
 	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('value',$('#field_label').val());
-	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class', 'btn btn-primary '+$('#field_cssclass').val() );
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('class', 'btn btn-primary '+$.trim( $('#field_cssclass').val() ) );
 	  			
 	  		} else {
 	  			

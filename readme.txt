@@ -138,6 +138,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.2.1 =
+* Removed unnecessary spaces in css classes and fixed adding of spaces upon update
+
 = 1.2.0 =
 * Fixed an issue where the form could output a php error message under certain server configurations
 
