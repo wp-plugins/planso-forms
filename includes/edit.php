@@ -184,8 +184,11 @@ jQuery(document).ready(function($){
 		if(typeof jf.planso_style!='undefined' && jf.planso_style==true){
 			$('#planso_style').prop('checked','checked');
 		}
-		if(typeof jf.javascript_antispam!='undefined' && jf.javascript_antispam==true){
+		if(typeof jf.javascript_antispam=='undefined' || jf.javascript_antispam==true){
 			$('#javascript_antispam').prop('checked','checked');
+		}
+		if(typeof jf.clean_attachments!='undefined' && jf.clean_attachments==true){
+			$('#clean_attachments').prop('checked','checked');
 		}
 		if(typeof jf.datepicker!='undefined'){
 			$('#psfb_datepicker').val(jf.datepicker);
@@ -477,6 +480,11 @@ jQuery(document).ready(function($){
 			jj.javascript_antispam = true;
 		} else {
 			jj.javascript_antispam = false;
+		}
+		if( $('#clean_attachments').is(':checked') ){
+			jj.clean_attachments = true;
+		} else {
+			
 		}
 		jj.datepicker = $('#psfb_datepicker').val();
 		
@@ -1713,7 +1721,7 @@ function ps_manage_form_vars(){
 				}
 			}
 		});
-	})
+	});
 	
 	$('.ps_admin_mail_variables_stage').html( h );
 	$('.ps_user_mail_variables_stage').html( h.replace(/admin/g,'user') );
@@ -2427,6 +2435,7 @@ jQuery.fn.setCursorPosition = function(position){
 						    	<input type="checkbox" id="ps_link_love" name="ps_link_love" value="1">
 						    	<?php echo __('Get good karma and spread some link love','psfbldr'); ?>
 						    </label>
+						    <!-- <p class="help-block"><?php echo __('When checked, a powered by link will appear below this form.','psfbldr'); ?></p> -->
 						  </div>
 						
 							<div class="form-group checkbox">
@@ -2434,6 +2443,15 @@ jQuery.fn.setCursorPosition = function(position){
 						    	<input type="checkbox" id="planso_style" name="planso_style" value="1">
 						    	<?php echo __('Include special Stylesheet based on bootstrap 3.0 if your form does not look good','psfbldr'); ?>
 						    </label>
+						    <!-- <p class="help-block"><?php echo __('This will add a stylesheet to make your form look as close to the preview as possible.','psfbldr'); ?></p> -->
+						  </div>
+						
+							<div class="form-group checkbox">
+						    <label for="clean_attachments">
+						    	<input type="checkbox" id="clean_attachments" name="clean_attachments" value="1">
+						    	<?php echo __('Do not delete submitted attachments after mailing them','psfbldr'); ?>
+						    </label>
+						    <!-- <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p> -->
 						  </div>
 						
 							<div class="form-group checkbox">

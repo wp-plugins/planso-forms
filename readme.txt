@@ -138,6 +138,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.2.2 =
+* Added a new option to save all attachments on your server
+* Corrected sorting of forms in form builder overview
+
 = 1.2.1 =
 * Removed unnecessary spaces in css classes and fixed adding of spaces upon update
 

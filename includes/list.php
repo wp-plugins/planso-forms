@@ -1,3 +1,22 @@
+<?php
+$sort_column    = empty( $_REQUEST['orderby'] ) ? 'ID' : $_REQUEST['orderby'];
+if ( ! in_array( ( $sort_column ), array( 'ID', 'title', 'date', 'author' ) ) ) {
+  $sort_column = 'ID';
+}
+$sort_ad    = empty( $_REQUEST['order'] ) ? 'DESC' : strtoupper($_REQUEST['order']);
+if ( ! in_array( strtoupper( $sort_ad ), array( 'ASC', 'DESC' ) ) ) {
+  $sort_ad = 'DESC';
+}
+if($sort_ad=='ASC'){
+	$new_sort = 'desc';
+} else {
+	$new_sort = 'asc';
+}
+$page_limit = empty( $_REQUEST['rows'] ) ? 25 : $_REQUEST['rows'];
+if(!is_numeric( $page_limit )){
+	$page_limit = 25;
+}
+?>
 <style type="text/css">
 	body{background-color:inherit;}
 </style>
@@ -12,24 +31,24 @@
 	<thead>
 	<tr>
 		<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
-			<label class="screen-reader-text" for="cb-select-all-1">Alle auswählen</label>
+			<label class="screen-reader-text" for="cb-select-all-1"><?php echo esc_html( __( 'Select all', 'psfbldr' ) ); ?></label>
 			<input id="cb-select-all-1" type="checkbox">
 		</th>
-		<th scope="col" id="title" class="manage-column column-title sortable asc" style="">
-			<a href="?page=ps-form-builder&amp;orderby=title&amp;order=desc">
+		<th scope="col" id="title" class="manage-column column-title sortable <?php echo strtolower($new_sort); ?>" style="">
+			<a href="?page=ps-form-builder&amp;orderby=title&amp;order=<?php echo $new_sort; ?>">
 				<span><?php echo esc_html( __( 'Title', 'psfbldr' ) ); ?></span>
 				<span class="sorting-indicator"></span>
 			</a>
 		</th>
 		<th scope="col" id="shortcode" class="manage-column column-shortcode" style=""><?php echo esc_html( __( 'Shortcode', 'psfbldr' ) ); ?></th>
-		<th scope="col" id="author" class="manage-column column-author sortable desc" style="">
-			<a href="?page=ps-form-builder&amp;orderby=author&amp;order=asc">
+		<th scope="col" id="author" class="manage-column column-author sortable <?php echo strtolower($new_sort); ?>" style="">
+			<a href="?page=ps-form-builder&amp;orderby=author&amp;order=<?php echo $new_sort; ?>">
 				<span><?php echo esc_html( __( 'Author', 'psfbldr' ) ); ?></span>
 				<span class="sorting-indicator"></span>
 			</a>
 		</th>
-		<th scope="col" id="date" class="manage-column column-date sortable desc" style="">
-			<a href="?page=ps-form-builder&amp;orderby=date&amp;order=asc">
+		<th scope="col" id="date" class="manage-column column-date sortable <?php echo strtolower($new_sort); ?>" style="">
+			<a href="?page=ps-form-builder&amp;orderby=date&amp;order=<?php echo $new_sort; ?>">
 				<span><?php echo esc_html( __( 'Date', 'psfbldr' ) ); ?></span>
 				<span class="sorting-indicator"></span>
 			</a>
@@ -40,24 +59,24 @@
 	<tfoot>
 	<tr>
 		<th scope="col" id="cb" class="manage-column column-cb check-column" style="">
-			<label class="screen-reader-text" for="cb-select-all-1">Alle auswählen</label>
+			<label class="screen-reader-text" for="cb-select-all-1"><?php echo esc_html( __( 'Select all', 'psfbldr' ) ); ?></label>
 			<input id="cb-select-all-1" type="checkbox">
 		</th>
-		<th scope="col" id="title" class="manage-column column-title sortable asc" style="">
-			<a href="?page=ps-form-builder&amp;orderby=title&amp;order=desc">
+		<th scope="col" id="title" class="manage-column column-title sortable <?php echo strtolower($new_sort); ?>" style="">
+			<a href="?page=ps-form-builder&amp;orderby=title&amp;order=<?php echo $new_sort; ?>">
 				<span><?php echo esc_html( __( 'Title', 'psfbldr' ) ); ?></span>
 				<span class="sorting-indicator"></span>
 			</a>
 		</th>
 		<th scope="col" id="shortcode" class="manage-column column-shortcode" style=""><?php echo esc_html( __( 'Shortcode', 'psfbldr' ) ); ?></th>
-		<th scope="col" id="author" class="manage-column column-author sortable desc" style="">
-			<a href="?page=ps-form-builder&amp;orderby=author&amp;order=asc">
+		<th scope="col" id="author" class="manage-column column-author sortable <?php echo strtolower($new_sort); ?>" style="">
+			<a href="?page=ps-form-builder&amp;orderby=author&amp;order=<?php echo $new_sort; ?>">
 				<span><?php echo esc_html( __( 'Author', 'psfbldr' ) ); ?></span>
 				<span class="sorting-indicator"></span>
 			</a>
 		</th>
-		<th scope="col" id="date" class="manage-column column-date sortable desc" style="">
-			<a href="?page=ps-form-builder&amp;orderby=date&amp;order=asc">
+		<th scope="col" id="date" class="manage-column column-date sortable <?php echo strtolower($new_sort); ?>" style="">
+			<a href="?page=ps-form-builder&amp;orderby=date&amp;order=<?php echo $new_sort; ?>">
 				<span><?php echo esc_html( __( 'Date', 'psfbldr' ) ); ?></span>
 				<span class="sorting-indicator"></span>
 			</a>
@@ -69,8 +88,8 @@
 	
 <?php
  
-$r = query_posts( 'post_type=psfb&posts_per_page=20');
-  
+
+$r = query_posts( 'post_type=psfb&posts_per_page='.$page_limit.'&order='.$sort_ad.'&orderby='.$sort_column);
 if($r && count($r)>0){
 	foreach($r as $row){
 		?>
