@@ -138,6 +138,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.2.3 =
+* Fixed an issue that could lead to unwanted output above form if no referer was detected
+
 = 1.2.2 =
 * Added a new option to save all attachments on your server
 * Corrected sorting of forms in form builder overview
