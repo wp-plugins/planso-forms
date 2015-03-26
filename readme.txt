@@ -52,6 +52,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 * Custom CSS classes and styles per form field
 * Individual labels, placeholders and help-texts
 * Batch edit, copy and paste label value pairs
+* Multiple form layouts
 * Multi file uploads
 * Font-Awesome Icons for input groups
 * Select from different datepickers within form builder
@@ -137,6 +138,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.2.4 =
+* Added new option to allow labels to to be placed in line with fields
 
 = 1.2.3 =
 * Fixed an issue that could lead to unwanted output above form if no referer was detected

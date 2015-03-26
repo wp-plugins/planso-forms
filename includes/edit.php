@@ -187,6 +187,9 @@ jQuery(document).ready(function($){
 		if(typeof jf.javascript_antispam=='undefined' || jf.javascript_antispam==true){
 			$('#javascript_antispam').prop('checked','checked');
 		}
+		if(typeof jf.horizontal_form=='undefined' || jf.horizontal_form==true){
+			$('#horizontal_form').prop('checked','checked');
+		}
 		if(typeof jf.clean_attachments!='undefined' && jf.clean_attachments==true){
 			$('#clean_attachments').prop('checked','checked');
 		}
@@ -483,6 +486,11 @@ jQuery(document).ready(function($){
 		}
 		if( $('#clean_attachments').is(':checked') ){
 			jj.clean_attachments = true;
+		} else {
+			
+		}
+		if( $('#horizontal_form').is(':checked') ){
+			jj.horizontal_form = true;
 		} else {
 			
 		}
@@ -2450,6 +2458,14 @@ jQuery.fn.setCursorPosition = function(position){
 						    <label for="clean_attachments">
 						    	<input type="checkbox" id="clean_attachments" name="clean_attachments" value="1">
 						    	<?php echo __('Do not delete submitted attachments after mailing them','psfbldr'); ?>
+						    </label>
+						    <!-- <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p> -->
+						  </div>
+						
+							<div class="form-group checkbox">
+						    <label for="horizontal_form">
+						    	<input type="checkbox" id="horizontal_form" name="horizontal_form" value="1">
+						    	<?php echo __('Place labels side by side with fields','psfbldr'); ?>
 						    </label>
 						    <!-- <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p> -->
 						  </div>

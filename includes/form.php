@@ -112,7 +112,11 @@
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_scripts'],true).'</pre>';
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_styles'],true).'</pre>';
 	
-	$out .= '<form enctype="multipart/form-data" method="post" class="planso-form-builder" data-id="'.$atts['id'].'" data-cnt="'.$_POST['psfb_global_cnt'].'" id="planso_forms_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'">';
+	$out .= '<form enctype="multipart/form-data" method="post" class="planso-form-builder';
+	if(isset($j->horizontal_form) && $j->horizontal_form==true){
+		$out .= ' form-horizontal';
+	}
+	$out .= '" data-id="'.$atts['id'].'" data-cnt="'.$_POST['psfb_global_cnt'].'" id="planso_forms_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'">';
 	$out .= '<div class="container-fluid">';
 	if(isset($_SESSION['psfb_errors'][$atts['id']]) && !empty($_SESSION['psfb_errors'][$atts['id']]) ){
 		$out .= '<p style="padding: 15px;" class="bg-danger">'.__('Attention! There has been an error submitting the form. Please check the marked fields below.','psfbldr').'</p>';
@@ -268,13 +272,25 @@ EOF;
 					if( strstr('submit',$col->type) || strstr('button',$col->type) ){
 						
 						if(isset($col->force_label) && $col->force_label == true){
-							$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
+							$out .= '<label class="control-label';
+							if(isset($j->horizontal_form) && $j->horizontal_form==true){
+								$out .= ' col-md-2';
+							}
+							$out .= '" for="psfield_'.$atts['id'].'_'.$cnt.'">';
 							$out .= '&nbsp;';
 							$out .= '</label>';
+						} else {
+							if(isset($j->horizontal_form) && $j->horizontal_form==true){
+								$out .= '<label class="col-md-2 control-label">&nbsp;</label>';
+							}
 						}
 					} else {
 						if( !isset($col->hide_label) || $col->hide_label==false || $col->hide_label==''  ){
-							$out .= '<label class="control-label" for="psfield_'.$atts['id'].'_'.$cnt.'">';
+							$out .= '<label class="control-label';
+							if(isset($j->horizontal_form) && $j->horizontal_form==true){
+								$out .= ' col-md-2';
+							}
+							$out .= '" for="psfield_'.$atts['id'].'_'.$cnt.'">';
 							
 							$out .= $col->label;
 							
@@ -287,7 +303,15 @@ EOF;
 							}
 							$out .= '</label>';
 							
+						} else {
+							if(isset($j->horizontal_form) && $j->horizontal_form==true){
+								$out .= '<label class="col-md-2 control-label">&nbsp;</label>';
+							}
 						}
+					}
+					
+					if(isset($j->horizontal_form) && $j->horizontal_form==true){
+						$out .= '<div class="col-md-10">';
 					}
 					
 					if(isset($col->icon) && !empty($col->icon)){
@@ -493,6 +517,10 @@ EOF;
 					
 					if(isset($col->help_text) && !empty($col->help_text)){
 						$out .= '<p class="help-block">'.$col->help_text.'</p>';
+					}
+					
+					if(isset($j->horizontal_form) && $j->horizontal_form==true){
+						$out .= '</div>';//end div class="col-md-10
 					}
 					
 				}//if not html
