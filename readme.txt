@@ -139,6 +139,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.2.5 =
+* Fixed a problem that incorrectly handled the saving of the side by side label placement option
+
 = 1.2.4 =
 * Added new option to allow labels to to be placed in line with fields
 

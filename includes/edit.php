@@ -187,7 +187,7 @@ jQuery(document).ready(function($){
 		if(typeof jf.javascript_antispam=='undefined' || jf.javascript_antispam==true){
 			$('#javascript_antispam').prop('checked','checked');
 		}
-		if(typeof jf.horizontal_form=='undefined' || jf.horizontal_form==true){
+		if(typeof jf.horizontal_form!='undefined' && jf.horizontal_form==true){
 			$('#horizontal_form').prop('checked','checked');
 		}
 		if(typeof jf.clean_attachments!='undefined' && jf.clean_attachments==true){
@@ -492,7 +492,7 @@ jQuery(document).ready(function($){
 		if( $('#horizontal_form').is(':checked') ){
 			jj.horizontal_form = true;
 		} else {
-			
+			jj.horizontal_form = false;
 		}
 		jj.datepicker = $('#psfb_datepicker').val();
 		
