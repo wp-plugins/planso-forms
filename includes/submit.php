@@ -295,7 +295,7 @@ if(count($errors)<1){
 				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
 			}
 			if(strstr($bcc,';')){
-				$bcca = eplode(';',$bcc);
+				$bcca = explode(';',$bcc);
 			} else {
 				$bcca = array($bcc);
 			}
@@ -316,8 +316,11 @@ if(count($errors)<1){
 			} else {
 				
 				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>array()));
-				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers']);//, $attachments );
-				
+				if(isset($filtered_mail_contents['attachments']) && is_array($filtered_mail_contents['attachments']) && count($filtered_mail_contents['attachments']) > 0){
+					wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers'], $filtered_mail_contents['attachments']);
+				} else {
+					wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers']);//, $attachments );
+				}
 			}
 		}
 		
@@ -379,7 +382,7 @@ if(count($errors)<1){
 				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
 			}
 			if(strstr($bcc,';')){
-				$bcca = eplode(';',$bcc);
+				$bcca = explode(';',$bcc);
 			} else {
 				$bcca = array($bcc);
 			}
@@ -393,10 +396,13 @@ if(count($errors)<1){
 				$headers[] = 'Reply-To: '.trim($reply_to);
 			}
 			
-			$filtered_mail_contents = apply_filters('psfb_submit_before_user_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers));
+			$filtered_mail_contents = apply_filters('psfb_submit_before_user_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>array()));
 			
-			
-			wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers']);//, $attachments );
+			if(isset($filtered_mail_contents['attachments']) && is_array($filtered_mail_contents['attachments']) && count($filtered_mail_contents['attachments']) > 0){
+				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers'], $filtered_mail_contents['attachments']);
+			} else {
+				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers']);//, $attachments );
+			}
 		}
 		
 		

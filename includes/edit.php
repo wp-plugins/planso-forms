@@ -27,7 +27,7 @@ require_once( dirname(__FILE__).'/vars.inc.php' );
 			$j = json_decode($psform->post_content);
 		}
 		
-		$shortcode_out = '<div><input type="text" onfocus="this.select();" readonly="readonly" value="[psfb id=&quot;'.$post_id.'&quot; title=&quot;'.$psform->post_title.'&quot;]" class="shortcode-in-list-table wp-ui-text-highlight code form-control"></div>';
+		$shortcode_out = '<div><input type="text" onfocus="this.select();" onmouseup="return false;" readonly="readonly" value="[psfb id=&quot;'.$post_id.'&quot; title=&quot;'.$psform->post_title.'&quot;]" class="shortcode-in-list-table wp-ui-text-highlight code form-control"></div>';
 	}
 	echo ' <a href="' . esc_url( menu_page_url( 'ps-form-builder', false ) ) . '" class="add-new-h2">' . esc_html( __( 'Back to forms', 'psfbldr' ) ) . '</a>';
 	

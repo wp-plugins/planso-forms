@@ -138,7 +138,7 @@ if($r && count($r)>0){
 				</div>
 			</td>
 			<td class="shortcode column-shortcode">
-				<input type="text" onfocus="this.select();" readonly="readonly" value="[psfb id=&quot;<?php echo $row->ID; ?>&quot; title=&quot;<?php echo $row->post_title; ?>&quot;]" class="shortcode-in-list-table wp-ui-text-highlight code form-control">
+				<input type="text" onfocus="this.select();" onmouseup="return false;" readonly="readonly" value="[psfb id=&quot;<?php echo $row->ID; ?>&quot; title=&quot;<?php echo $row->post_title; ?>&quot;]" class="shortcode-in-list-table wp-ui-text-highlight code form-control">
 			</td>
 			<td class="author column-author"><?php
 				
