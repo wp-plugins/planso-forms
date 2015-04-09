@@ -139,6 +139,11 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.2.7 =
+* Extended side by side layout options to allow more flexible widths
+* Fixed validation of checkbox form fields
+* Improved extensibility
+
 = 1.2.6 =
 * Fixed an error that could break form submission when more than one bcc recipients were entered
 * Improved attachment handling

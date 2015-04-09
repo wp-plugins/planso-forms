@@ -187,8 +187,17 @@ jQuery(document).ready(function($){
 		if(typeof jf.javascript_antispam=='undefined' || jf.javascript_antispam==true){
 			$('#javascript_antispam').prop('checked','checked');
 		}
-		if(typeof jf.horizontal_form!='undefined' && jf.horizontal_form==true){
-			$('#horizontal_form').prop('checked','checked');
+		if(typeof jf.horizontal_form!='undefined'){
+			if(jf.horizontal_form==true || jf.horizontal_form=='horizontal'){
+				/*$('#horizontal_form').prop('checked','checked');*/
+				$('#horizontal_form').val('horizontal');
+			} else if(jf.horizontal_form==false || jf.horizontal_form=='vertical'){
+				$('#horizontal_form').val('vertical');
+			} else {
+				$('#horizontal_form').val(jf.horizontal_form);
+			}
+		} else {
+			$('#horizontal_form').val('vertical');
 		}
 		if(typeof jf.clean_attachments!='undefined' && jf.clean_attachments==true){
 			$('#clean_attachments').prop('checked','checked');
@@ -489,11 +498,15 @@ jQuery(document).ready(function($){
 		} else {
 			
 		}
+		/*
 		if( $('#horizontal_form').is(':checked') ){
 			jj.horizontal_form = true;
 		} else {
 			jj.horizontal_form = false;
 		}
+		*/
+		jj.horizontal_form = $('#horizontal_form').val();
+		
 		jj.datepicker = $('#psfb_datepicker').val();
 		
 		jj.date_format = $('#psfb_date_format').val();
@@ -968,7 +981,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    }
 		    row += '</select>';
 	    }
-	  } else {
+	  } else if(typeof myFieldType != 'undefined'){
 	  	
 	  	//input group
 	  	
@@ -980,7 +993,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		  	row += '</div>';
 	  	}
 	  	
-	    row += '<input id="field'+dynID+'" type="'+ myFieldType.type +'"';
+	    row += '<input id="field'+dynID+'"';
+	    
+	    if(typeof myFieldType.type!='undefined'){
+	    	row += ' type="'+ myFieldType.type +'"';
+	    }
 	    if(typeof myFieldType.multiple!='undefined' && myFieldType.multiple==true){
 	    	row += ' multiple="multiple"';
 	    }
@@ -2463,14 +2480,6 @@ jQuery.fn.setCursorPosition = function(position){
 						  </div>
 						
 							<div class="form-group checkbox">
-						    <label for="horizontal_form">
-						    	<input type="checkbox" id="horizontal_form" name="horizontal_form" value="1">
-						    	<?php echo __('Place labels side by side with fields','psfbldr'); ?>
-						    </label>
-						    <!-- <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p> -->
-						  </div>
-						
-							<div class="form-group checkbox">
 						    <label for="javascript_antispam">
 						    	<input type="checkbox" id="javascript_antispam" name="javascript_antispam" value="1">
 						    	<?php echo __('Enable special javascript based anti spam protection','psfbldr'); ?>
@@ -2481,6 +2490,30 @@ jQuery.fn.setCursorPosition = function(position){
 						</div>
 						<div class="col-md-6">
 							
+						<!-- 
+							<div class="form-group checkbox">
+						    <label for="horizontal_form">
+						    	<input type="checkbox" id="horizontal_form" name="horizontal_form" value="1">
+						    	<?php echo __('Place labels side by side with fields','psfbldr'); ?>
+						    </label>
+						    <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p>
+						  </div>
+						  -->
+						  <div class="form-group">
+						    <label for="horizontal_form">
+						    	<?php echo __('Place labels side by side with fields','psfbldr'); ?>
+						    </label>
+						    <select id="horizontal_form" name="horizontal_form" class="form-control">
+						    	<option value="vertical"><?php echo __('Place field labels above fields','psfbldr'); ?></option>
+						    	<option value="horizontal"><?php echo __('Place labels side by side with fields (Label width: 16%)','psfbldr'); ?></option>
+						    	<option value="horizontal_3"><?php echo __('Place labels side by side with fields (Label width: 25%)','psfbldr'); ?></option>
+						    	<option value="horizontal_4"><?php echo __('Place labels side by side with fields (Label width: 33%)','psfbldr'); ?></option>
+						    	<option value="horizontal_5"><?php echo __('Place labels side by side with fields (Label width: 41%)','psfbldr'); ?></option>
+						    	<option value="horizontal_6"><?php echo __('Place labels side by side with fields (Label width: 50%)','psfbldr'); ?></option>
+						    </select>
+						    <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p>
+						  </div>
+						  
 							<div class="form-group">
 						    <label for="psfb_datepicker"><?php echo __('Select the Datepicker that best fits your theme','psfbldr'); ?></label>
 					    	<select id="psfb_datepicker" name="psfb_datepicker" class="form-control">
