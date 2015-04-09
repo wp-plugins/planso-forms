@@ -113,7 +113,7 @@
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_styles'],true).'</pre>';
 	
 	$out .= '<form enctype="multipart/form-data" method="post" class="planso-form-builder';
-	if(isset($j->horizontal_form) && ($j->horizontal_form!=false || $j->horizontal_form!='vertical')){
+	if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 		$out .= ' form-horizontal';
 	}
 	$out .= '" data-id="'.$atts['id'].'" data-cnt="'.$_POST['psfb_global_cnt'].'" id="planso_forms_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'">';
@@ -273,7 +273,7 @@ EOF;
 						
 						if(isset($col->force_label) && $col->force_label == true){
 							$out .= '<label class="control-label';
-							if(isset($j->horizontal_form) && ($j->horizontal_form!=false || $j->horizontal_form!='vertical')){
+							if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 								if($j->horizontal_form=='horizontal'){
 									$out .= ' col-md-2';
 								} else if($j->horizontal_form=='horizontal_3'){
@@ -293,7 +293,7 @@ EOF;
 							$out .= '</label>';
 						} else {
 							
-							if(isset($j->horizontal_form) && ($j->horizontal_form!=false || $j->horizontal_form!='vertical')){
+							if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 								$out .= '<label class="';
 								if($j->horizontal_form=='horizontal'){
 									$out .= ' col-md-2';
@@ -315,7 +315,7 @@ EOF;
 						if( !isset($col->hide_label) || $col->hide_label==false || $col->hide_label==''  ){
 							$out .= '<label class="control-label';
 							
-							if(isset($j->horizontal_form) && ($j->horizontal_form!=false || $j->horizontal_form!='vertical')){
+							if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 								if($j->horizontal_form=='horizontal'){
 									$out .= ' col-md-2';
 								} else if($j->horizontal_form=='horizontal_3'){
@@ -345,7 +345,7 @@ EOF;
 							
 						} else {
 							
-							if(isset($j->horizontal_form) && ($j->horizontal_form!=false || $j->horizontal_form!='vertical')){
+							if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 								$out .= '<label class="';
 								if($j->horizontal_form=='horizontal'){
 									$out .= ' col-md-2';
@@ -365,7 +365,7 @@ EOF;
 						}
 					}
 					
-					if(isset($j->horizontal_form) && ($j->horizontal_form!=false || $j->horizontal_form!='vertical')){
+					if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 						$out .= '<div class="';
 						if($j->horizontal_form=='horizontal'){
 							$out .= ' col-md-10';
@@ -589,7 +589,7 @@ EOF;
 						$out .= '<p class="help-block">'.$col->help_text.'</p>';
 					}
 					
-					if(isset($j->horizontal_form) && ($j->horizontal_form!=false || $j->horizontal_form!='vertical')){
+					if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 						$out .= '</div>';//end div class="col-md-10
 					}
 					
