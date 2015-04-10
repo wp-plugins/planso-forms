@@ -90,6 +90,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 > HTML-Emails<br />
 > Conditional Logic<br />
 > No reference to PlanSo Forms in emails<br />
+> Predefined attachments for autoresponder mails<br />
 > Google Analytics Integration<br />
 > Pushover.net Integration<br />
 > Zapier.com Integration<br />
@@ -138,6 +139,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.2.8 =
+* Updated locales and translations
 
 = 1.2.7 =
 * Extended side by side layout options to allow more flexible widths
