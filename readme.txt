@@ -142,6 +142,7 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 = 1.2.9 =
 * Added option to allow form fields to be prefilled with a value using $_GET or $_POST
+* Added option to allow form fields to be prefilled with a value using shortcode attributes. The following values will be replaced intelligently: CURRENT_DATE(),CURRENT_DATETIME() and CURRENT_TIME()
 
 = 1.2.8 =
 * Updated locales and translations
