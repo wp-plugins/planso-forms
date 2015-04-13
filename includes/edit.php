@@ -184,6 +184,9 @@ jQuery(document).ready(function($){
 		if(typeof jf.planso_style!='undefined' && jf.planso_style==true){
 			$('#planso_style').prop('checked','checked');
 		}
+		if(typeof jf.allow_prefill!='undefined' && jf.allow_prefill==true){
+			$('#allow_prefill').prop('checked','checked');
+		}
 		if(typeof jf.javascript_antispam=='undefined' || jf.javascript_antispam==true){
 			$('#javascript_antispam').prop('checked','checked');
 		}
@@ -487,6 +490,11 @@ jQuery(document).ready(function($){
 			jj.planso_style = true;
 		} else {
 			jj.planso_style = false;
+		}
+		if( $('#allow_prefill').is(':checked') ){
+			jj.allow_prefill = true;
+		} else {
+			jj.allow_prefill = false;
 		}
 		if( $('#javascript_antispam').is(':checked') ){
 			jj.javascript_antispam = true;
@@ -2475,6 +2483,14 @@ jQuery.fn.setCursorPosition = function(position){
 						    <label for="clean_attachments">
 						    	<input type="checkbox" id="clean_attachments" name="clean_attachments" value="1">
 						    	<?php echo __('Do not delete submitted attachments after mailing them','psfbldr'); ?>
+						    </label>
+						    <!-- <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p> -->
+						  </div>
+						
+							<div class="form-group checkbox">
+						    <label for="allow_prefill">
+						    	<input type="checkbox" id="allow_prefill" name="allow_prefill" value="1">
+						    	<?php echo __('Allow fields to be pre populated with a value using $_GET or $_POST','psfbldr'); ?>
 						    </label>
 						    <!-- <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p> -->
 						  </div>

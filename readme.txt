@@ -140,6 +140,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.2.9 =
+* Added option to allow form fields to be prefilled with a value using $_GET or $_POST
+
 = 1.2.8 =
 * Updated locales and translations
 
