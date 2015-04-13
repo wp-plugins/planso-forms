@@ -1756,6 +1756,8 @@ function ps_manage_form_vars(){
 		});
 	});
 	
+	<?php do_action( 'psfb_edit_javascript_add_form_vars' ); ?>
+	
 	$('.ps_admin_mail_variables_stage').html( h );
 	$('.ps_user_mail_variables_stage').html( h.replace(/admin/g,'user') );
 	
