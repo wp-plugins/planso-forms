@@ -140,6 +140,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.3.0 =
+* Optimized shortcut handling with predefined values
+
 = 1.2.9 =
 * Added option to allow form fields to be prefilled with a value using $_GET or $_POST
 * Added option to allow form fields to be prefilled with a value using shortcode attributes. The following values will be replaced intelligently: CURRENT_DATE(),CURRENT_DATETIME() and CURRENT_TIME()

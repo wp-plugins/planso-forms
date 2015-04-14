@@ -197,15 +197,15 @@ EOF;
 					$col->name = 'field'.$cnt;
 				}
 				
-				if(isset($atts[$col->name]) && !empty($atts[$col->name])){
-					if($atts[$col->name] == 'CURRENT_DATE()'){
-						$atts[$col->name] = strftime('%Y-%m-%d');
+				if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)])){
+					if($atts[strtolower($col->name)] == 'CURRENT_DATE()'){
+						$atts[strtolower($col->name)] = strftime('%Y-%m-%d');
 					}
-					if($atts[$col->name] == 'CURRENT_DATETIME()'){
-						$atts[$col->name] = strftime('%Y-%m-%d %H:%M:%S');
+					if($atts[strtolower($col->name)] == 'CURRENT_DATETIME()'){
+						$atts[strtolower($col->name)] = strftime('%Y-%m-%d %H:%M:%S');
 					}
-					if($atts[$col->name] == 'CURRENT_TIME()'){
-						$atts[$col->name] = time();
+					if($atts[strtolower($col->name)] == 'CURRENT_TIME()'){
+						$atts[strtolower($col->name)] = time();
 					}
 				}
 				
@@ -437,8 +437,8 @@ EOF;
 							}
 							if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
 								$out .= ' value="'.$_SESSION['psfb_values'][$atts['id']][$col->name].'"';
-							} else if(isset($atts[$col->name]) && !empty($atts[$col->name])){
-								$out .= ' value="'.htmlentities($atts[$col->name], ENT_QUOTES).'"';
+							} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)])){
+								$out .= ' value="'.htmlentities($atts[strtolower($col->name)], ENT_QUOTES).'"';
 							} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name])){
 								$out .= ' value="'.htmlentities($_REQUEST[$col->name], ENT_QUOTES).'"';
 							}
@@ -475,8 +475,8 @@ EOF;
 								
 								if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
 									$out .= $_SESSION['psfb_values'][$atts['id']][$col->name];
-								} else if(isset($atts[$col->name]) && !empty($atts[$col->name])){
-									$out .= htmlentities($atts[$col->name], ENT_QUOTES);
+								} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)])){
+									$out .= htmlentities($atts[strtolower($col->name)], ENT_QUOTES);
 								} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name])){
 									$out .= htmlentities($_REQUEST[$col->name], ENT_QUOTES);
 								}
@@ -516,7 +516,7 @@ EOF;
 									$out .= '<option value="'.$opt->val.'"';
 									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
 										$out .= ' selected="selected"';
-									} else if(isset($atts[$col->name]) && !empty($atts[$col->name]) && $atts[$col->name]==$opt->val){
+									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && $atts[strtolower($col->name)]==$opt->val){
 										$out .= ' selected="selected"';
 									} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name]) && $_REQUEST[$col->name]==$opt->val){
 										$out .= ' selected="selected"';
@@ -556,7 +556,7 @@ EOF;
 									}
 									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
 										$out .= ' checked="checked"';
-									} else if(isset($atts[$col->name]) && !empty($atts[$col->name]) && $atts[$col->name]==$opt->val){
+									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && $atts[strtolower($col->name)]==$opt->val){
 										$out .= ' checked="checked"';
 									} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name]) && $_REQUEST[$col->name]==$opt->val){
 										$out .= ' checked="checked"';
@@ -595,7 +595,7 @@ EOF;
 									//if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name.'_'.$ocnt])){
 									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && is_array($_SESSION['psfb_values'][$atts['id']][$col->name]) && in_array($opt->val,$_SESSION['psfb_values'][$atts['id']][$col->name])){
 										$out .= ' checked="checked"';
-									} else if(isset($atts[$col->name]) && !empty($atts[$col->name]) && ((is_array($atts[$col->name]) && in_array($opt->val,$atts[$col->name]) ) || $atts[$col->name] == $opt->val ) ){
+									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && ((is_array($atts[strtolower($col->name)]) && in_array($opt->val,$atts[strtolower($col->name)]) ) || $atts[strtolower($col->name)] == $opt->val ) ){
 										$out .= ' checked="checked"';
 									} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name]) && ((is_array($_REQUEST[$col->name]) && in_array($opt->val,$_REQUEST[$col->name]) ) || $_REQUEST[$col->name] == $opt->val ) ){
 										$out .= ' checked="checked"';

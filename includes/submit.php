@@ -59,6 +59,7 @@ if(isset($j->javascript_antispam) && $j->javascript_antispam==true){
 $errors = array();
 $mail_replace = array();
 $file_keys = array();
+$cnt = 1;
 if(isset($j->fields) && count($j->fields)>0){
 	foreach($j->fields as $row){
 		foreach($row as $col){

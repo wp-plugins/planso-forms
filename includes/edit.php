@@ -146,6 +146,7 @@ var noiconfields = [
 ];	
 
 var dragcontroller = {};
+<?php do_action('psfb_edit_js_before_document_ready'); ?>
 
 jQuery(document).ready(function($){
 	$('body').css('background-color','inherit');
