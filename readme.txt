@@ -89,6 +89,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 >
 > HTML-Emails<br />
 > Conditional Logic<br />
+> PayPal Payment Forms<br />
 > No reference to PlanSo Forms in emails<br />
 > Predefined attachments for autoresponder mails<br />
 > Google Analytics Integration<br />
@@ -139,6 +140,12 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.3.1 =
+* Added new dynamic variables for use in autoresponder email body ([psfb_current_date], [psfb_current_datetime], [psfb_current_time])
+* Added new debug option for cases where the form breaks (add &psfb_debug=1 to the url of your form in edit mode and submit the JSON to the forums or to our support form for help)
+* Added possibility to define icons for multiline text fields and selectboxes
+* Updated translations
 
 = 1.3.0 =
 * Optimized shortcut handling with predefined values

@@ -23,7 +23,18 @@ $htmlfields = array(
 	'html_hr',
 	'html_header',
 	'html_paragraph'
-);	
+);
+
+$field_configurations = apply_filters('psfb_vars_field_configurations',
+	array(
+		'specialfields' => $specialfields,
+		'selectfields' => $selectfields,
+		'htmlfields' => $htmlfields
+	)
+);
+$specialfields = $field_configurations['specialfields'];
+$selectfields = $field_configurations['selectfields'];
+$htmlfields = $field_configurations['htmlfields'];
 
 $fieldtypes = array(
 	'divider_templates' => array('label'=> __('Predefined fields','psfbldr'),'type'=>'divider'),
@@ -70,6 +81,8 @@ $fieldtypes = array(
 	'submit' => array('label'=>__('Submit-Button','psfbldr'),'type'=>'submit'),
 	'imagesubmit' => array('label'=>__('Submit-Image','psfbldr'),'type'=>'image')
 );
+
+$fieldtypes = apply_filters('psfb_vars_fieldtypes',$fieldtypes);
 
 $powered_by_txt_email = <<<EOF
 
@@ -301,6 +314,16 @@ $psfb_mail_tracking_map = array(
 	'psfb_referer' => 'referer'
 );
 
+$psfb_current_date = strftime('%Y-%m-%d');
+$psfb_current_datetime = strftime('%Y-%m-%d %H:%M:%S');
+$psfb_current_time = strftime('%H:%M:%S');
+
+$psfb_mail_dynamic_values = array(
+	'psfb_current_date' => $psfb_current_date,
+	'psfb_current_datetime' => $psfb_current_datetime,
+	'psfb_current_time' => $psfb_current_time
+);
+
 $psfb_pro_teaser = '
 
 <section class="container-fluid postbox "><!-- container-fluid -->
@@ -318,6 +341,7 @@ $psfb_pro_teaser = '
 
 					<ul class="fa-ul">
 						<li><i class="fa-li fa fa-check-square"></i>'. __('All Free Features','psfbldr').'</li>
+						<li><i class="fa-li fa fa-check-square"></i>'. __('PayPal Payment Forms','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('HTML Email & Tracking Information','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Easyly send attachments via autoresponder to your users','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Conditional logic for intelligent field handling','psfbldr').'</li>
@@ -329,7 +353,8 @@ $psfb_pro_teaser = '
 					</ul>
 					
 					<p>
-						<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2JD3JD2J5Q72Q" target="_blank" class="btn btn-primary btn-xl btn-large">'.__('Upgrade now','psfbldr').'</a>
+						<!-- <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2JD3JD2J5Q72Q" target="_blank" class="btn btn-primary btn-xl btn-large">'.__('Upgrade now','psfbldr').'</a> -->
+						<a href="http://forms.planso.de/pricing/" target="_blank" class="btn btn-primary btn-xl btn-large">'.__('Upgrade to PlanSo Forms Pro now','psfbldr').'</a>
 					</p>
 					<p>
 						<a href="http://forms.planso.de/" target="_blank">'.__('Check out PlanSo Forms Pro before upgrading','psfbldr').'</a>

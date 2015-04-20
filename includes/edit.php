@@ -134,13 +134,13 @@ var noplaceholderfields = [
 	'multifile'
 ];	
 var noiconfields = [
-	'select',
 	'checkbox',
 	'radio',
-	'multiselect',
 	'submit',
-	'submitimage',
-	'textarea'/*,
+	'submitimage'/*,
+	'select',
+	'multiselect',
+	'textarea',
 	'file',
 	'multifile'*/
 ];	
@@ -1885,6 +1885,21 @@ jQuery.fn.setCursorPosition = function(position){
 .form_builder_stage .row:last-child{
 	padding-bottom:25px;
 }
+
+
+
+.form_builder_stage:empty{
+	
+	min-height:590px;
+	border:1px dashed lightgray;
+	vertical-align: middle;
+	text-align:center;
+	position:relative;
+}
+.form_builder_stage:empty:before { content: '<?php echo __('1. Start by dragging fields to your form','psfbldr'); ?>'; color: #666; font-size: 2em;z-index:8;padding:0; position:relative;top:80px;width:inherit;padding-bottom:400px;background-image:url(<?php echo plugins_url( '/images/arrow-drag-in-up-left.png', (dirname(__FILE__)) ); ?>);background-position:100% 20%;background-repeat:no-repeat;}
+
+.form_builder_stage:empty:after { content: '<?php echo __('2. Continue by saving afterwards','psfbldr'); ?>'; color: #999; font-size: 1.5em;z-index:9;padding:0; position:absolute;bottom:20px;right:20px;width:inherit;padding-bottom:100px;background-image:url(<?php echo plugins_url( '/images/arrow-drag-in-down-right.png', (dirname(__FILE__)) ); ?>);background-position:100% 100%;background-repeat:no-repeat;}
+
 
 <?php do_action( 'psfb_edit_cssstyles' ); ?>
 </style>

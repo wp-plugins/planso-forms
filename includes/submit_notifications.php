@@ -26,6 +26,9 @@
 			foreach($psfb_mail_tracking_map as $k=>$v){
 				$content = str_replace('['.$v.']',$_REQUEST[$k],$content);
 			}
+			foreach($psfb_mail_dynamic_values as $k=>$v){
+				$content = str_replace('['.$k.']',$v,$content);
+			}
 			
 			/********** Automatischer Mail Body **********/
 			if(trim($content)==''){
@@ -210,6 +213,9 @@
 				$bcc = str_replace('['.$k.']',$v,$bcc);
 			}
 			
+			foreach($psfb_mail_dynamic_values as $k=>$v){
+				$content = str_replace('['.$k.']',$v,$content);
+			}
 			//vars.inc.php
 			if(isset($mail->html_mail) && $mail->html_mail==true){
   			//$content .= PSFB_POWERED_BY_HTML;
@@ -272,7 +278,7 @@
 		
 	}
 	
-	if(isset($j->pushover_user)){
+	if(isset($j->pushover_user) && !empty($j->pushover_user)){
 		
 		$options = array(
 		  CURLOPT_URL => "https://api.pushover.net/1/messages.json",
@@ -286,6 +292,8 @@
 		  ),
 		  CURLOPT_RETURNTRANSFER => 1,
       CURLOPT_HEADER         => 0,
+      CURLOPT_SSL_VERIFYPEER => 0, 
+	    CURLOPT_SSL_VERIFYHOST => 0,
       CURLOPT_USERAGENT      => "PlanSo Forms"
 		); 
 
