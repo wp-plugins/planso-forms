@@ -188,7 +188,7 @@ function psfb_save_form(){
 	
 	$query = array(
 		'message' => ( -1 == $_POST['psfbid'] ) ? 'created' : 'saved',
-		'post' => $id );
+		'psfbid' => $id );
 
 	$redirect_to = add_query_arg( $query, menu_page_url( 'ps-form-builder-new', false ) );
 	wp_safe_redirect( $redirect_to );

@@ -144,6 +144,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.3.3 =
+* IMPORTANT fix after the change of the post parameter to psfbid
+
 = 1.3.2 =
 * Changed post parameter to psfbid because of incompatibility with certain themes
 * Checked for compatability with WordPress 4.2
