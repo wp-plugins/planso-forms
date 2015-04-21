@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.3.1
+ * Version: 1.3.2
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -162,7 +162,7 @@ function psfb_admin_updated_message() {
 
 function psfb_save_form(){
 	
-	$id = $_REQUEST['post'];
+	$id = $_REQUEST['psfbid'];
 	$title = $_REQUEST['title'];
 	$post_content = $_REQUEST['json'];
 	
@@ -187,7 +187,7 @@ function psfb_save_form(){
 	}
 	
 	$query = array(
-		'message' => ( -1 == $_POST['post_ID'] ) ? 'created' : 'saved',
+		'message' => ( -1 == $_POST['psfbid'] ) ? 'created' : 'saved',
 		'post' => $id );
 
 	$redirect_to = add_query_arg( $query, menu_page_url( 'ps-form-builder-new', false ) );
@@ -207,7 +207,7 @@ function psfb_load_contact_form_admin(){
 	}
 	if ( 'copy' == $action ) {
 		
-		$psform = get_post($_REQUEST['post']);
+		$psform = get_post($_REQUEST['psfbid']);
 		$j = json_decode($psform->post_content);
 		$psform->post_content = addslashes(json_encode($j));
 		$id = wp_insert_post(
@@ -222,7 +222,7 @@ function psfb_load_contact_form_admin(){
 	
 		$query = array(
 			'message' => 'created',
-			'post' => $id 
+			'psfbid' => $id 
 		);
 		
 		$redirect_to = add_query_arg( $query, menu_page_url( 'ps-form-builder', false ) );
@@ -232,7 +232,7 @@ function psfb_load_contact_form_admin(){
 	
 	if ( 'delete' == $action ) {
 		
-		wp_delete_post( $_REQUEST['post'], true );
+		wp_delete_post( $_REQUEST['psfbid'], true );
 		$query = array();
 		$redirect_to = add_query_arg( $query, menu_page_url( 'ps-form-builder', false ) );
 		wp_safe_redirect( $redirect_to );
@@ -310,7 +310,7 @@ add_filter('mce_external_plugins', 'psfb_register_tinymce_javascript');
 
 function psfb_register_tinymce_javascript($plugin_array) {
 	psfb_add_tinymce_button();
-	$plugin_array['planso_forms_shortcodes'] = plugins_url('/js/mce-button.js',__file__);
+	$plugin_array['planso_forms_shortcodes'] = plugins_url('/js/mce-button.js',__FILE__);
 	return $plugin_array;
 }
 

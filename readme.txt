@@ -2,7 +2,7 @@
 Contributors: Stephan Helbig, PabloFernandezGarcia
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms,form maker
 Requires at least: 3.9
-Tested up to: 4.1.1
+Tested up to: 4.2
 Stable tag: trunk
 
 This form builder makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize fields with icons, etc
@@ -30,7 +30,10 @@ PlanSo Forms are highly flexible. Create any kind of form for infinite use cases
 Forms created with PlanSo Forms comply to mobile-first development style as each form is based on Twitter's Bootstrap form syntax.
 
 **Themes**  
-PlanSo Forms are based on Twitter's Bootstrap and are highly compatible with different themes.
+PlanSo Forms is tested with many different themes and has options to inject unobtrusive styles to look awesome with allmost any theme.
+
+**Bootstrap Forms**  
+PlanSo Forms are based on Twitter's Bootstrap and allow flexible columns and rows.
 
 **No coding**  
 Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding skills.
@@ -140,6 +143,12 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.3.2 =
+* Changed post parameter to psfbid because of incompatibility with certain themes
+* Checked for compatability with WordPress 4.2
+* Changed the dynamic date and time variables to obey the WordPress settings
+* Updated locales
 
 = 1.3.1 =
 * Added new dynamic variables for use in autoresponder email body ([psfb_current_date], [psfb_current_datetime], [psfb_current_time])

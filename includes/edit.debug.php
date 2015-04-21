@@ -10,7 +10,7 @@ require_once( dirname(__FILE__).'/vars.inc.php' );
 ?><div class="wrap">
 	<h2><?php
 	
-	if ( !isset($_REQUEST['post']) || empty($_REQUEST['post']) || $_REQUEST['post'] == -1 ) {
+	if ( !isset($_REQUEST['psfbid']) || empty($_REQUEST['psfbid']) || $_REQUEST['psfbid'] == -1 ) {
 		echo esc_html( __( 'Add New Form', 'psfbldr' ) ).' '.__('Debug mode','psfbldr');
 		$post_id = -1;
 		$shortcode_out = '';
@@ -18,12 +18,9 @@ require_once( dirname(__FILE__).'/vars.inc.php' );
 		echo esc_html( __( 'Edit Form', 'psfbldr' ) ).' '.__('Debug mode','psfbldr');
 
 		echo ' <a href="' . esc_url( menu_page_url( 'ps-form-builder-new', false ) ) . '" class="add-new-h2">' . esc_html( __( 'Add New', 'psfbldr' ) ) . '</a>';
-		$post_id = $_REQUEST['post'];
+		$post_id = $_REQUEST['psfbid'];
 		$psform = get_post( $post_id);//, $output, $filter );
 		
-		if(isset($psform->post_content) && !empty($psform->post_content) && strstr($psform->post_content,'{')){
-			$j = json_decode($psform->post_content);
-		}
 		
 		$shortcode_out = '<div><input type="text" onfocus="this.select();" onmouseup="return false;" readonly="readonly" value="[psfb id=&quot;'.$post_id.'&quot; title=&quot;'.$psform->post_title.'&quot;]" class="shortcode-in-list-table wp-ui-text-highlight code form-control"></div>';
 	}
@@ -34,7 +31,7 @@ require_once( dirname(__FILE__).'/vars.inc.php' );
 
 
 
-<form method="post" class="psfb_submit_form" action="<?php echo esc_url( add_query_arg( array( 'post' => $post_id ), menu_page_url( 'ps-form-builder', false ) ) ); ?>">
+<form method="post" class="psfb_submit_form" action="<?php echo esc_url( add_query_arg( array( 'psfbid' => $post_id ), menu_page_url( 'ps-form-builder', false ) ) ); ?>">
 <input type="hidden" name="action" value="save"/>
 <div class="form-group">
   <label><?php echo __('Title','psfbldr'); ?></label>

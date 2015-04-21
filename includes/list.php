@@ -113,7 +113,7 @@ if($r && count($r)>0){
 			</th>
 			<td class="title column-title">
 				<strong>
-					<a class="row-title" href="<?php echo esc_url( add_query_arg( array( 'post' => $row->ID ), menu_page_url( 'ps-form-builder-new', false ) ) ); ?>" title="<?php echo __('Edit','psfbldr').' '.$row->post_title.''; ?>">
+					<a class="row-title" href="<?php echo esc_url( add_query_arg( array( 'psfbid' => $row->ID ), menu_page_url( 'ps-form-builder-new', false ) ) ); ?>" title="<?php echo __('Edit','psfbldr').' '.$row->post_title.''; ?>">
 						<?php 
 					if(isset($row->post_title) && !empty($row->post_title)){
 						echo $row->post_title; 
@@ -125,15 +125,15 @@ if($r && count($r)>0){
 				</strong>
 				<div class="row-actions">
 					<span class="edit">
-						<a href="<?php echo esc_url( add_query_arg( array( 'post' => $row->ID ), menu_page_url( 'ps-form-builder-new', false ) ) ); ?>"><?php echo __('Edit','psfbldr'); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( array( 'psfbid' => $row->ID ), menu_page_url( 'ps-form-builder-new', false ) ) ); ?>"><?php echo __('Edit','psfbldr'); ?></a>
 						 | 
 					</span>
 					<span class="copy">
-						<a href="<?php echo esc_url( add_query_arg( array( 'post' => $row->ID,'action' => 'copy' ), menu_page_url( 'ps-form-builder', false ) ) ); ?>"><?php echo __('Copy','psfbldr'); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( array( 'psfbid' => $row->ID,'action' => 'copy' ), menu_page_url( 'ps-form-builder', false ) ) ); ?>"><?php echo __('Copy','psfbldr'); ?></a>
 						 | 
 					</span>
 					<span class="delete">
-						<a href="<?php echo esc_url( add_query_arg( array( 'post' => $row->ID,'action' => 'delete' ), menu_page_url( 'ps-form-builder', false ) ) ); ?>" onclick="if(confirm('<?php echo __('Are you sure you want to delete this form?','psfbldr'); ?>')){return true;}else{return false;}"><?php echo __('Delete','psfbldr'); ?></a>
+						<a href="<?php echo esc_url( add_query_arg( array( 'psfbid' => $row->ID,'action' => 'delete' ), menu_page_url( 'ps-form-builder', false ) ) ); ?>" onclick="if(confirm('<?php echo __('Are you sure you want to delete this form?','psfbldr'); ?>')){return true;}else{return false;}"><?php echo __('Delete','psfbldr'); ?></a>
 					</span>
 				</div>
 			</td>

@@ -199,13 +199,16 @@ EOF;
 				
 				if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)])){
 					if($atts[strtolower($col->name)] == 'CURRENT_DATE()'){
-						$atts[strtolower($col->name)] = strftime('%Y-%m-%d');
+						//$atts[strtolower($col->name)] = strftime('%Y-%m-%d');
+						$atts[strtolower($col->name)] = the_date(get_option( 'date_format' ), '', '', false);
 					}
 					if($atts[strtolower($col->name)] == 'CURRENT_DATETIME()'){
-						$atts[strtolower($col->name)] = strftime('%Y-%m-%d %H:%M:%S');
+						//$atts[strtolower($col->name)] = strftime('%Y-%m-%d %H:%M:%S');
+						$atts[strtolower($col->name)] = the_date(get_option( 'date_format' ), '', '', false).' '. the_date(get_option('time_format'), '', '', false);
 					}
 					if($atts[strtolower($col->name)] == 'CURRENT_TIME()'){
-						$atts[strtolower($col->name)] = time();
+						//$atts[strtolower($col->name)] = time();
+						$atts[strtolower($col->name)] = the_date(get_option('time_format'), '', '', false);
 					}
 				}
 				
