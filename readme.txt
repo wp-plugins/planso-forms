@@ -259,4 +259,4 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 == Upgrade Notice ==
 
 = 1.3.3 =
-Please update because of an error that caused you to be redirected to a wrong url aufter form saving and updateing
+Please update version 1.3.2 because of an error that causes you to be redirected to a wrong url after form saving and updating
