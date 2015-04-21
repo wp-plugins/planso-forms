@@ -255,3 +255,8 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 = 1.0.3 =
 * Added drop down menu to WordPress RichTextEditor for easier integration of forms
 * Added option to choose from 3 different Datepicker Frameworks
+
+== Upgrade Notice ==
+
+= 1.3.3 =
+Please update because of an error that caused you to be redirected to a wrong url aufter form saving and updateing
