@@ -314,9 +314,9 @@ $psfb_mail_tracking_map = array(
 	'psfb_referer' => 'referer'
 );
 
-$psfb_current_date =  the_date(get_option( 'date_format' ), '', '', false);
-$psfb_current_datetime = the_date(get_option( 'date_format' ), '', '', false).' '. the_date(get_option('time_format'), '', '', false);
-$psfb_current_time = the_date(get_option('time_format'), '', '', false);
+$psfb_current_date =  date_i18n(get_option( 'date_format' ));
+$psfb_current_datetime = date_i18n(get_option( 'date_format' )).' '. date_i18n(get_option('time_format'));
+$psfb_current_time = date_i18n(get_option('time_format'));
 
 $psfb_mail_dynamic_values = array(
 	'psfb_current_date' => $psfb_current_date,
