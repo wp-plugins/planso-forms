@@ -2,7 +2,7 @@
 Contributors: Stephan Helbig, PabloFernandezGarcia
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms,form maker
 Requires at least: 3.9
-Tested up to: 4.2
+Tested up to: 4.2.1
 Stable tag: trunk
 
 This form builder makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize fields with icons, etc
