@@ -144,6 +144,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.3.5 =
+* Simplified email settings by prefilling important input fields
+* Suppressed an error message that could be outputted on screen in certain configurations
+
 = 1.3.4 =
 * Updated the date and time handling for the dynamic email replacement variables
 

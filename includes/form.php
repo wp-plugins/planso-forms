@@ -161,6 +161,22 @@ EOF;
 	$cnt = 0;
 	if(isset($j->fields) && count($j->fields)>0){
 		foreach($j->fields as $row){
+			$all_atts = array(
+			 'row' => $row,
+			 'customfields' => $customfields,
+			 'j' => $j,
+			 'cnt' => $cnt,
+			 'out' => $out
+			);
+			//$out .= apply_filters('psfb_form_before_row_handle',$all_atts);
+			$new_atts = apply_filters('psfb_form_before_row_handle',$all_atts);
+			
+			$row = $new_atts['row'];
+			$customfields = $new_atts['customfields'];
+			$j = $new_atts['j'];
+			$cnt = $new_atts['cnt'];
+			$out = $new_atts['out'];
+			
 			$out .= '<div class="row">';
 			
 			$colcnt = floor(12/count((array)$row));
@@ -189,7 +205,11 @@ EOF;
 				}
 				
 				if(!isset($col->name) || empty($col->name)){
-					$col->name = $col->label;
+					if(!isset($col->label) || empty($col->label)){
+						$col->name = $col->label;
+					} else {
+						$col->name = '';
+					}
 				}
 				$col->name = preg_replace("/[^A-Za-z0-9_]+/", '_', $col->name);
 				
@@ -252,10 +272,29 @@ EOF;
 					$out .= '<textarea class="psfb_condition_content" style="display:none;" data-id="psfield_'.$atts['id'].'_'.$cnt.'">'.json_encode($condition).'</textarea>';
 				}
 				
-				
-				//HTML BLOCK
-				if( in_array($mytype,$htmlfields)){
+				if( in_array($mytype,$customfields)){
 					
+					$all_atts = array(
+						'out' => $out,
+						'col' => $col,
+						'mytype' => $mytype,
+						'fieldinfo' => $fieldinfo,
+						'customfields' => $customfields,
+						'j' => $j
+					);
+	
+					$all_atts = apply_filters('psfb_form_customfieds_handler',$all_atts);
+					
+					$out = $all_atts['out'];
+					$col = $all_atts['col'];
+					$mytype = $all_atts['mytype'];
+					$fieldinfo = $all_atts['fieldinfo'];
+					$customfields = $all_atts['customfields'];
+					$j = $all_atts['j'];
+					
+				} else if( in_array($mytype,$htmlfields)){
+					
+				//HTML BLOCK
 					$tag = $col->type;
 					if(isset($fieldinfo['options']) && !empty($fieldinfo['options'])){
 						if(isset($col->option) && !empty($col->option)){

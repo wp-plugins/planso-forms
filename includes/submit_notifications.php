@@ -147,7 +147,7 @@
 
 			
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
-				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'noreply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
+				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
 			} else {
 				if(trim($from_name)!=''){
 					$headers[] = 'From: "'.trim($from_name).'" <'.trim($from_email).'>';
@@ -238,7 +238,7 @@
 			
 			$headers = array();
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
-				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'noreply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
+				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
 			} else {
 				if(trim($from_name)!=''){
 					$headers[] = 'From: "'.trim($from_name).'" <'.trim($from_email).'>';

@@ -25,16 +25,20 @@ $htmlfields = array(
 	'html_paragraph'
 );
 
+$customfields = array();
+
 $field_configurations = apply_filters('psfb_vars_field_configurations',
 	array(
 		'specialfields' => $specialfields,
 		'selectfields' => $selectfields,
-		'htmlfields' => $htmlfields
+		'htmlfields' => $htmlfields,
+		'customfields' => $customfields
 	)
 );
 $specialfields = $field_configurations['specialfields'];
 $selectfields = $field_configurations['selectfields'];
 $htmlfields = $field_configurations['htmlfields'];
+$customfields = $field_configurations['customfields'];
 
 $fieldtypes = array(
 	'divider_templates' => array('label'=> __('Predefined fields','psfbldr'),'type'=>'divider'),
@@ -354,7 +358,7 @@ $psfb_pro_teaser = '
 					
 					<p>
 						<!-- <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2JD3JD2J5Q72Q" target="_blank" class="btn btn-primary btn-xl btn-large">'.__('Upgrade now','psfbldr').'</a> -->
-						<a href="http://forms.planso.de/pricing/" target="_blank" class="btn btn-primary btn-xl btn-large">'.__('Upgrade to PlanSo Forms Pro now','psfbldr').'</a>
+						<a href="http://www.planso.net/pricing/" target="_blank" class="btn btn-primary btn-xl btn-large">'.__('Upgrade to PlanSo Forms Pro now','psfbldr').'</a>
 					</p>
 					<p>
 						<a href="http://forms.planso.de/" target="_blank">'.__('Check out PlanSo Forms Pro before upgrading','psfbldr').'</a>

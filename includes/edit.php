@@ -143,7 +143,9 @@ var noiconfields = [
 	'textarea',
 	'file',
 	'multifile'*/
-];	
+];
+
+var customfields = [];
 
 var dragcontroller = {};
 <?php do_action('psfb_edit_js_before_document_ready'); ?>
@@ -637,7 +639,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		row += '</label>';
 	}
 	
-  if( $.inArray(mytype,htmlfields)!= -1 ){
+  if( $.inArray(mytype,customfields) != -1 ){
+  	<?php do_action('psfb_edit_js_customfields_create'); ?>
+  	
+  } else if( $.inArray(mytype,htmlfields)!= -1 ){
 		
 		var tag_details = fieldtypes[mytype];
 		//console.log(tag_details);
@@ -2247,10 +2252,10 @@ jQuery.fn.setCursorPosition = function(position){
 									$admin_mail = new stdClass;
 									$admin_mail->content = '';
 									$admin_mail->subject = '';
-									$admin_mail->from_name = '';
-									$admin_mail->from_email = '';
+									$admin_mail->from_name = get_option( 'blogname', __('Your Wordpress Blog','psfbldr') );
+									$admin_mail->from_email = get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) );
 									$admin_mail->reply_to = '';
-									$admin_mail->recipients = array();
+									$admin_mail->recipients = array(get_option( 'admin_email', 'info@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ));
 									$admin_mail->bcc = array();
 								}
 								if(isset($j->mails) && isset($j->mails->user_mail)){
@@ -2259,9 +2264,9 @@ jQuery.fn.setCursorPosition = function(position){
 									$user_mail = new stdClass;
 									$user_mail->content = '';
 									$user_mail->subject = '';
-									$user_mail->from_name = '';
-									$user_mail->from_email = '';
-									$user_mail->reply_to = '';
+									$user_mail->from_name = get_option( 'blogname', __('Your Wordpress Blog','psfbldr') );
+									$user_mail->from_email = get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) );
+									$user_mail->reply_to = get_option( 'admin_email', 'info@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) );
 									$user_mail->recipients = array();
 									$user_mail->bcc = array();
 								}
@@ -2269,17 +2274,17 @@ jQuery.fn.setCursorPosition = function(position){
 								$admin_mail = new stdClass;
 									$admin_mail->content = '';
 									$admin_mail->subject = '';
-									$admin_mail->from_name = '';
-									$admin_mail->from_email = '';
+									$admin_mail->from_name = get_option( 'blogname', __('Your Wordpress Blog','psfbldr') );
+									$admin_mail->from_email = get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) );
 									$admin_mail->reply_to = '';
-									$admin_mail->recipients = array();
+									$admin_mail->recipients = array(get_option( 'admin_email', 'info@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ));
 									$admin_mail->bcc = array();
 								$user_mail = new stdClass;
 									$user_mail->content = '';
 									$user_mail->subject = '';
-									$user_mail->from_name = '';
-									$user_mail->from_email = '';
-									$user_mail->reply_to = '';
+									$user_mail->from_name = get_option( 'blogname', __('Your Wordpress Blog','psfbldr') );
+									$user_mail->from_email = get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) );
+									$user_mail->reply_to = get_option( 'admin_email', 'info@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) );
 									$user_mail->recipients = array();
 									$user_mail->bcc = array();
 							}
