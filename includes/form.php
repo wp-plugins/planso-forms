@@ -205,7 +205,7 @@ EOF;
 				}
 				
 				if(!isset($col->name) || empty($col->name)){
-					if(!isset($col->label) || empty($col->label)){
+					if(isset($col->label) && !empty($col->label)){
 						$col->name = $col->label;
 					} else {
 						$col->name = '';

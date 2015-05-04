@@ -144,6 +144,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.3.6 =
+* Further improvements on checkbox error handling
+
 = 1.3.5 =
 * Simplified email settings by prefilling important input fields
 * Suppressed an error message that could be outputted on screen in certain configurations
