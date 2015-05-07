@@ -19,7 +19,10 @@
 				 $(this).closest('.form-group .input-group').addClass('date');
 			});
 			if( $('.planso-form-builder input[type="date"]').length > 0){
-				$('.planso-form-builder input[type="date"]').attr('type','text').each(function(){
+				$('.planso-form-builder input[type="date"]').each(function(){
+					$(this).addClass('planso_datepicker').get(0).type = 'text';
+				});
+				$('.planso-form-builder .planso_datepicker').each(function(){
 					if( $(this).closest('.form-group .input-group').length > 0){
 						var me = $(this);//.closest('.form-group .input-group')
 					} else {
