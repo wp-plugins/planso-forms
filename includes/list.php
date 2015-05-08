@@ -92,21 +92,20 @@ if(!is_numeric( $page_limit )){
 $r = query_posts( 'post_type=psfb&posts_per_page='.$page_limit.'&order='.$sort_ad.'&orderby='.$sort_column);
 if($r && count($r)>0){
 	foreach($r as $row){
-		?>
-		<!--
-		<strong>
-			<a class="row-title" href="<?php echo esc_url( add_query_arg( array( 'post' => $row->ID ), menu_page_url( 'ps-form-builder-new', false ) ) ); ?>" title="<?php echo __('Edit','psfbldr').' '.$row->post_title; ?>">
-				<?php 
-					if(isset($row->post_title) && !empty($row->post_title)){
-						echo $row->post_title; 
-					} else {
-						echo __('Unnamed form','psfbldr');
-					}
-				?> 
-			</a>
-		</strong>
-		-->
 		
+		//UPDATE POST STATUS IF NECCESSARY
+		if($row->post_status!='draft'){
+			$post_id = wp_update_post(
+				array(
+					'ID' => (int) $row->ID,
+					'post_status' => 'draft',
+					'ping_status' => 'closed',
+					'comment_status' => 'closed' 
+				) 
+			);
+		}
+		
+		?>
 		<tr class="alternate">
 			<th scope="row" class="check-column">
 				<input type="checkbox" name="post[]" value="1981">
@@ -150,30 +149,14 @@ if($r && count($r)>0){
 				<abbr title="<?php echo date_i18n( get_option( 'date_format' ), strtotime( $row->post_date ) ) .' '. strftime('%H:%M:%S',strtotime( $row->post_date ) ); ?>">
 					<!-- 20.10.2014 -->
 					<?php
-						//$datetime = new DateTime($row->post_date);
-						//setLocale(LC_TIME|LC_CTYPE, WP_LOCALE); 
-						//echo strftime('%a %e.%l.%Y', $datetime->format('U'));
 						 echo date_i18n( get_option( 'date_format' ), strtotime( $row->post_date ) );
 					?>
 				</abbr>
-				<!--
-				<?php
-					print_r($row);
-				?>
-				-->
 			</td>
 		</tr>
-
-
-
-
-
-
 <?php
 	}
-}    
-		
-//print_r($my_query); 
+}
 ?>
 		</tbody>
 </table>

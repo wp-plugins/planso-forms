@@ -144,6 +144,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.3.8 =
+* Fixed an important bug that can lead to form settings exposure if certain other plugins are in use
+
 = 1.3.7 =
 * Fixed a bug that could prevent form submission when JavaScript Anti Spam was active and certain jquery versions were present
 * Tested for WordPress 4.2.2
@@ -272,6 +275,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 * Added option to choose from 3 different Datepicker Frameworks
 
 == Upgrade Notice ==
+
+= 1.3.8 =
+Fixed an IMPORTANT security issue
 
 = 1.3.3 =
 Please update version 1.3.2 because of an error that causes you to be redirected to a wrong url after form saving and updating
