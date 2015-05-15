@@ -23,8 +23,6 @@
 	}
 	
 	if(!isset($framework['bootstrap'])){
-	//	wp_enqueue_style( 'bootstrap',plugins_url( '/css/bootstrap/css/bootstrap.min.css', dirname(__FILE__) ) );
-	//	wp_enqueue_style( 'bootstrap-theme',plugins_url( '/css/bootstrap/css/bootstrap-theme.min.css', dirname(__FILE__) ) );
 		
 		wp_enqueue_style( 'bootstrap-grid',plugins_url( '/css/planso_bootstrap/bootstrap.grid.css', dirname(__FILE__) ) );
 		
@@ -37,7 +35,6 @@
 	}
 	
 	if(isset($j->planso_style) && $j->planso_style==true){
-		//wp_enqueue_style( 'planso-bootstrap',plugins_url( '/css/planso_bootstrap/bootstrap.css', dirname(__FILE__) ) );
 		wp_enqueue_style( 'bootstrap-form',plugins_url( '/css/planso_bootstrap/bootstrap.form.css', dirname(__FILE__) ) );
 	}
 
@@ -83,12 +80,10 @@
 		} else if(isset($j->datepicker) && $j->datepicker=='bootstrap-datepicker-eternicode'){
 			
 			wp_enqueue_script( 'bootstrap_datepicker',plugins_url( '/js/bootstrap/eternicode-bootstrap-datepicker/js/bootstrap-datepicker.js', dirname(__FILE__) ), array('jquery'), '1.3.1', true );
-			//wp_enqueue_script( 'psfb_datepicker',plugins_url( '/js/bootstrap/eternicode-bootstrap-datepicker/js/bootstrap-datepicker.js', dirname(__FILE__) ), array('jquery'), '1.3.1', true );
 			$_POST['psfb_global_datepicker_scripts'] = 1;
 		} else if(isset($j->datepicker) && $j->datepicker=='bootstrap-datepicker'){
 			//datepicker
 			wp_enqueue_script( 'bootstrap_datepicker',plugins_url( '/js/bootstrap/eyecon-bootstrap-datepicker/js/bootstrap-datepicker.js', dirname(__FILE__) ), array('jquery'), '1.3.1', true );
-			//wp_enqueue_script( 'psfb_datepicker',plugins_url( '/js/bootstrap/eyecon-bootstrap-datepicker/js/bootstrap-datepicker.js', dirname(__FILE__) ), array('jquery'), '1.3.1', true );
 			$_POST['psfb_global_datepicker_scripts'] = 1;
 		}
 	}
@@ -128,7 +123,6 @@
 		$out .= '<p style="padding: 15px;" class="bg-success">'.__('Your submission was successful.','psfbldr').'</p>';
 		$_SESSION['psfb_success'][$atts['id']] = null;
 	}
-	//$out .= '<input type="hidden" name="psfb_pageurl" value="'.htmlspecialchars(@$_SERVER['HTTP_REFERER']).'"/>';
 	$out .= '<input type="hidden" name="psfb_pageurl" value="'.htmlspecialchars(get_permalink( get_the_ID() ) ).'"/>';
 	$out .= '<input type="hidden" name="psfb_userip" value="'.@$_SERVER['REMOTE_ADDR'].'"/>';
 	$out .= '<input type="hidden" name="psfb_useragent" value="'.@$_SERVER['HTTP_USER_AGENT'].'"/>';
@@ -148,15 +142,25 @@
 	
 	if(isset($j->javascript_antispam) && $j->javascript_antispam==true){
 		$out .= '<noscript>'.__('Please enable Javascript in your Browser in order to correctly submit this form.','psfbldr').'</noscript>';
-		/*
-		$out .= <<<EOF
-<script type="text/javascript">document.write('<i'+'n'+'p'+'ut ty'+'pe="hi'+'dden" va'+'lu'+'e="{$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']]}" name="psfb_js_as">');</script>
-EOF;
-*/
+		
 		$out .= <<<EOF
 <script type="text/javascript">document.write('<i'+'n'+'p'+'ut ty'+'pe="hi'+'dden" value="'+document.getElementById("psfb_hon_as2_{$atts['id']}_{$_POST['psfb_global_cnt']}").value+'" name="psfb_js_as">');</script>
 EOF;
 	}
+	
+	$all_atts = array(
+		'id' => $atts['id'],
+		'customfields' => $customfields,
+		'j' => $j,
+		'out' => $out
+	);
+	$new_atts = apply_filters('psfb_form_after_hidden_fields',$all_atts);
+	
+	$atts['id'] = $new_atts['id'];
+	$customfields = $new_atts['customfields'];
+	$j = $new_atts['j'];
+	$out = $new_atts['out'];
+	
 	
 	$cnt = 0;
 	if(isset($j->fields) && count($j->fields)>0){
@@ -168,7 +172,6 @@ EOF;
 			 'cnt' => $cnt,
 			 'out' => $out
 			);
-			//$out .= apply_filters('psfb_form_before_row_handle',$all_atts);
 			$new_atts = apply_filters('psfb_form_before_row_handle',$all_atts);
 			
 			$row = $new_atts['row'];

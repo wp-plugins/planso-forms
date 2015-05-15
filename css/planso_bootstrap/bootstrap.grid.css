@@ -185,9 +185,11 @@
 .planso-form-builder th {
   padding: 0;
 }
-.planso-form-builder * {
+.planso-form-builder *,
+.planso-form-builder div{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
   box-sizing: border-box;
 }
 .planso-form-builder *:before,

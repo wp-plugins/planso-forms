@@ -93,6 +93,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 > HTML-Emails<br />
 > Conditional Logic<br />
 > PayPal Payment Forms<br />
+> Multi-Page Forms<br />
 > No reference to PlanSo Forms in emails<br />
 > Predefined attachments for autoresponder mails<br />
 > Google Analytics Integration<br />
@@ -143,6 +144,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.3.9 =
+* Slight changes to the base CSS to be more compatible with some special themes
 
 = 1.3.8 =
 * Fixed an important bug that can lead to form settings exposure if certain other plugins are in use
