@@ -145,6 +145,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.0 =
+* Minor layout changes in the forms edit page
+* We now explicitly set the form submission url
+
 = 1.3.9 =
 * Slight changes to the base CSS to be more compatible with some special themes
 

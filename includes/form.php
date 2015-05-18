@@ -107,7 +107,7 @@
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_scripts'],true).'</pre>';
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_styles'],true).'</pre>';
 	
-	$out .= '<form enctype="multipart/form-data" method="post" class="planso-form-builder';
+	$out .= '<form enctype="multipart/form-data" method="post" action="'.htmlspecialchars(get_permalink( get_the_ID() ) ).'" class="planso-form-builder';
 	if(isset($j->horizontal_form) && ($j->horizontal_form!=false && $j->horizontal_form!='vertical')){
 		$out .= ' form-horizontal';
 	}

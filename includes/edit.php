@@ -1739,10 +1739,21 @@ function ps_field_drop( event, ui, target, j, createcol ){
   		
   		$('#fieldeditor').modal('hide');
   		ps_manage_form_vars();
+			psfb_on_stage_change();
   	});
   });
+	
+	psfb_on_stage_change();
+	
 }
 
+
+function psfb_on_stage_change(){
+	var $ = jQuery;
+	console.log('why');
+	<?php do_action( 'psfb_edit_js_on_stage_change' ); ?>
+	return;
+}
 
 function ps_manage_form_vars(){
 	var $ = jQuery;
@@ -2208,14 +2219,14 @@ jQuery.fn.setCursorPosition = function(position){
 					<h3 class="hndle" style="cursor:default;"><span><strong><?php echo __('Thank you page','psfbldr'); ?></strong></span></h3>
 				</div>
 				<br class="clear">
-				<section class="col-md-9">
+				<section class="col-md-12">
 					
 						<div class="form-group">
 					    <label for="thankyou_page_url"><?php echo __('Thank you page url','psfbldr'); ?></label>
 					    <input type="text" placeholder="http://" id="thankyou_page_url" class="form-control thankyou_page_url" value="<?php if(isset($j->thankyou_page_url))echo $j->thankyou_page_url; ?>">
 					    <p class="help-block"><?php echo __('Enter the website address (inkl. http://) of the page the user should be redirected to after successfully submitting the form','psfbldr'); ?></p>
 					  </div>
-					  
+					  <?php do_action( 'psfb_edit_in_thankyoupage_content' ); ?>
 				</section>
 			</div>
 		</div>
