@@ -9,7 +9,7 @@
 	
 	$framework = array();
 	
-  wp_register_style( 'font-awesome',plugins_url( '/css/font-awesome-4.2.0/css/font-awesome.min.css', dirname(__FILE__) ) ,array() ,'4.2.0');
+  wp_register_style( 'font-awesome',plugins_url( '/css/font-awesome-4.3.0/css/font-awesome.min.css', dirname(__FILE__) ) ,array() ,'4.2.0');
   wp_enqueue_style( 'font-awesome');
   if(isset($GLOBALS['wp_scripts']) && isset($GLOBALS['wp_scripts']->queue)){
 	  foreach($GLOBALS['wp_scripts']->queue as $queue){

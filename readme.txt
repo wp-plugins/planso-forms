@@ -145,6 +145,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.1 =
+* Updated Font-Awesome to version 4.3.0
+
 = 1.4.0 =
 * Minor layout changes in the forms edit page
 * We now explicitly set the form submission url
