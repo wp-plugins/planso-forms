@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -94,8 +94,26 @@ add_action( 'admin_menu', 'ps_form_builder_admin_menu' );
 
 /** Hook Admin Menu */
 function ps_form_builder_admin_menu() {
-	
-	$edit = add_menu_page( __('PlanSo Form Builder','psfbldr'), __('PlanSo Form Builder','psfbldr'), 'manage_options', 'ps-form-builder', 'ps_form_builder_list' );
+	/*
+	add_menu_page( 
+		$page_title, 
+		$menu_title, 
+		$capability, 
+		$menu_slug, 
+		$function, 
+		$icon_url,
+		$position 
+	);
+	*/
+	$edit = add_menu_page( 
+		__('PlanSo Form Builder','psfbldr'), 
+		__('PlanSo Form Builder','psfbldr'), 
+		'manage_options', 
+		'ps-form-builder', 
+		'ps_form_builder_list',
+		plugins_url( '/images/planso-logo-gears-transparent-20x20.png', (__FILE__) ),
+		'65.87255991543'
+	);
 	add_submenu_page( 'ps-form-builder', __('Create new PlanSo Form','psfbldr'), __('New Form','psfbldr'), 'manage_options', 'ps-form-builder-new', 'ps_form_builder_options');
 	do_action( 'psfb_admin_menu' );
 	add_action( 'load-' . $edit, 'psfb_load_contact_form_admin' );

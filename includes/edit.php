@@ -2221,6 +2221,7 @@ jQuery.fn.setCursorPosition = function(position){
 				<br class="clear">
 				<section class="col-md-12">
 					
+					  <?php do_action( 'psfb_edit_in_thankyoupage_content_top' ); ?>
 						<div class="form-group">
 					    <label for="thankyou_page_url"><?php echo __('Thank you page url','psfbldr'); ?></label>
 					    <input type="text" placeholder="http://" id="thankyou_page_url" class="form-control thankyou_page_url" value="<?php if(isset($j->thankyou_page_url))echo $j->thankyou_page_url; ?>">

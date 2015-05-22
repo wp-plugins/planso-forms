@@ -145,6 +145,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.2 =
+* Added PlanSo Forms Icon to Menu
+
 = 1.4.1 =
 * Updated Font-Awesome to version 4.3.0
 
