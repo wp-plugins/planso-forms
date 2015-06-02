@@ -146,6 +146,7 @@ var noiconfields = [
 ];
 
 var customfields = [];
+var customelements = [];
 
 var dragcontroller = {};
 <?php do_action('psfb_edit_js_before_document_ready'); ?>
@@ -223,51 +224,92 @@ jQuery(document).ready(function($){
 		});
 	}
 	
+ 	
 	$( '#main_right_container .btn' ).css({'cursor':'move'}).draggable({
 		appendTo: 'body',
     helper: 'clone',
+    addClasses: false,
     cancel: false,
-    start:function(event,ui){
-    	$( '.form_builder_stage .row' ).each(function(){
-    		var cont_cnt = $(this).find('.field_container').length;
-    		$(this).find('.field_container').each(function(){
-    			$(this).attr('class','field_container').addClass('col-md-'+ Math.ceil(12/(parseInt(cont_cnt)+1))+'');
-    		});
-    		$(this).append('<div class="droparea field_container col-md-'+ Math.ceil(12/(parseInt(cont_cnt)+1))+'"></div>');
-    	});
-    	$( '.form_builder_stage .droparea' ).each(function(){
-    		$(this).height( $(this).parent().height() );
-    	});
-    	$( '<div class="row"><div class="droparea field_container col-md-12"></div></div>' ).insertBefore('.form_builder_stage .row');
-      //console.log(ui);
-      $('.form_builder_stage').append( '<div class="row"><div class="droparea field_container col-md-12"></div></div>' );
-      dragcontroller.dropped = false;
-      $( '.form_builder_stage .droparea' ).droppable({
-		    accept: '.btn',
- //   		activeClass: 'bg-warning',
-    		hoverClass: 'bg-success',
-		    drop: function( event, ui ) {
-		    	//console.log(event);
-		    	//console.log(ui);
-		    	//console.log(event.currentTarget.id);
-		    	
-		    	dragcontroller.dropped = true;
-		      ps_field_drop( event, ui, $(this), false, false );
-		      
-  				ps_remove_dropareas();
-		    }
-		  });
-			
-      
-    },
-    stop:function(event,ui){
-    	if(!dragcontroller.dropped){
-    		//if not dropped remove all dropareas
-	    	ps_remove_dropareas();
-	    }
-    }
-  });
- 
+    refreshPositions:true,
+		start:function(event,ui){
+			if( $('.form_builder_stage').is(':empty') ){
+				var height = $('.form_builder_stage').height();
+			} else {
+				var height = 50;
+			}
+		  
+		 	$('.form_builder_stage').append( '<div class="empty_helper_row row"><div style="height:'+height+'px;" class="droparea field_container col-md-12"></div></div>' );
+		 	
+		 	
+			$('.field_container').droppable({
+				greedy:false,
+				tolerance:'intersect',
+				addClasses: false,
+				accept:'.btn',
+				hoverClass: 'bg-success',
+				over: function(event,ui){
+					
+  				var droppableElement = $(this);
+  				var row = droppableElement.closest('.row');
+  				if(droppableElement.hasClass('droparea')){
+  					//ist leeres element - darf gedroppt werden
+  				} else {
+						ps_remove_dropareas();
+	  				var cont_cnt = row.find('.field_container').length;
+	  				var col_cls = Math.floor(12/(parseInt(cont_cnt)+2));
+	  				
+		    		row.find('.field_container').each(function(){
+		    			$(this).attr('class','field_container').addClass('col-md-'+ col_cls +'');
+		    		});
+		    		
+		    		$('<div class="droparea field_container col-md-'+ col_cls +'"></div>').insertBefore(droppableElement);
+		    		$('<div class="droparea field_container col-md-'+ col_cls +'"></div>').insertAfter(droppableElement);
+	  				$( '<div class="row"><div style="height:50px;" class="droparea field_container col-md-12"></div></div>' ).insertBefore(row);
+	  				$( '<div class="row"><div style="height:50px;" class="droparea field_container col-md-12"></div></div>' ).insertAfter(row);
+	  				
+				  	$( '.form_builder_stage .droparea' ).each(function(){
+				  		$(this).height( $(this).parent().height() );
+				  	});
+				  	
+	  				$('.droparea').droppable({
+	  					greedy:false,
+							addClasses: false,
+							hoverClass: 'bg-success',
+							tolerance:'intersect',//touch,intersect,pointer,fit
+							
+							drop:function(event,ui){
+					    	dragcontroller.dropped = true;
+					      ps_field_drop( event, ui, $(this), false, false );
+					      $('.droparea').droppable('destroy');
+			  				ps_remove_dropareas();
+							}
+						});
+						
+	  			}
+				},
+				drop: function(event,ui){
+					
+					if( $(this).hasClass('droparea') ){
+						try{$('.field_container').droppable('destroy');}catch(e){}
+			    	dragcontroller.dropped = true;
+			      ps_field_drop( event, ui, $(this), false, false );
+			      
+	  			}
+	  			ps_remove_dropareas();
+  				
+				}
+				
+			});
+		},
+		stop:function(){
+			if( $('.empty_helper_row').is(':empty') ){
+				$('.empty_helper_row').remove();
+			} else {
+				$('.empty_helper_row').removeClass('empty_helper_row');
+			}
+			ps_remove_dropareas();
+		}
+	});
 	$('.psfb_save_perform').click(function(){
 		$('.psfb_save_html').trigger('click');
 	});
@@ -416,7 +458,13 @@ jQuery(document).ready(function($){
 				
 				
 				
-	 			if( $.inArray(mytype,selectfields)!= -1 ){
+	 			if( $.inArray(mytype,customfields)!= -1 ){
+	 				
+	 				<?php do_action( 'psfb_save_customfields' ); ?>
+	 			} else if( $.inArray(mytype,customelements)!= -1 ){
+	 				
+	 				<?php do_action( 'psfb_save_customelements' ); ?>
+	 			} else if( $.inArray(mytype,selectfields)!= -1 ){
 	 				var opts = [];
 	 				if(mytype=='select' || mytype=='multiselect'){
 	 					
@@ -509,13 +557,7 @@ jQuery(document).ready(function($){
 		} else {
 			
 		}
-		/*
-		if( $('#horizontal_form').is(':checked') ){
-			jj.horizontal_form = true;
-		} else {
-			jj.horizontal_form = false;
-		}
-		*/
+		
 		jj.horizontal_form = $('#horizontal_form').val();
 		
 		jj.datepicker = $('#psfb_datepicker').val();
@@ -566,9 +608,16 @@ function ps_remove_dropareas(){
 	$( '.form_builder_stage .row').each(function(){
 		var cont_cnt = $(this).find('.field_container').length;
 		$(this).find('.field_container').each(function(){
-			$(this).attr('class','field_container').addClass('col-md-'+ Math.ceil(12/(parseInt(cont_cnt)))+'');
+			$(this).attr('class','field_container').addClass('col-md-'+ Math.floor(12/(parseInt(cont_cnt)))+'');
 		});
  	});
+}
+function psfb_handle_edit_special_tabs_closing(){
+	var $ = jQuery;
+	$('#fieldeditor .selectoptionstab').hide();
+	
+	
+	<?php do_action('psfb_edit_js_close_edit_tabs'); ?>
 }
 function ps_field_drop( event, ui, target, j, createcol ){
 	var $ = jQuery;
@@ -640,7 +689,12 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	}
 	
   if( $.inArray(mytype,customfields) != -1 ){
+  	
   	<?php do_action('psfb_edit_js_customfields_create'); ?>
+  	
+  } else if( $.inArray(mytype,customelements) != -1 ){
+  	
+  	<?php do_action('psfb_edit_js_customelements_create'); ?>
   	
   } else if( $.inArray(mytype,htmlfields)!= -1 ){
 		
@@ -730,7 +784,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
 		    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 		    } else {
-		    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
+					row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 		    }
 		    row += '></textarea>';
 		    
@@ -796,10 +850,12 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    
 		   		if(wrap_div){
 						row += '<div class="radio">';
+						
 					}
 					row += '<label';
 					if(!wrap_div){
 						row += ' class="radio-inline"';
+						
 					}
 					row += '><input type="radio" name="optionsfield'+dynID+'" value="">';
 					row += myLabel+' 1';
@@ -851,8 +907,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
 						row += '><input type="radio"  value="'+value.val+'"';
 						//name="optionsfield'+dynID+'"
 				    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
+				    	
 				    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 				    } else {
+				    	
 				    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 				    }
 						row += '>';
@@ -1108,30 +1166,106 @@ function ps_field_drop( event, ui, target, j, createcol ){
   	cursor:'ns-resize',
   	items:'>div'
   });
-  $('.form_builder_stage .row').sortable({
-//  	appendTo: document.body,
-  	axis: 'x',
-  	containment: 'parent',
-  	tolerance: 'pointer',
-//  	cursorAt: { right: 5 },
-//  	forcePlaceholderSize: true,
-  	helper: 'clone',
-  	forceHelperSize: true,
-  	handle: '.options .move-h',
-  	cursor:'ew-resize',
-  	items:'>div'
+  
+  
+  $('.form_builder_stage .row .field_container').draggable({
+  	appendTo: 'body',
+    helper: 'original',
+    addClasses: false,
+    cancel: false,
+    refreshPositions:true,
+    revert:true,
+    zIndex:5555,
+  	cursorAt:{left: 25,top:50},
+    handle: '.options .move-hv',
+  	start:function(event,ui){
+				var height = 50;
+		  
+		 	$('.form_builder_stage').append( '<div class="empty_helper_row row"><div style="height:'+height+'px;" class="droparea field_container col-md-12"></div></div>' );
+		 	
+			$('.field_container').droppable({
+				greedy:false,
+				tolerance:'pointer',
+				addClasses: false,
+				accept:'.field_container',
+				hoverClass: 'bg-success',
+				over: function(event,ui){
+					
+  				var droppableElement = $(this);
+  				var row = droppableElement.closest('.row');
+  				if(droppableElement.hasClass('droparea')){
+  					//is empty - allowed to be dropped
+  				} else {
+						ps_remove_dropareas();
+	  				var cont_cnt = row.find('.field_container').length;
+	  				var col_cls = Math.floor(12/(parseInt(cont_cnt)+2));
+	  				
+		    		row.find('.field_container').each(function(){
+		    			$(this).attr('class','field_container').addClass('col-md-'+ col_cls +'');
+		    		});
+		    		
+		    		$('<div class="droparea field_container col-md-'+ col_cls +'"></div>').insertBefore(droppableElement);
+		    		$('<div class="droparea field_container col-md-'+ col_cls +'"></div>').insertAfter(droppableElement);
+	  				$( '<div class="row"><div style="height:50px;" class="droparea field_container col-md-12"></div></div>' ).insertBefore(row);
+	  				$( '<div class="row"><div style="height:50px;" class="droparea field_container col-md-12"></div></div>' ).insertAfter(row);
+	  				
+				  	$( '.form_builder_stage .droparea' ).each(function(){
+				  		$(this).height( $(this).parent().height() );
+				  	});
+				  	
+	  				$('.droparea').droppable({
+	  					greedy:false,
+							addClasses: false,
+							hoverClass: 'bg-success',
+							tolerance:'pointer',//touch,intersect,pointer,fit
+							
+							drop:function(event,ui){
+					    	dragcontroller.dropped = true;
+					      ui.draggable.insertAfter($(this));
+					      $('.droparea').droppable('destroy');
+			  				ps_remove_dropareas();
+							}
+						});
+						
+	  			}
+				},
+				drop: function(event,ui){
+					
+					if( $(this).hasClass('droparea') ){
+						try{$('.field_container').droppable('destroy');}catch(e){}
+			    	dragcontroller.dropped = true;
+			      
+					  ui.draggable.insertAfter($(this));
+			      
+	  			}
+	  			ps_remove_dropareas();
+					$('.form_builder_stage .field_container').removeAttr('style');
+  				
+				}
+				
+			});
+		},
+		revert : function(event, ui) {
+      
+      $(this).data("uiDraggable").originalPosition = {
+          top : 0,
+          left : 0
+      };
+      // return boolean
+      return !event;
+    },
+		stop:function(){
+			if( $('.empty_helper_row').is(':empty') ){
+				$('.empty_helper_row').remove();
+			} else {
+				$('.empty_helper_row').removeClass('empty_helper_row');
+			}
+			$('.form_builder_stage .row:empty').remove();
+			ps_remove_dropareas();
+			$('.form_builder_stage .field_container').removeAttr('style');
+		}
   });
-  /*
-  $( '.form_builder_stage .row' ).droppable({
-    accept: '.btn',
-    drop: function( event, ui ) {
-    	//console.log(event);
-    	//console.log(ui);
-    	//console.log(event.currentTarget.id);
-      ps_field_drop( event, ui, $(this) );
-    }
-  });
-  */
+  
   
   $('.form_builder_stage button.delete').unbind('click').click(function(){
   	if( $(this).closest('.row').find('.field_container').length > 1){
@@ -1283,8 +1417,19 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	} else {
 	  		$('.field_orientation_wrapper').hide();
 	  	}
+	  	
+	  	psfb_handle_edit_special_tabs_closing();
+	  	if( $.inArray(mytype,customfields)!= -1 ){
+	  		//console.log(mytype);
+	  		<?php do_action( 'psfb_edit_js_handle_edit_customfields' ); ?>
 	  		
-	  	if( $.inArray(mytype,selectfields)!= -1 ){
+	  		
+	  	} else if( $.inArray(mytype,customelements)!= -1 ){
+	  		//console.log(mytype);
+	  		<?php do_action( 'psfb_edit_js_handle_edit_customelements' ); ?>
+	  		
+	  		
+	  	} else if( $.inArray(mytype,selectfields)!= -1 ){
 	    	//selectfield
 	    	
 	    	$('.selectoptionstab').show();
@@ -1341,6 +1486,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		$('.toggle_selectoption').unbind('click').click(function(){
 	  			if( $('.selectoptions_content').is(':hidden') ){
 	  				//build rows from textarea
+	  				
 	  				$('.selectoptions_quick_content').trigger('blur');
 	  				$('.selectoptions_quick_content').hide();
 	  				$('.selectoptions_quick_content_desc').hide();
@@ -1348,6 +1494,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  				$('.selectoptions_content').show();
 	  				$('.selectoptions_content_desc').show();
 	  			} else {
+	  				
 	  				//fill texarea from rows
 	  				var h = '';
 	  				$('.selectoptions_content .row').each(function(i){
@@ -1387,8 +1534,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		});
 	  		
 	  	} else {
-	  		$('.selectoptionstab').hide();
+	  		psfb_handle_edit_special_tabs_closing();
 	  	}
+	  	
 	  }//end if not html
   	
   	$('.add_conditionset').unbind('click').click(function(){
@@ -1462,7 +1610,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
   	
 		if( $.inArray(mytype,htmlfields)!=-1){
 			$('#fieldeditor .basicstab').hide();
-			$('#fieldeditor .selectoptionstab').hide();
+			
+			psfb_handle_edit_special_tabs_closing();
 			var tag_details = fieldtypes[mytype];
  			if(typeof tag_details.wrap!='undefined' && tag_details.wrap===true){
 				$('#fieldeditor .basicshtmltab').show();
@@ -1623,7 +1772,19 @@ function ps_field_drop( event, ui, target, j, createcol ){
   			}
   		}
   		
-  		if( $.inArray(mytype,selectfields)!= -1 ){
+  		if( $.inArray(mytype,customfields)!= -1 ){
+	  		
+	  		
+	  		<?php do_action( 'psfb_edit_js_handle_save_customfields' ); ?>
+	  		
+	  		
+	  	} else if( $.inArray(mytype,customelements)!= -1 ){
+	  		
+	  		
+	  		<?php do_action( 'psfb_edit_js_handle_save_customelements' ); ?>
+	  		
+	  		
+	  	} else if( $.inArray(mytype,selectfields)!= -1 ){
 	    	//selectfield
 	    	//$('#fieldeditor .selectoptions').show();
 	    	
@@ -1683,17 +1844,13 @@ function ps_field_drop( event, ui, target, j, createcol ){
   					var val = $(this).find('.field_option_value').val();
   					
   					$('.field_container[data-id="'+myID+'"]').find('.form-group .checkbox_wrapper')
-  					/*	.append( $('<div></div>')
-  							.addClass('checkbox')
-  					*/
-	  						.append( $('<label class="checkbox-inline"></label>') 
+  							.append( $('<label class="checkbox-inline"></label>') 
 					        .append( $('<input>')
 					        	.attr('type', 'checkbox' )
 					        	.attr('name', 'field'+myID )
 					        	.attr('value', val )
 					        )
 					        .append( label )
-					   //   )
 			        );
   				});
   				$('.field_container[data-id="'+myID+'"]').find('.form-group')
@@ -1711,8 +1868,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  				$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').data('orientation', orientation );
 	  				if(orientation == 'horizontal'){
 	  					//Do nothing - fields have just been built in horizontal mode
-	  					//$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').find('label').addClass('checkbox-inline').unwrap();
-	  					//$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').find('label').addClass('radio-inline').unwrap();
 	  				} else {
 	  					$('.field_container[data-id="'+myID+'"]').find('.checkbox_wrapper').find('label').removeClass('checkbox-inline').wrap('<div class="checkbox"></div>');
 	  					$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').find('label').removeClass('radio-inline').wrap('<div class="radio"></div>');
@@ -1741,7 +1896,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
   		ps_manage_form_vars();
 			psfb_on_stage_change();
   	});
-  });
+  });//Edit click finish
 	
 	psfb_on_stage_change();
 	
@@ -1750,7 +1905,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 
 function psfb_on_stage_change(){
 	var $ = jQuery;
-	console.log('why');
+	
 	<?php do_action( 'psfb_edit_js_on_stage_change' ); ?>
 	return;
 }
@@ -1893,7 +2048,6 @@ jQuery.fn.setCursorPosition = function(position){
 }
 
 .droparea{
-//	background:#ffffdd;
 	border:1px dashed lightgray;
 	min-height:50px;
 	margin-bottom:0.5em;
@@ -1924,8 +2078,9 @@ jQuery.fn.setCursorPosition = function(position){
 <div class="editoptions_template" style="display:none;">
 <button type="button" class="delete btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span> <?php echo __('Delete','psfbldr'); ?></button>
 <button type="button" class="edit btn btn-success btn-xs"><span class="glyphicon glyphicon-edit"></span> <?php echo __('Edit','psfbldr'); ?></button>
-	<div type="button" class="move-h btn btn-default btn-xs" style="cursor:ew-resize;"><span class="fa fa-arrows-h"></span> <?php echo __('Move','psfbldr'); ?></div>
-	<div type="button" class="move-v btn btn-default btn-xs" style="cursor:ns-resize;"><span class="fa fa-arrows-v"></span> <?php echo __('Move','psfbldr'); ?></div>
+	<!--<div type="button" class="move-h btn btn-default btn-xs" style="cursor:ew-resize;" title="<?php echo __('Move','psext'); ?>"><span class="fa fa-arrows-h"></span></div>-->
+	<div type="button" class="move-v btn btn-default btn-xs" style="cursor:ns-resize;" title="<?php echo __('Move','psext'); ?>"><span class="fa fa-arrows-v"></span></div>
+	<div type="button" class="move-hv btn btn-default btn-xs" style="cursor:move;" title="<?php echo __('Move','psext'); ?>"><span class="fa fa-arrows"></span></div>
 </div>
 
 <div class="modal fade" id="fieldeditor" tabindex="-1" role="dialog" aria-labelledby="fieldeditorlabel" aria-hidden="true">
@@ -1945,6 +2100,7 @@ jQuery.fn.setCursorPosition = function(position){
 				    <li role="presentation" class="active basicstab"><a href="#tab-basics" aria-controls="basics" role="tab" data-toggle="tab"><?php echo __('Basic','psfbldr'); ?></a></li>
 				    <li role="presentation" class="basicshtmltab"><a href="#tab-basicshtml" aria-controls="basicshtml" role="tab" data-toggle="tab"><?php echo __('Basic','psfbldr'); ?></a></li>
 				    <li role="presentation" class="selectoptionstab"><a href="#tab-selectoptions" aria-controls="selectoptions" role="tab" data-toggle="tab"><?php echo __('Select values','psfbldr'); ?></a></li>
+				    <?php do_action('psfb_edit_modal_after_selectoptions_tab'); ?>
 				    <li role="presentation" class="experttab"><a href="#tab-expert" aria-controls="profile" role="tab" data-toggle="tab"><?php echo __('Advanced','psfbldr'); ?></a></li>
 				  </ul>
         
@@ -2079,6 +2235,9 @@ jQuery.fn.setCursorPosition = function(position){
 							  </div>
 		        	</div>
 		        </div>
+		        
+		        <?php do_action('psfb_edit_modal_after_selectoptions_tab_content'); ?>
+		        
 		        <div class="expert tab-pane" id="tab-expert" role="tabpanel">
 		        	
 						  <div class="form-group" style="display:none;">

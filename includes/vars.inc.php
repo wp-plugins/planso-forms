@@ -26,19 +26,22 @@ $htmlfields = array(
 );
 
 $customfields = array();
+$customelements = array();
 
 $field_configurations = apply_filters('psfb_vars_field_configurations',
 	array(
 		'specialfields' => $specialfields,
 		'selectfields' => $selectfields,
 		'htmlfields' => $htmlfields,
-		'customfields' => $customfields
+		'customfields' => $customfields,
+		'customelements' => $customelements
 	)
 );
 $specialfields = $field_configurations['specialfields'];
 $selectfields = $field_configurations['selectfields'];
 $htmlfields = $field_configurations['htmlfields'];
 $customfields = $field_configurations['customfields'];
+$customelements = $field_configurations['customelements'];
 
 $fieldtypes = array(
 	'divider_templates' => array('label'=> __('Predefined fields','psfbldr'),'type'=>'divider'),

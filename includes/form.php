@@ -275,26 +275,26 @@ EOF;
 					$out .= '<textarea class="psfb_condition_content" style="display:none;" data-id="psfield_'.$atts['id'].'_'.$cnt.'">'.json_encode($condition).'</textarea>';
 				}
 				
-				if( in_array($mytype,$customfields)){
+				if( in_array($mytype,$customelements)){
 					
 					$all_atts = array(
 						'out' => $out,
 						'col' => $col,
 						'mytype' => $mytype,
 						'fieldinfo' => $fieldinfo,
-						'customfields' => $customfields,
+						'customelements' => $customelements,
 						'j' => $j
 					);
 	
-					$all_atts = apply_filters('psfb_form_customfieds_handler',$all_atts);
+					$all_atts = apply_filters('psfb_form_customelements_handler',$all_atts);
 					
 					$out = $all_atts['out'];
 					$col = $all_atts['col'];
 					$mytype = $all_atts['mytype'];
 					$fieldinfo = $all_atts['fieldinfo'];
-					$customfields = $all_atts['customfields'];
+					$customelements = $all_atts['customelements'];
 					$j = $all_atts['j'];
-					
+						
 				} else if( in_array($mytype,$htmlfields)){
 					
 				//HTML BLOCK
@@ -449,7 +449,27 @@ EOF;
 				  	$out .= '</div>';
 					}
 					
-					if(!in_array($col->type,$specialfields)){
+					if( in_array($mytype,$customfields)){
+						
+						$all_atts = array(
+							'out' => $out,
+							'col' => $col,
+							'mytype' => $mytype,
+							'fieldinfo' => $fieldinfo,
+							'customfields' => $customfields,
+							'j' => $j
+						);
+						
+						$all_atts = apply_filters('psfb_form_customfieds_handler',$all_atts);
+						
+						$out = $all_atts['out'];
+						$col = $all_atts['col'];
+						$mytype = $all_atts['mytype'];
+						$fieldinfo = $all_atts['fieldinfo'];
+						$customfields = $all_atts['customfields'];
+						$j = $all_atts['j'];
+						
+					} else if(!in_array($col->type,$specialfields)){
 						if(strstr($col->type,'file')){
 							$out .= '<input type="file"';
 							if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){

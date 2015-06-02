@@ -67,84 +67,112 @@ if(isset($j->fields) && count($j->fields)>0){
 			$mytype = $col->type;
 			$fieldinfo = $fieldtypes[$mytype];
 			$fieldtype = $fieldinfo['type'];
+			$post_indexes = array();
+			$post_types = array();
+			if(isset($col->field_options) && isset($col->field_options->names)){
+				$fcnt = 0;
+				foreach($col->field_options->names as $name){
+					$name = preg_replace("/[^A-Za-z0-9_]+/", '_', $name);
+					if(trim($name)==''){
+						$name = 'field'.$cnt.'_'.$fcnt;
+					}
+					$post_indexes[] = $name;
+					$post_types[] = $col->type;
+					$fcnt ++;
+				}
+				
+			} else {
+				
+			}
 			
 			if(!isset($col->name) || empty($col->name)){
 				$col->name = $col->label;
 			}
-			$col->name = preg_replace("/[^A-Za-z0-9_]+/", '_', $col->name);
-			
-			if(trim($col->name)==''){
-				$col->name = 'field'.$cnt;
-			}
-			$post_value = '';
-			if(isset($_POST[$col->name])){
-				$post_value = $_POST[$col->name];
-				if(is_array($post_value)){
-					if(count($post_value)>0){
-						$tmp = implode(', ',$post_value);
-						$post_value = $tmp;
-					} else {
-						$post_value = '';
-					}
-				}
-				$post_value = trim($post_value);
-			  $post_value = stripslashes($post_value);
-			  $post_value = htmlspecialchars($post_value);
-			}
-			
-			if( isset($col->required) && ($col->required==true || $col->required=='required' || $col->required=='true')){
+			if(count($post_indexes)<1){
+				$col->name = preg_replace("/[^A-Za-z0-9_]+/", '_', $col->name);
 				
-				if(strstr($col->type,'file')){
-					//file && required
-					if(is_array($_FILES[$col->name]['tmp_name'])){
-						foreach($_FILES[$col->name]['tmp_name'] as $key=>$val){
-							if($_FILES[$col->name]['error'][$key]!=UPLOAD_ERR_OK){
-								$errors[$col->name]['error'] = true;
-								$errors[$col->name]['message'] = __('File upload error','psfbldr');
+				if(trim($col->name)==''){
+					$col->name = 'field'.$cnt;
+				}
+				$post_indexes[] = $col->name;
+				$post_types[] = $col->type;
+			} 
+			
+      
+			foreach($post_indexes as $i => $pidx){
+				
+				$post_value = '';
+				if(isset($_POST[$pidx])){
+					$post_value = $_POST[$pidx];
+					if(is_array($post_value)){
+						if(count($post_value)>0){
+							$tmp = implode(', ',$post_value);
+							$post_value = $tmp;
+						} else {
+							$post_value = '';
+						}
+					}
+					$post_value = trim($post_value);
+				  $post_value = stripslashes($post_value);
+				  $post_value = htmlspecialchars($post_value);
+				}
+				
+				if( isset($col->required) && ($col->required==true || $col->required=='required' || $col->required=='true')){
+					
+					if(strstr($post_types[$i],'file')){
+						//file && required
+						if(is_array($_FILES[$pidx]['tmp_name'])){
+							foreach($_FILES[$pidx]['tmp_name'] as $key=>$val){
+								if($_FILES[$pidx]['error'][$key]!=UPLOAD_ERR_OK){
+									$errors[$pidx]['error'] = true;
+									$errors[$pidx]['message'] = __('File upload error','psfbldr');
+								}
+							}
+						} else {
+							if($_FILES[$pidx]['error']!=UPLOAD_ERR_OK){
+								$errors[$pidx]['error'] = true;
+								$errors[$pidx]['message'] = __('File upload error','psfbldr');
 							}
 						}
+						
+					} else if(strstr($post_types[$i],'checkbox')){
+						if($post_value==''){
+							//fehler - feld muss ausgefüllt sein
+							$errors[$pidx]['error'] = true;
+							$errors[$pidx]['required'] = true;
+							$errors[$pidx]['message'] = __('This field is required','psfbldr');
+						}
+						
 					} else {
-						if($_FILES[$col->name]['error']!=UPLOAD_ERR_OK){
-							$errors[$col->name]['error'] = true;
-							$errors[$col->name]['message'] = __('File upload error','psfbldr');
+						//all other fields
+						if(!isset($post_value) || empty($post_value)){
+							//fehler - feld muss ausgefüllt sein
+							$errors[$pidx]['error'] = true;
+							$errors[$pidx]['required'] = true;
+							$errors[$pidx]['message'] = __('This field is required','psfbldr');
+						}
+						
+						if($post_types[$i]=='email' && !is_email($post_value)){
+							$errors[$pidx]['error'] = true;
+							$errors[$pidx]['message'] = __('Invalid E-Mail','psfbldr');
+						}
+						
+						if($post_types[$i]=='url' && !validate_url($post_value)){
+							$errors[$pidx]['error'] = true;
+							$errors[$pidx]['message'] = __('Invalid URL','psfbldr');
 						}
 					}
-					
-				} else if(strstr($col->type,'checkbox')){
-					if($post_value==''){
-						//fehler - feld muss ausgefüllt sein
-						$errors[$col->name]['error'] = true;
-						$errors[$col->name]['required'] = true;
-						$errors[$col->name]['message'] = __('This field is required','psfbldr');
-					}
-					
+				}//end required
+				
+				$mail_replace[$pidx] = $post_value;
+				if(strstr($post_types[$i],'file')){
+					$file_keys[] = $pidx;
 				} else {
-					//all other fields
-					if(!isset($post_value) || empty($post_value)){
-						//fehler - feld muss ausgefüllt sein
-						$errors[$col->name]['error'] = true;
-						$errors[$col->name]['required'] = true;
-						$errors[$col->name]['message'] = __('This field is required','psfbldr');
-					}
-					
-					if($fieldtype=='email' && !is_email($post_value)){
-						$errors[$col->name]['error'] = true;
-						$errors[$col->name]['message'] = __('Invalid E-Mail','psfbldr');
-					}
-					
-					if($fieldtype=='url' && !validate_url($post_value)){
-						$errors[$col->name]['error'] = true;
-						$errors[$col->name]['message'] = __('Invalid URL','psfbldr');
-					}
+					$zmail_replace[$pidx] = $post_value;
 				}
-			}//end required
+				
+			}//end post_indexes each
 			
-			$mail_replace[$col->name] = $post_value;
-			if(strstr($col->type,'file')){
-				$file_keys[] = $col->name;
-			} else {
-				$zmail_replace[$col->name] = $post_value;
-			}
 		}
 	}
 }

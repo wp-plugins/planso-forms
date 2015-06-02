@@ -145,6 +145,11 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.3 =
+* Completely rewritten drag-n-drop methods to allow more flexible placement of fields
+* Completely rewritten field sorting to allow dragging of fields to any row and to any position
+* Performance improvements and code cleanup
+
 = 1.4.2 =
 * Added PlanSo Forms Icon to Menu
 
@@ -289,6 +294,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 * Added option to choose from 3 different Datepicker Frameworks
 
 == Upgrade Notice ==
+
+= 1.4.3 =
+Major improvements in the backend - all new drag-n-drop and field sorting methods
 
 = 1.3.8 =
 Fixed an IMPORTANT security issue
