@@ -553,6 +553,7 @@ EOF;
 							}
 						} else {
 							//select,radio,checkbox, etc
+							
 							$opts = $col->select_options;
 							if($col->type=='select' || $col->type=='multiselect'){
 								$out .= '<select';
@@ -586,6 +587,7 @@ EOF;
 									$out .= '>'.$opt->label.'</option>';
 								}
 								$out .= '</select>';
+								
 							} else if($col->type == 'radio'){
 								$ocnt = 0;
 								$out .= '<div class="radio_wrapper">';
@@ -662,6 +664,7 @@ EOF;
 									} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name]) && ((is_array($_REQUEST[$col->name]) && in_array($opt->val,$_REQUEST[$col->name]) ) || $_REQUEST[$col->name] == $opt->val ) ){
 										$out .= ' checked="checked"';
 									}
+									
 									$out .= ' type="checkbox" value="'.$opt->val.'" name="'.$col->name.'[]" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
 									$out .= $opt->label;
 									

@@ -1,5 +1,5 @@
 === PlanSo Forms ===
-Contributors: Stephan Helbig, PabloFernandezGarcia
+Contributors: Stephan Helbig, PabloFernandezGarcia, Sharath Chandra Prathiwadhi
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms,form maker
 Requires at least: 3.9
 Tested up to: 4.2.2
@@ -94,6 +94,7 @@ Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding
 > Conditional Logic<br />
 > PayPal Payment Forms<br />
 > Multi-Page Forms<br />
+> Special Survey-Fields<br />
 > No reference to PlanSo Forms in emails<br />
 > Predefined attachments for autoresponder mails<br />
 > Google Analytics Integration<br />
@@ -118,7 +119,7 @@ Download the [planso-forms.zip](https://downloads.wordpress.org/plugin/planso-fo
 Log on to your WordPress admin account. Select Plugins on the left hand options and click Add New. Search for PlanSo Forms in the search bar and click  Install Now. After the installation click Activate Plugin and after a few seconds you will find a new option on the left hand menu named Planso Forms.
 
 = ATTENTION IIS/AZURE USERS =
-If you are using a windows server or azure websites for your WordPress host you might have to enable "smtp mail" in order for autoresponder emails to work. You can install a plugin like easy smtp to make your life easier.
+If you are using a windows server or azure websites for your WordPress host you might have to enable "smtp mail" in order for autoresponder emails to work. You can install a plugin like [Postman SMTP](https://wordpress.org/plugins/postman-smtp/) to make your life easier.
 
 == Frequently Asked Questions ==
 
@@ -144,6 +145,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.4.4 =
+* Fixed several issues with Radio and Checkbox fields
 
 = 1.4.3 =
 * Completely rewritten drag-n-drop methods to allow more flexible placement of fields

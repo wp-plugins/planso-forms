@@ -479,6 +479,7 @@ jQuery(document).ready(function($){
 	 						opts[i] = {};
 	 						opts[i].label = $(this).text();
 	 						opts[i].val = $(this).find('input').attr('value');
+	 						j[rind][ind].name = $(this).find('input').attr('name');
 	 					});
 	 				} else if(mytype=='radio'){
 	 					
@@ -486,6 +487,8 @@ jQuery(document).ready(function($){
 	 						opts[i] = {};
 	 						opts[i].label = $(this).text();
 	 						opts[i].val = $(this).find('input').attr('value');
+	 						j[rind][ind].name = $(this).find('input').attr('name');
+	 						
 	 					});
 	 				}
 	 				j[rind][ind].select_options = opts;
@@ -833,6 +836,25 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    	} else {
 	    		var wrap_div = true;
 	    	}
+	    	
+	    	
+			  if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
+			  	var tmp_name = j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_');
+			  	console.log('name');
+			  } else {
+			  	var tmp_name = myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_');
+			  	console.log('label');
+			  }
+			  
+			  if( $('.form_builder_stage .field_container .form-group :input[name="'+tmp_name+'"]').length > 0 ){
+			  	
+			  	var inc_cnt = 1;
+			  	while( $('.form_builder_stage .field_container .form-group :input[name="'+tmp_name+'_'+inc_cnt+'"]').length > 0 ){
+			  		inc_cnt ++;
+			  	}
+			  	tmp_name = tmp_name +'_' + inc_cnt;
+			  }
+	    	
 	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
 	    		row += '<div class="radio_wrapper" id="field'+dynID+'"';
 					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
@@ -857,7 +879,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 						row += ' class="radio-inline"';
 						
 					}
-					row += '><input type="radio" name="optionsfield'+dynID+'" value="">';
+					row += '><input type="radio" name="'+tmp_name+'" value="">';
 					row += myLabel+' 1';
 					row += '</label>';
 					
@@ -872,7 +894,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					if(!wrap_div){
 						row += ' class="radio-inline"';
 					}
-					row += '><input type="radio" name="optionsfield'+dynID+'" value="">';
+					row += '><input type="radio" name="'+tmp_name+'" value="">';
 					row += myLabel+' 2';
 					row += '</label>';
 					
@@ -895,6 +917,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    	row += ' data-orientation="horizontal"';
 			    }
 			    row += '>';
+			    
 					$.each(j.select_options,function(key,value){
 						
 			   		if(wrap_div){
@@ -906,13 +929,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 						}
 						row += '><input type="radio"  value="'+value.val+'"';
 						//name="optionsfield'+dynID+'"
-				    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
-				    	
-				    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-				    } else {
-				    	
-				    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-				    }
+				    row += ' name="'+tmp_name+'"';
+				    
 						row += '>';
 						row += value.label;
 						row += '</label>';
@@ -936,6 +954,20 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    		var inner_class = '';
 	    		var wrap_div = true;
 	    	}
+	    	if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
+			  	var tmp_name_chk = j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_');
+			  } else {
+			  	var tmp_name_chk = myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_');
+			  }
+			  
+			  if( $('.form_builder_stage .field_container .form-group :input[name="'+tmp_name_chk+'"]').length > 0 ){
+			  	var inc_cnt_chk = 1;
+			  	while( $('.form_builder_stage .field_container .form-group :input[name="'+tmp_name_chk+'_'+inc_cnt_chk+'"]').length > 0 ){
+			  		inc_cnt_chk ++;
+			  	}
+			  	tmp_name_chk = tmp_name_chk +'_' + inc_cnt_chk;
+			  }
+	    	
 	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
 		    	row += '<div class="checkbox_wrapper" id="field'+dynID+'"';
 					if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
@@ -958,7 +990,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					if(!wrap_div){
 						row += ' class="checkbox-inline"';
 					}
-					row += '><input type="checkbox" value="">';
+					row += '><input type="checkbox" name="'+tmp_name_chk+'" value="">';
 					row += myLabel+' 1';
 					row += '</label>';
 					if(wrap_div){
@@ -971,7 +1003,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					if(!wrap_div){
 						row += ' class="checkbox-inline"';
 					}
-					row += '><input type="checkbox" value="">';
+					row += '><input type="checkbox" name="'+tmp_name_chk+'" value="">';
 					row += myLabel+' 2';
 					row += '</label>';
 					if(wrap_div){
@@ -1004,11 +1036,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 						}
 						row += '><input type="checkbox"';
 						
-				    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
-				    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-				    } else {
-				    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
-				    }
+				    row += ' name="'+tmp_name_chk+'"';
+				    
 						row += ' value="'+value.val+'">';
 						row += value.label;
 						row += '</label>';
@@ -1275,6 +1304,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
   	}
   	ps_remove_dropareas();
   });
+  ////////////// MODAL EDIT CLICk \\\\\\\\\\\\\
+  
   $('.form_builder_stage button.edit').unbind('click').click(function(){
   	
   	var mytype = $(this).closest('.field_container').data('type');
@@ -1313,31 +1344,50 @@ function ps_field_drop( event, ui, target, j, createcol ){
   		
   		
   	} else {
-	  	
+	  	var my_field_container = $(this).closest('.field_container');
 	  	if(mytype.indexOf('submit')!=-1){
-	  		$('#field_label').val( $(this).closest('.field_container').find('.form-group :input').attr('value') );
+	  		$('#field_label').val( my_field_container.find('.form-group :input').attr('value') );
 	  	} else {
-		  	$('#field_label').val( $(this).closest('.field_container').find('.form-group .field_label').html().replace('*','') );
+		  	$('#field_label').val( my_field_container.find('.form-group .field_label').html().replace('*','') );
 		  }
 		  if( $('#field_label').val()=='undefined'){
 	  		$('#field_label').val('');
 	  	}
 	  	$('#field_label').unbind('change').change(function(){
 	  		$('#field_name').val( $(this).val().replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_') );
+	  		
+	  		var current_name = $('#field_name').val();
+	  		var current_original_name = $('#field_name_orig').val();
+	  		if( current_name == current_original_name ){
+	  			var check_cnt = 1;
+	  		} else {
+	  			var check_cnt = 0;
+	  		}
+	  		var test_name = current_name+'_1';
+	  		if( $('.form_builder_stage .field_container .form-group :input[name="'+current_name+'"]').closest('.form-group').length > check_cnt ){
+	  			
+	  			var inc_cnt = 1;
+	  			var test_name = current_name+'_'+inc_cnt;
+	  			while( $('.form_builder_stage .field_container .form-group :input[name="'+current_name+'_'+inc_cnt+'"]').closest('.form-group').length > 0 && test_name!=current_original_name ){
+	  				inc_cnt ++;
+	  				test_name = current_name+'_'+inc_cnt;
+	  			}
+	  			$('#field_name').val(current_name+'_'+inc_cnt);
+	  		}
 	  	});
-	  	$('#field_helptext').val( $(this).closest('.field_container').find('.form-group .help-block').html() );
+	  	$('#field_helptext').val( my_field_container.find('.form-group .help-block').html() );
 	  	if( $('#field_helptext').val()=='undefined'){
 	  		$('#field_helptext').val('');
 	  	}
-	  	$('#field_placeholder').val( $(this).closest('.field_container').find('.form-group :input').attr('placeholder') );
+	  	$('#field_placeholder').val( my_field_container.find('.form-group :input').attr('placeholder') );
 	  	if( $('#field_placeholder').val()=='undefined'){
 	  		$('#field_placeholder').val('');
 	  	}
-	  	$('#field_cssstyle').val( $(this).closest('.field_container').find('.form-group :input').attr('style') );
+	  	$('#field_cssstyle').val( my_field_container.find('.form-group :input').attr('style') );
 	  	if( $('#field_cssstyle').val()=='undefined'){
 	  		$('#field_cssstyle').val('');
 	  	}
-	  	var cssclass = $(this).closest('.field_container').find('.form-group :input').attr('class');
+	  	var cssclass = my_field_container.find('.form-group :input').attr('class');
 	  	if(typeof cssclass!='undefined'){
 	  		if(cssclass.indexOf('form-control')!=-1){
 	  			cssclass=cssclass.replace('form-control','');
@@ -1352,21 +1402,22 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	if( $('#field_cssclass').val()=='undefined'){
 	  		$('#field_cssclass').val('');
 	  	}
-	  	$('#field_name').val( $(this).closest('.field_container').find('.form-group :input').attr('name') );
+	  	$('#field_name').val( my_field_container.find('.form-group :input').attr('name') );
 	  	if( $('#field_name').val()=='undefined'){
 	  		$('#field_name').val('');
 	  	}
 	  	$('#field_name_orig').val( $('#field_name').val() );
 	  	
 	  	
-	  	if( $(this).closest('.field_container').find('.checkbox_wrapper').length > 0 ){
-	  		var req = $(this).closest('.field_container').find('.checkbox_wrapper').data('required');
-	  		var orientation = $(this).closest('.field_container').find('.checkbox_wrapper').data('orientation');
-	  	} else if( $(this).closest('.field_container').find('.radio_wrapper').length > 0 ){
-	  		var req = $(this).closest('.field_container').find('.radio_wrapper').data('required');
-	  		var orientation = $(this).closest('.field_container').find('.radio_wrapper').data('orientation');
+	  	if( my_field_container.find('.checkbox_wrapper').length > 0 ){
+	  		var req = my_field_container.find('.checkbox_wrapper').data('required');
+	  		var orientation = my_field_container.find('.checkbox_wrapper').data('orientation');
+	  	} else if( my_field_container.find('.radio_wrapper').length > 0 ){
+	  		
+	  		var req = my_field_container.find('.radio_wrapper').data('required');
+	  		var orientation = my_field_container.find('.radio_wrapper').data('orientation');
 	  	} else {
-	  		var req = $(this).closest('.field_container').find('.form-group :input').prop('required');
+	  		var req = my_field_container.find('.form-group :input').prop('required');
 	  		var orientation = false;
 	  	}
 	  	//console.log(req);
@@ -1380,12 +1431,12 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	if(typeof orientation!='undefined' && orientation !== false ){
 	  		$('#field_orientation').val( orientation );
 	  	}
-	  	if( $(this).closest('.field_container').find('.checkbox_wrapper').length > 0 ){
-	  		var hide_label = $(this).closest('.field_container').find('.checkbox_wrapper').data('hide_label');
-	  	} else if( $(this).closest('.field_container').find('.radio_wrapper').length > 0 ){
-	  		var hide_label = $(this).closest('.field_container').find('.radio_wrapper').data('hide_label');
+	  	if( my_field_container.find('.checkbox_wrapper').length > 0 ){
+	  		var hide_label = my_field_container.find('.checkbox_wrapper').data('hide_label');
+	  	} else if( my_field_container.find('.radio_wrapper').length > 0 ){
+	  		var hide_label = my_field_container.find('.radio_wrapper').data('hide_label');
 	  	} else {
-	  		var hide_label = $(this).closest('.field_container').find('.form-group :input').data('hide_label');
+	  		var hide_label = my_field_container.find('.form-group :input').data('hide_label');
 	  	}
 	  	//console.log(req);
 	  	if(typeof hide_label!='undefined' && (hide_label == '1' || hide_label==true || hide_label=='true') ){
@@ -1397,8 +1448,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	}
 	  	
 	  	$('#field_icon').val('');
-	  	if( $(this).closest('.field_container').find('.input-group').length > 0){
-	  		$('#field_icon').val( $(this).closest('.field_container').find('.input-group .fa').attr('class').replace('fa ','') );
+	  	if( my_field_container.find('.input-group').length > 0){
+	  		$('#field_icon').val( my_field_container.find('.input-group .fa').attr('class').replace('fa ','') );
 	  	}
 	  	
 	  	
@@ -1435,7 +1486,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    	$('.selectoptionstab').show();
 	    	$('.selectoptions_content').html('');
 	    	if(mytype == 'select' || mytype == 'multiselect'){
-	  			$(this).closest('.field_container').find('option').each(function(){
+	  			my_field_container.find('option').each(function(){
 	  				var h = $('.selectoptions_template').html();
 	  				$('.selectoptions_content').append(h);
 	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
@@ -1445,7 +1496,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  				});
 	  			});
 	  		} else if(mytype == 'radio'){
-	  			$(this).closest('.field_container').find('input[type="radio"]').each(function(){
+	  			my_field_container.find('input[type="radio"]').each(function(){
 	  				var h = $('.selectoptions_template').html();
 	  				$('.selectoptions_content').append(h);
 	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
@@ -1455,7 +1506,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  				});
 	  			});
 	  		} else if(mytype == 'checkbox'){
-	  			$(this).closest('.field_container').find('input[type="checkbox"]').each(function(){
+	  			my_field_container.find('input[type="checkbox"]').each(function(){
 	  				var h = $('.selectoptions_template').html();
 	  				$('.selectoptions_content').append(h);
 	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
@@ -1560,12 +1611,13 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			var cname = $(this).find('label:first').html();
 			var cvalue = $(this).find(':input').attr('name');
 			if(typeof cname!='undefined' && cname!=''){
-				
+	
 			} else {
 				if(typeof cvalue!='undefined' && cvalue!=''){
 					cname = cvalue;
 				}
 			}
+			
 			if(typeof cvalue!='undefined' && cvalue!='' && cvalue!='undefined'){
 				h += '<option value="'+cvalue+'">'+cname+'</option>';
 			}
@@ -1627,10 +1679,12 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		}
 		//$('#fieldeditor li a:visible').first().tab('show');
   	//$('#fieldeditor a:first').tab('show');
-  	/************ SAVE BUTTON *********/
+  	/************ MODAL SAVE BUTTON *********/
   	$('#fieldeditor .savefield').unbind('click').click(function(){
   		var myID = $('#fieldeditor').data('id');
   		var mytype = $('#fieldeditor').data('type');
+  		
+  		$('#field_label').trigger('change');
   		
   		if( $.inArray(mytype,htmlfields)!=-1){
   			var tag_details = fieldtypes[mytype];
@@ -1752,6 +1806,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
   					$(this).find('.condition_set_content .form-group').each(function(){
   						c.groups[i].rules[ii] = {};
   						c.groups[i].rules[ii].field = $(this).find('.condition_field_select').val();
+  						//console.log('here');
+  					//	console.log($(this).find('.condition_field_select').val());
   						c.groups[i].rules[ii].op = $(this).find('.condition_field_condition').val();
   						c.groups[i].rules[ii].data = $(this).find('.condition_field_value').val();
   						ii ++;
@@ -1809,6 +1865,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
   						.html( $('<div></div>')
   							.addClass('radio_wrapper') );
   				*/
+  				
   				$('.selectoptions_content .row').each(function(){
   					var label = $(this).find('.field_option_label').val();
   					var val = $(this).find('.field_option_value').val();
@@ -1819,7 +1876,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  						.append( $('<label class="radio-inline"></label>') 
 					        .append( $('<input>')
 					        	.attr('type', 'radio' )
-					        	.attr('name', 'field'+myID )
+					        	//.attr('name', 'field'+myID ) //$('#field_label').val()
+					        	.attr('name', $('#field_name').val() ) //$('#field_label').val()
 					        	.attr('value', val )
 					        )
 					        .append( label )
@@ -1847,7 +1905,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
   							.append( $('<label class="checkbox-inline"></label>') 
 					        .append( $('<input>')
 					        	.attr('type', 'checkbox' )
-					        	.attr('name', 'field'+myID )
+					        	//.attr('name',  'field'+myID )//$('#field_label').val())
+					        	.attr('name',  $('#field_name').val() )//$('#field_label').val())
 					        	.attr('value', val )
 					        )
 					        .append( label )
@@ -2721,7 +2780,7 @@ jQuery.fn.setCursorPosition = function(position){
 						    	<option value="horizontal_5"><?php echo __('Place labels side by side with fields (Label width: 41%)','psfbldr'); ?></option>
 						    	<option value="horizontal_6"><?php echo __('Place labels side by side with fields (Label width: 50%)','psfbldr'); ?></option>
 						    </select>
-						    <p class="help-block"><?php echo __('If checked all attachments will reside on your server and will not be deleted anymore after they have been attached to the admin email.','psfbldr'); ?></p>
+						    <p class="help-block"><?php echo __('Labels can placed beside the fields according to your theme using different types of widths.','psfbldr'); ?></p>
 						  </div>
 						  
 							<div class="form-group">
