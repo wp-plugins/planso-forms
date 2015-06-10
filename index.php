@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.4.6
+ * Version: 1.4.7
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -319,6 +319,7 @@ function ps_form_builder_enqueue($hook) {
 	wp_enqueue_style( 'font-awesome');
 	wp_enqueue_style( 'bootstrap',plugins_url( '/css/bootstrap/full/bootstrap.min.css', (__FILE__) ) );
 	wp_enqueue_style( 'bootstrap-theme',plugins_url( '/css/bootstrap/full/bootstrap-theme.min.css', (__FILE__) ) );
+	wp_enqueue_style( 'font-awesome-icon-picker',plugins_url( '/js/font-awesome-icon-picker/css/fontawesome-iconpicker.min.css', (__FILE__) ) );
 	
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-draggable' );
@@ -332,12 +333,15 @@ function ps_form_builder_enqueue($hook) {
 	wp_register_script( 'bootstrap-popover',plugins_url( '/js/bootstrap/src/popover.js', (__FILE__) ), array('jquery'), '3.2.2', true );
 	wp_register_script( 'bootstrap-tab',plugins_url( '/js/bootstrap/src/tab.js', (__FILE__) ), array('jquery'), '3.2.2', true );
 	wp_register_script( 'bootstrap-transition',plugins_url( '/js/bootstrap/src/transition.js', (__FILE__) ), array('jquery'), '3.2.2', true );
+	wp_register_script( 'font-awesome-icon-picker',plugins_url( '/js/font-awesome-icon-picker/js/fontawesome-iconpicker.min.js', (__FILE__) ), array('jquery'), '3.2.2', true );
+	
 	wp_enqueue_script( 'bootstrap-tooltip' );
 	wp_enqueue_script( 'bootstrap-modal' );
 	wp_enqueue_script( 'bootstrap-collapse' );
 	wp_enqueue_script( 'bootstrap-popover' );
 	wp_enqueue_script( 'bootstrap-tab' );
 	wp_enqueue_script( 'bootstrap-transition' );
+	wp_enqueue_script( 'font-awesome-icon-picker' );
 		
 }
 add_action( 'admin_enqueue_scripts', 'ps_form_builder_enqueue' );

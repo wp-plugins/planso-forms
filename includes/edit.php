@@ -1477,8 +1477,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	}
 	  	
 	  	$('#field_icon').val('');
+	  	$('#field_icon_addon').html('');
 	  	if( my_field_container.find('.input-group').length > 0){
 	  		$('#field_icon').val( my_field_container.find('.input-group .fa').attr('class').replace('fa ','') );
+	  		$('#field_icon_addon').html('<span class="fa '+my_field_container.find('.input-group .fa').attr('class').replace('fa ','')+'"></span>');
 	  	}
 	  	
 	  	
@@ -1685,7 +1687,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			}
 		}
   	
-  	
+  	$('#field_icon').iconpicker({inputSearch: false,placement:'bottomRight',templates:{search:'<input type="search" class="form-control iconpicker-search" placeholder="<?php echo __('Type to filter','psfbldr'); ?>" />'} /*options*/ });
   	
   	$('#fieldeditor').modal('show').data('type',$(this).closest('.field_container').data('type') ).data('id',$(this).closest('.field_container').data('id') );
   	
@@ -2337,7 +2339,10 @@ jQuery.fn.setCursorPosition = function(position){
 						  
 						  <div class="form-group field_icon_wrapper">
 						    <label for="field_icon"><?php echo __('Icon','psfbldr'); ?></label>
-						    <input type="text" id="field_icon" class="form-control">
+						    <div class="input-group">
+									<input id="field_icon" data-placement="bottomRight" class="form-control icp icp-auto" type="text" />
+									<span class="input-group-addon" id="field_icon_addon"></span>
+								</div>
 						    <p class="help-block"><?php echo __('Please enter a Font-Awesome icon class. i.e. &quot;fa-user&quot;. Available Icons are found here: ','psfbldr'); ?><a href="http://fortawesome.github.io/Font-Awesome/icons/" target="_blank">Font-Awesome</a></p>
 						  </div>
 						  
@@ -2510,7 +2515,7 @@ jQuery.fn.setCursorPosition = function(position){
 	<div class="row">
 		<div class="form-group">
 			<div class="btn-group" role="group" style="float:right;">
-				<button class="psfb_open_help_modal btn btn-default" title="<?php echo __('Help','psfbldr'); ?>"><span class="fa fa-question-circle"></span></button>
+				<button class="psfb_open_help_modal btn btn-default" title="<?php echo __('Help','psfbldr'); ?>"><span class="fa fa-life-saver"></span></button>
 				<button class="psfb_save_perform btn btn-primary"><?php echo __('Save','psfbldr'); ?></button>
 			</div>
 			<div style="clear:both;"></div>
@@ -3000,7 +3005,10 @@ jQuery.fn.setCursorPosition = function(position){
   <button class="psfb_generate_json btn btn-default" type="button" ><?php echo __('Generate','psfbldr'); ?></button>
 </div>
 <div class="form-group">
-  <button class="psfb_save_html btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
+	<div class="btn-group" role="group" style="float:right;">
+		<button type="button" class="psfb_open_help_modal btn btn-default" title="<?php echo __('Help','psfbldr'); ?>"><span class="fa fa-life-saver"></span></button>
+		<button class="psfb_save_html btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
+	</div>
   <div style="clear:both;"></div>
 </div>
 </form>
