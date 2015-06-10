@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.4.4
+ * Version: 1.4.5
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -119,18 +119,9 @@ function ps_form_builder_admin_menu() {
 	add_action( 'load-' . $edit, 'psfb_load_contact_form_admin' );
 }
 
-function psfb_submit_form(){
-	if(!isset($_POST['psfb_form_submit'])){
-		return;
-	}
-	
-	require( dirname(__FILE__).'/includes/submit.php' );
-	
-}
-add_action('init', 'psfb_submit_form');
-
 
 add_action('admin_init', 'psfb_register');
+
  
 function psfb_register() {
     $args = array(
@@ -177,6 +168,63 @@ function psfb_admin_updated_message() {
 <?php
 }
 
+function psfb_submit_form(){
+	if(!isset($_POST['psfb_form_submit'])){
+		return;
+	}
+	
+	require( dirname(__FILE__).'/includes/submit.php' );
+	
+}
+add_action('init', 'psfb_submit_form');
+
+function psfb_submit_test_values(){
+	if(!isset($_POST['psfb_form_submit_test_values']) || $_POST['psfb_form_submit_test_values']!='doit'){
+		return;
+	}
+	//print_r($_POST['psfb_test_json']);
+	$submitted_j = json_decode(stripslashes($_POST['psfb_test_json']));
+	
+	require_once(dirname(__FILE__).'/includes/vars.inc.php');
+	
+	if(isset($submitted_j) && isset($submitted_j->fields)){
+		foreach($submitted_j->fields as $row){
+			foreach($row as $field){
+				if( isset($fieldtypes[$field->type]) ){
+					if(!isset($field->name)){
+						$field->name = preg_replace("/[^A-Za-z0-9_]+/", '_', $field->label);
+					}
+					
+					if(isset($fieldtypes[$field->type]['testvalue'])){
+						if($fieldtypes[$field->type]['testvalue'] == 'select_options'){
+							if($fieldtypes[$field->type]['multiple']==true){
+								$_POST[$field->name][] = $field->select_options[0]->val;
+							} else {
+								$_POST[$field->name] = $field->select_options[0]->val;
+							}
+						} else if($fieldtypes[$field->type]['testvalue'] == 'field_options'){
+							if($fieldtypes[$field->type]['multiple']==true){
+								$_POST[$field->name][] = $field->field_options[0]->val;
+							} else {
+								$_POST[$field->name] = $field->field_options[0]->val;
+							}
+						} else {
+							if($fieldtypes[$field->type]['multiple']==true){
+								$_POST[$field->name][] = $fieldtypes[$field->type]['testvalue'];
+							} else {
+								$_POST[$field->name] = $fieldtypes[$field->type]['testvalue'];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	print_r($_POST);
+	require( dirname(__FILE__).'/includes/submit.php' );
+	exit();
+}
+add_action( 'wp_ajax_psfb_form_submit_test', 'psfb_submit_test_values' );
 
 function psfb_save_form(){
 	

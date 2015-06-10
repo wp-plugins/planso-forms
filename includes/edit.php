@@ -310,6 +310,10 @@ jQuery(document).ready(function($){
 			ps_remove_dropareas();
 		}
 	});
+	
+	$('.psfb_open_help_modal').click(function(){
+		$('#psfb_help_modal').modal('show');
+	});
 	$('.psfb_save_perform').click(function(){
 		$('.psfb_save_html').trigger('click');
 	});
@@ -317,6 +321,21 @@ jQuery(document).ready(function($){
 		$('.psfb_generate_json').trigger('click');
 		$('#psfb_html').val( $( '.form_builder_stage' ).html() );
 	});
+	
+	$('.psfb_test_form_submit').click(function(){
+		$('.psfb_generate_json').trigger('click');
+		
+		var data = {
+			'action': 'psfb_form_submit_test',
+			'psfb_form_submit_test_values': 'doit',
+			'psfb_test_json': $('#psfb_json').val()
+		};
+		
+		$.post(ajaxurl, data, function(response) {
+			alert('<?php echo __('Test submission sent. Please check your email or API target to validate the result.','psfbldr'); ?>');
+		});
+	});
+	
 	
 	$('.psfb_generate_json').click(function(){
 		var j = [];
@@ -2142,11 +2161,117 @@ jQuery.fn.setCursorPosition = function(position){
 	<div type="button" class="move-hv btn btn-default btn-xs" style="cursor:move;" title="<?php echo __('Move','psext'); ?>"><span class="fa fa-arrows"></span></div>
 </div>
 
+
+<div class="modal fade" id="psfb_help_modal" tabindex="-1" role="dialog" aria-labelledby="psfb_help_modal_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?php echo __('Close','psfbldr'); ?>"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="psfb_help_modal_label"><?php echo __('Help &amp; Hints','psfbldr'); ?></h4>
+      </div>
+      <div class="modal-body">
+      	
+      	
+      	<?php 
+      	if ( is_plugin_active( 'postman-smtp/postman-smtp.php' ) ) {
+      		//plugin is activated
+      	} else if(is_dir( dirname(dirname(dirname(__FILE__))).'/postman-smtp' )){
+      		//plugin is installed but inactive
+      		?>
+      		<div class="form-group">
+	      		<label><?php echo __('Postman SMTP installed but inactive','psfbldr'); ?></label>
+	      		<a href="<?php 
+	      			echo admin_url( 'plugins.php' ).'?plugin_status=inactive';
+	      			/*
+	      			echo wp_nonce_url(
+					    add_query_arg(
+					        array(
+					            'action' => 'activate',
+					            'plugin' => 'postman-smtp/postman-smtp.php',
+					            'plugin_status' => 'all',
+					            'paged' => 1
+					            
+					        ),
+					        admin_url( 'plugins.php' )
+					    ),
+					    'activate_postman-smtp%2Fpostman-smtp.php_all_1'
+						);*/
+	      		?>" target="_blank" class="btn btn-success btn-xs"><?php echo __('Activate Postman SMTP','psfbldr'); ?></a>
+	      		<p class="help-block"><?php echo __('By clicking the button you will be transfered to your plugin-section. Please find Postman SMTP there and click on &#39;activate&#39;. Don&#39;nt forget to configure the plugin afterwards.','psfbldr'); ?></p>
+	      	</div>
+      	<?php
+				} else {
+					//plugin is not installed
+					?>
+					<div class="form-group">
+      		<label><?php echo __('Trouble sending emails?','psfbldr'); ?></label>
+      		<a href="<?php
+					echo wp_nonce_url(
+					    add_query_arg(
+					        array(
+					            'action' => 'install-plugin',
+					            'plugin' => 'postman-smtp'
+					        ),
+					        admin_url( 'update.php' )
+					    ),
+					    'install-plugin_postman-smtp'
+					);
+					?>" target="_blank" class="btn btn-success btn-xs"><?php echo __('Install Postman SMTP','psfbldr'); ?></a>
+      		<p class="help-block"><?php echo __('The button above will lead you to the plugin installation of','psfbldr'); ?> <a href="https://wordpress.org/plugins/postman-smtp/" target="_blank">Postman SMTP</a></p>
+      	</div>
+      	<?php
+				}
+      	?>
+      	
+      	
+      	<div class="form-group">
+      		<label><?php echo __('Visit support forum','psfbldr'); ?></label>
+      		<a href="https://wordpress.org/support/plugin/planso-forms" target="_blank" class="btn btn-success btn-xs"><?php echo __('Support forum','psfbldr'); ?></a>
+      		<p class="help-block"><?php echo __('The button above will open a new window and lead you to the PlanSo Forms section of the WordPress support forum.','psfbldr'); ?></p>
+      	</div>
+      	
+      	<div class="form-group">
+      		<label><?php echo __('Test form submission using dummy values','psfbldr'); ?></label>
+      		<button type="button" class="psfb_test_form_submit btn btn-success btn-xs"><?php echo __('Test submission','psfbldr'); ?></button>
+      		<p class="help-block"><?php echo __('By clicking the above button PlanSo Forms will simulate a form submission. This is usefull for testing email settings or other API connections.','psfbldr'); ?></p>
+      	</div>
+      	
+      	<form method="post" target="_blank" action="http://plugin-api.planso.net/submit-form-settings.php">
+	      	<div style="display:none;">
+      			<?php
+      				$current_user = wp_get_current_user();
+      				
+      				echo '<div class="form-group"><input type="text" name="email" value="'.$current_user->user_email.'"></div>';
+      				echo '<div class="form-group"><input type="text" name="first_name" value="'.$current_user->user_firstname.'"></div>';
+      				echo '<div class="form-group"><input type="text" name="last_name" value="'.$current_user->user_lastname .'"></div>';
+      				echo '<div class="form-group"><input type="text" name="url" value="http://'.$_SERVER['HTTP_HOST'].'"></div>';
+      				echo '<div class="form-group"><textarea name="server">'.print_r($_SERVER,true).'</textarea></div>';
+      			?>
+      			<div class="form-group"><textarea name="json" id="psfb_submit_settings_json"></textarea></div>
+      		</div>
+	      	<div class="form-group">
+	      		<label><?php echo __('Request support','psfbldr'); ?></label>
+	      		<textarea name="msg" class="form-control" rows="7" placeholder="<?php echo __('Please describe your problem as detailed as possible','psfbldr'); ?>"></textarea>
+	      		<button class="psfb_submit_form_settings_to_planso btn btn-danger btn-xs" type="submit" onmousedown="jQuery('#psfb_submit_settings_json').val( jQuery('#psfb_json').val() );"><?php echo __('Submit message and settings','psfbldr'); ?></button>
+	      		<p class="help-block"><?php echo __('By clicking the button you will send your name, email, form settings and server details to PlanSo. With the data submitted the PlanSo Forms Team can offer you better support.','psfbldr'); ?></p>
+	      	</div>
+      	</form>
+      	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Close','psfbldr'); ?></button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 <div class="modal fade" id="fieldeditor" tabindex="-1" role="dialog" aria-labelledby="fieldeditorlabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?php echo __('Close','psfbldr'); ?>"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="fieldeditorlabel"><?php echo __('Edit field','psfbldr'); ?></h4>
       </div>
       <div class="modal-body">
@@ -2360,12 +2485,14 @@ jQuery.fn.setCursorPosition = function(position){
 <section class="container-fluid">
 	<div class="row">
 		<div class="form-group">
-			<button class="psfb_save_perform btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
+			<div class="btn-group" role="group" style="float:right;">
+				<button class="psfb_open_help_modal btn btn-default" title="<?php echo __('Help','psfbldr'); ?>"><span class="fa fa-question-circle"></span></button>
+				<button class="psfb_save_perform btn btn-primary"><?php echo __('Save','psfbldr'); ?></button>
+			</div>
 			<div style="clear:both;"></div>
 		</div>
 	</div>
 </section>
-
 
 
  <div role="tabpanel">
@@ -2844,9 +2971,11 @@ jQuery.fn.setCursorPosition = function(position){
 <div class="form-group" style="display:none;">
   <label><?php echo __('JSON','psfbldr'); ?></label>
   <textarea id="psfb_json" name="json" class="form-control"><?php echo $psform->post_content;?></textarea>
+  
+  <button class="psfb_test_form_submit btn btn-default" type="button"><?php echo __('Test form submission','psfbldr'); ?></button>
+  <button class="psfb_generate_json btn btn-default" type="button" ><?php echo __('Generate','psfbldr'); ?></button>
 </div>
 <div class="form-group">
-  <button class="psfb_generate_json btn btn-default" type="button" style="display:none;"><?php echo __('Generate','psfbldr'); ?></button>
   <button class="psfb_save_html btn btn-primary" style="float:right;"><?php echo __('Save','psfbldr'); ?></button>
   <div style="clear:both;"></div>
 </div>

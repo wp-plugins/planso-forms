@@ -146,6 +146,14 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.5 =
+* Added new help section
+* Added new support interface to offer even better support
+* Added option to allow test submissions to check admin and user emails
+* Added option to install Postman SMTP directly from within the help section
+* Added new dummy values to fields for submission testing
+* Updated locales
+
 = 1.4.4 =
 * Fixed several issues with Radio and Checkbox fields
 
