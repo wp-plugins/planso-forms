@@ -1067,6 +1067,13 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					row += '</div>';
 				}
 	    } else if(mytype == 'select' || mytype == 'multiselect'){
+	    	if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
+		    	//console.log(j.icon);
+			  	row += '<div class="input-group">';
+			  	row += '<div class="input-group-addon">';
+			  	row += '<span class="fa '+j.icon+'"></span>';
+			  	row += '</div>';
+		  	}
 	    	row += '<select id="field'+dynID+'" class="form-control';
 		    if(typeof j.class!='undefined' && j.class!=''){
 		    	row += j.class;
@@ -1100,6 +1107,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    	});
 		    }
 		    row += '</select>';
+		    if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
+			  	row += '</div>';
+		  	}
 	    }
 	  } else if(typeof myFieldType != 'undefined'){
 	  	
@@ -1876,6 +1886,20 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			        );
   				});
   				
+  				
+  				if( $('.field_container[data-id="'+myID+'"]').find('.input-group').length>0){
+	  				//remove input-group
+	  				$('.field_container[data-id="'+myID+'"]').find('.input-group-addon').remove();
+	  				$('.field_container[data-id="'+myID+'"]').find('.form-group select').unwrap();
+	  			}
+	  			if( $('#field_icon').val()!=''){
+	  				//add input-group
+	  				$('.field_container[data-id="'+myID+'"]').find('.form-group select').wrap('<div class="input-group"></div>');
+	  				$('.field_container[data-id="'+myID+'"]').find('.input-group').prepend('<div class="input-group-addon"><span class="fa '+$('#field_icon').val()+'"></span></div>');
+	  			} else {
+	  				
+	  			}
+  				
   			} else if(mytype == 'radio'){
   				$('.field_container[data-id="'+myID+'"]').find('.radio_wrapper').html('');
   				$('.field_container[data-id="'+myID+'"]').find('.form-group .help-block').remove();
@@ -1959,11 +1983,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
   			if( $('.field_container[data-id="'+myID+'"]').find('.input-group').length>0){
   				//remove input-group
   				$('.field_container[data-id="'+myID+'"]').find('.input-group-addon').remove();
-  				$('.field_container[data-id="'+myID+'"]').find('.form-group input').unwrap();
+  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').unwrap();
   			}
   			if( $('#field_icon').val()!=''){
   				//add input-group
-  				$('.field_container[data-id="'+myID+'"]').find('.form-group input').wrap('<div class="input-group"></div>');
+  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').wrap('<div class="input-group"></div>');
   				$('.field_container[data-id="'+myID+'"]').find('.input-group').prepend('<div class="input-group-addon"><span class="fa '+$('#field_icon').val()+'"></span></div>');
   			} else {
   				

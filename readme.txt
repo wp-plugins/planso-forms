@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.6 =
+* Fixed an issue with icons for multi line fields and select fields
+
 = 1.4.5 =
 * Added new help section
 * Added new support interface to offer even better support
