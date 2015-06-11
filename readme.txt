@@ -146,6 +146,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.9 =
+* Added option to allow new fields to be added by click additional to dragging the field to their position
+* Optimized field selection block to stay in viewport on long forms
+
 = 1.4.8 =
 * Maintenance release and code cleanup
 

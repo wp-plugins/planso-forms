@@ -156,12 +156,18 @@ jQuery(document).ready(function($){
 	if( $('div.updated.fade').length > 0){
 		$('div.updated.fade').css('opacity','1');
 	}
+	psfb_affix();
+
+	$(window).on("resize", function () {
+		psfb_affix();
+	});
+	
 	$.each(fieldtypes,function(key, val){
 		//console.log(val.type);
 		if(val.type == 'divider'){
 			$( '#main_right_container').append('<h4>'+val.label+'</h4>');
 		} else {
-			var b = '<button data-type="'+ key +'" class="btn btn-default">';
+			var b = '<button data-type="'+ key +'" class="btn btn-default btn-sm">';
 			if(typeof val.icon!='undefined'){
 				if(val.icon.indexOf('fa-')!=-1){
 					b += '<span class="fa '+val.icon+'"></span> ';
@@ -225,7 +231,12 @@ jQuery(document).ready(function($){
 	}
 	
  	
-	$( '#main_right_container .btn' ).css({'cursor':'move'}).draggable({
+	$( '#main_right_container .btn' ).css({'cursor':'move'}).click(function(){
+		var mytype = $(this).data('type');
+		var val = fieldtypes[mytype];
+		var ui = {draggable: $(this) };
+		ps_field_drop( false, ui, false, false, false );
+	}).draggable({
 		appendTo: 'body',
     helper: 'clone',
     addClasses: false,
@@ -660,6 +671,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		//console.log('I am in new row');
 	  		var row_mode = 'new';
 	  	}
+	  } else {
+	  	row_mode = 'plain';
 	  }
 	} else {
 		//INTRODUCE new mytype property to be absolutely sure
@@ -1983,12 +1996,42 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	psfb_on_stage_change();
 	
 }
+function psfb_affix(){
+	var $ = jQuery;
+	
+	$('#psfb_tab_form_stage_row').css('min-height', Math.max($('#main_right_container').height(),$('#main_center').height()) );
+	
+	var affixoffset = ($('#main_right').offset().top);
+	var stage_offset = $('#psfb_tab_form_stage_row').offset().top;
+	$(window).unbind('scroll').scroll(function () {
+		if( $(window).width() >= 970){
+			if( $('#main_right_container').height() <  $('#main_center').height() ){
+				var scrollTop = $(window).scrollTop();
+				if ( (scrollTop+30) <= affixoffset) {
+					$('#main_right_container').removeClass('affix').removeClass('affix-bottom').css({'height':'auto','overflow-y':'visible','width':'auto'});
+				} else {
+					var my_offset = Math.min(0, parseInt($('#main_right_container').css('top').replace('px','')) );
+					var my_bottom = ( my_offset + $('#main_right_container').height() );
+					var stage_bottom = ( stage_offset-scrollTop + $('#psfb_tab_form_stage_row').height()  );
+					
+					$('#main_right_container').addClass('affix').css({'height': Math.min( (stage_bottom-30), ($(window).height()- 30 ) ) ,'overflow-y':'auto','width':($('#main_right').width()+15)+'px'} );
+					
+				}
+			} else {
+				$('#main_right_container').removeClass('affix').removeClass('affix-bottom').css('top','');
+			}
+		} else {
+			$('#main_right_container').removeClass('affix').removeClass('affix-bottom').css('top','');
+		}
+	}).trigger('scroll');
 
+}
 
 function psfb_on_stage_change(){
 	var $ = jQuery;
 	
 	<?php do_action( 'psfb_edit_js_on_stage_change' ); ?>
+	psfb_affix();
 	return;
 }
 
@@ -2152,6 +2195,16 @@ jQuery.fn.setCursorPosition = function(position){
 
 .form_builder_stage:empty:after { content: '<?php echo __('2. Continue by saving afterwards','psfbldr'); ?>'; color: #999; font-size: 1.5em;z-index:9;padding:0; position:absolute;bottom:20px;right:20px;width:inherit;padding-bottom:100px;background-image:url(<?php echo plugins_url( '/images/arrow-drag-in-down-right.png', (dirname(__FILE__)) ); ?>);background-position:100% 100%;background-repeat:no-repeat;}
 
+#main_right_container.affix-top {
+  position: static;
+}
+#main_right_container.affix {
+  top: 30px;
+  position: fixed;
+}
+#main_right_container.affix-bottom {
+  position: absolute;
+}
 
 <?php do_action( 'psfb_edit_cssstyles' ); ?>
 </style>
@@ -2529,25 +2582,26 @@ jQuery.fn.setCursorPosition = function(position){
 					<h3 class="hndle" style="cursor:default;"><span><strong><?php echo __('Form settings','psfbldr'); ?></strong></span></h3>
 				</div>
 				<br class="clear">
-				
-				<section id="main_center" class="col-md-9">
-					<section id="main_center_center">
-						<section id="content">
-							
-							<form class="form_builder_stage" onsubmit="return false;"></form>
+				<div id="psfb_tab_form_stage_row">
+					<section id="main_center" class="col-md-9">
+						<section id="main_center_center">
+							<section id="content">
+								
+								<form class="form_builder_stage" onsubmit="return false;"></form>
+								
+								
+							</section>
+						</section>
+					</section>
+					<aside id="main_right" class="col-md-3">
+						<section id="main_right_container">
 							
 							
 						</section>
-					</section>
-				</section>
-				<aside id="main_right" class="col-md-3">
-					<section id="main_right_container">
-						
-						
-					</section>
-					<br class="clear">
-					<br class="clear">
-				</aside>
+						<br class="clear">
+						<br class="clear">
+					</aside>
+				</div>
 			</div>
 		</div>
 		
@@ -2557,7 +2611,7 @@ jQuery.fn.setCursorPosition = function(position){
 <?php do_action( 'psfb_edit_after_form_stage' ); ?>
 
 
-
+				<div style="clear:both;"></div>
 			</div>
 			<div class="thankyou_page tab-pane" id="psfb_tab_thankyou_page" role="tabpanel">
 			
