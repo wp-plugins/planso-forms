@@ -344,7 +344,7 @@ jQuery(document).ready(function($){
 			var rind = $(this).index();
 			j[rind] = {};			
 			
-			$(this).find('.field_container').each(function(){	
+			$(this).find('.field_container').each(function(){
 				var mytype = $(this).data('type');
 				var mid = $(this).data('id');
 				var ind = $(this).index();
@@ -439,7 +439,8 @@ jQuery(document).ready(function($){
 					
 					
 				}
-				var  cond = $(this).find('#field'+mid+'').data('condition');
+				
+				var  cond = $(this).data('condition');
 				if (typeof cond != 'undefined') {
 					j[rind][ind].condition = cond;
 				}
@@ -1178,37 +1179,23 @@ function ps_field_drop( event, ui, target, j, createcol ){
   
   row += '</div>';
   
-  //console.log(row_mode);
   if(row_mode=='plain'){
   	row += '</div>';//end row
   	$( '.form_builder_stage' ).append( row );
-  	if( $.inArray(mytype,htmlfields)!=-1){
-  		$( '.form_builder_stage' ).find('.psfb_html_content').last().data('condition',j.condition);
-  	} else {
-  		$( '.form_builder_stage' ).find('.form-group :input').last().data('condition',j.condition);
-  	}
+  	
+  	$( '.form_builder_stage' ).find('.field_container').last().data('condition',j.condition);
   } else if(row_mode=='plain_col'){
   	$( '.form_builder_stage .row:last-child' ).append( row );
-  	if( $.inArray(mytype,htmlfields)!=-1){
-	  	$( '.form_builder_stage .row:last-child' ).find('.psfb_html_content').last().data('condition',j.condition);
-	  } else {
-	  	$( '.form_builder_stage .row:last-child' ).find('.form-group :input').last().data('condition',j.condition);
-	  }
+  	
+  	$( '.form_builder_stage' ).find('.field_container').last().data('condition',j.condition);
   	var colcnt = $( '.form_builder_stage .row:last-child .field_container' ).length;
   	$( '.form_builder_stage .row:last-child .field_container' ).attr('class','field_container').addClass('col-md-'+ Math.floor( 12 / colcnt) +'');
-  	if( $.inArray(mytype,htmlfields)!=-1){
-  		$( '.form_builder_stage .row:last-child .field_container' ).find('.psfb_html_content').last().data('condition',j.condition);
-  	} else {
-  		$( '.form_builder_stage .row:last-child .field_container' ).find('.form-group :input').last().data('condition',j.condition);
-  	}
+  	
+  	$( '.form_builder_stage' ).find('.field_container').last().data('condition',j.condition);
   } else {
   	$( row ).insertAfter( $(target) );
-  	if( $.inArray(mytype,htmlfields)!=-1){
-  		$(target).find('.psfb_html_content').last().data('condition',j.condition);
-  	} else {
-  		$(target).find('.form-group :input').last().data('condition',j.condition);
-  	}
   	
+  	$( '.form_builder_stage' ).find('.field_container').last().data('condition',j.condition);
   }
   
   ps_manage_form_vars();
@@ -1333,7 +1320,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
   	}
   	ps_remove_dropareas();
   });
-  ////////////// MODAL EDIT CLICk \\\\\\\\\\\\\
+  ////////////// MODAL EDIT CLICK ///////////////
   
   $('.form_builder_stage button.edit').unbind('click').click(function(){
   	
@@ -1656,11 +1643,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		$('.condition_template .condition_field_select').html(h);
   	
   	$('.condition_content').html('');
-  	if( $.inArray(mytype,htmlfields) != -1){
-			var cond = $(this).closest('.field_container').find('.psfb_html_content').data('condition');
-		} else {
-			var cond = $(this).closest('.field_container').find('.form-group :input').data('condition');
-		}
+  	
+		var cond = $(this).closest('.field_container').data('condition');
 		if(typeof cond!='undefined'){
 			if( $.type(cond)=='object'){
 				var c = cond;
@@ -1846,17 +1830,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
   				}
   				i ++;
   			});
-  			if( $.inArray(mytype,htmlfields) != -1 ){
-  				$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').data('condition',JSON.stringify(c) );
-  			} else {
-  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',JSON.stringify(c) );
-  			}
+  			$('.field_container[data-id="'+myID+'"]').data('condition',JSON.stringify(c) );
+  			
   		} else {
-  			if( $.inArray(mytype,htmlfields) != -1 ){
-  				$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').data('condition',null).removeData('condition');
-  			} else {
-  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').data('condition',null).removeData('condition');
-  			}
+  			$('.field_container[data-id="'+myID+'"]').data('condition',null).removeData('condition');
+  			
   		}
   		
   		if( $.inArray(mytype,customfields)!= -1 ){

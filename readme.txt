@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.4.8 =
+* Maintenance release and code cleanup
+
 = 1.4.7 =
 * Added an icon picker for easier selection of icons
 
