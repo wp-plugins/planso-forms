@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.5.0 =
+* Fixed an issue that could cause the new-field section to be invisible under certain conditions
+
 = 1.4.9 =
 * Added option to allow new fields to be added by click additional to dragging the field to their position
 * Optimized field selection block to stay in viewport on long forms

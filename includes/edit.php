@@ -2004,7 +2004,7 @@ function psfb_affix(){
 	var affixoffset = ($('#main_right').offset().top);
 	var stage_offset = $('#psfb_tab_form_stage_row').offset().top;
 	$(window).unbind('scroll').scroll(function () {
-		if( $(window).width() >= 970){
+		if( $(window).width() >= 970 &&  $('#main_right').is(':visible')){
 			if( $('#main_right_container').height() <  $('#main_center').height() ){
 				var scrollTop = $(window).scrollTop();
 				if ( (scrollTop+30) <= affixoffset) {
@@ -2024,7 +2024,7 @@ function psfb_affix(){
 			$('#main_right_container').removeClass('affix').removeClass('affix-bottom').css('top','');
 		}
 	}).trigger('scroll');
-
+	
 }
 
 function psfb_on_stage_change(){
