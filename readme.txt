@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.5.2 =
+* Fix for AnsPress style overwrite
+
 = 1.5.1 =
 * Chnaged internal class names to avoid conflicts with other plugins
 

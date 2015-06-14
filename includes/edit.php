@@ -2209,6 +2209,16 @@ jQuery.fn.setCursorPosition = function(position){
   position: absolute;
 }
 
+/* anspress fix */
+.tab-content{
+	max-width: none;
+  overflow: inherit;
+  padding: 0;
+  border: 0px none;
+  margin: 0;
+  min-height: inherit;
+}
+
 <?php do_action( 'psfb_edit_cssstyles' ); ?>
 </style>
 
