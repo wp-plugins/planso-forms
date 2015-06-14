@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.5.1 =
+* Chnaged internal class names to avoid conflicts with other plugins
+
 = 1.5.0 =
 * Fixed an issue that could cause the new-field section to be invisible under certain conditions
 

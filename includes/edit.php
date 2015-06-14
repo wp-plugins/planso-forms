@@ -2008,20 +2008,20 @@ function psfb_affix(){
 			if( $('#main_right_container').height() <  $('#main_center').height() ){
 				var scrollTop = $(window).scrollTop();
 				if ( (scrollTop+30) <= affixoffset) {
-					$('#main_right_container').removeClass('affix').removeClass('affix-bottom').css({'height':'auto','overflow-y':'visible','width':'auto'});
+					$('#main_right_container').removeClass('psfb_affix').removeClass('psfb_affix-bottom').css({'height':'auto','overflow-y':'visible','width':'auto'});
 				} else {
 					var my_offset = Math.min(0, parseInt($('#main_right_container').css('top').replace('px','')) );
 					var my_bottom = ( my_offset + $('#main_right_container').height() );
 					var stage_bottom = ( stage_offset-scrollTop + $('#psfb_tab_form_stage_row').height()  );
 					
-					$('#main_right_container').addClass('affix').css({'height': Math.min( (stage_bottom-30), ($(window).height()- 30 ) ) ,'overflow-y':'auto','width':($('#main_right').width()+15)+'px'} );
+					$('#main_right_container').addClass('psfb_affix').css({'height': Math.min( (stage_bottom-30), ($(window).height()- 30 ) ) ,'overflow-y':'auto','width':($('#main_right').width()+15)+'px'} );
 					
 				}
 			} else {
-				$('#main_right_container').removeClass('affix').removeClass('affix-bottom').css('top','');
+				$('#main_right_container').removeClass('psfb_affix').removeClass('psfb_affix-bottom').css('top','');
 			}
 		} else {
-			$('#main_right_container').removeClass('affix').removeClass('affix-bottom').css('top','');
+			$('#main_right_container').removeClass('psfb_affix').removeClass('psfb_affix-bottom').css('top','');
 		}
 	}).trigger('scroll');
 	
@@ -2031,6 +2031,7 @@ function psfb_on_stage_change(){
 	var $ = jQuery;
 	
 	<?php do_action( 'psfb_edit_js_on_stage_change' ); ?>
+	$('.form_builder_stage .row').css('borderBottom','none');
 	psfb_affix();
 	return;
 }
@@ -2195,14 +2196,16 @@ jQuery.fn.setCursorPosition = function(position){
 
 .form_builder_stage:empty:after { content: '<?php echo __('2. Continue by saving afterwards','psfbldr'); ?>'; color: #999; font-size: 1.5em;z-index:9;padding:0; position:absolute;bottom:20px;right:20px;width:inherit;padding-bottom:100px;background-image:url(<?php echo plugins_url( '/images/arrow-drag-in-down-right.png', (dirname(__FILE__)) ); ?>);background-position:100% 100%;background-repeat:no-repeat;}
 
-#main_right_container.affix-top {
+#wpfooter{position:static!important;}
+
+#main_right_container.psfb_affix-top {
   position: static;
 }
-#main_right_container.affix {
+#main_right_container.psfb_affix {
   top: 30px;
   position: fixed;
 }
-#main_right_container.affix-bottom {
+#main_right_container.psfb_affix-bottom {
   position: absolute;
 }
 
@@ -2532,16 +2535,7 @@ jQuery.fn.setCursorPosition = function(position){
 
 <?php do_action( 'psfb_edit_after_title_input' ); ?>
 
-<!--
-<section class="container-fluid">
-	<section class="row">
-		<div class="form-group">
-			<label><?php echo __('Form Title','psfbldr'); ?></label>
-			<input type="text" class="psfb_title_input form-control" value="<?php echo $psform->post_title;?>">
-		</div>
-	</section>
-</section>
--->
+
 <section class="container-fluid">
 	<div class="row">
 		<div class="form-group">
@@ -3031,7 +3025,7 @@ jQuery.fn.setCursorPosition = function(position){
 </div>
 <div class="form-group" style="display:none;">
   <label><?php echo __('JSON','psfbldr'); ?></label>
-  <textarea id="psfb_json" name="json" class="form-control"><?php echo $psform->post_content;?></textarea>
+  <textarea id="psfb_json" name="json" class="form-control"><?php if(isset($psform) && isset($psform->post_content)){echo $psform->post_content;}?></textarea>
   
   <button class="psfb_test_form_submit btn btn-default" type="button"><?php echo __('Test form submission','psfbldr'); ?></button>
   <button class="psfb_generate_json btn btn-default" type="button" ><?php echo __('Generate','psfbldr'); ?></button>
