@@ -2311,7 +2311,7 @@ jQuery.fn.setCursorPosition = function(position){
       		</div>
 	      	<div class="form-group">
 	      		<label><?php echo __('Request support','psfbldr'); ?></label>
-	      		<textarea name="msg" class="form-control" rows="7" placeholder="<?php echo __('Please describe your problem as detailed as possible','psfbldr'); ?>"></textarea>
+	      		<textarea name="msg" required="required" class="form-control" rows="7" placeholder="<?php echo __('Please describe your problem as detailed as possible','psfbldr'); ?>"></textarea>
 	      		<button class="psfb_submit_form_settings_to_planso btn btn-danger btn-xs" type="submit" onmousedown="jQuery('#psfb_submit_settings_json').val( jQuery('#psfb_json').val() );"><?php echo __('Submit message and settings','psfbldr'); ?></button>
 	      		<p class="help-block"><?php echo __('By clicking the button you will send your name, email, form settings and server details to PlanSo. With the data submitted the PlanSo Forms Team can offer you better support.','psfbldr'); ?></p>
 	      	</div>
