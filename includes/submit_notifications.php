@@ -275,7 +275,6 @@
 			}
 		}
 		
-		
 	}
 	
 	if(isset($j->pushover_user) && !empty($j->pushover_user)){
