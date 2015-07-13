@@ -21,10 +21,10 @@
 			}
 		}
 	}
-	wp_enqueue_style( 'bootstrap-grid',plugins_url( '/css/planso_bootstrap/bootstrap.grid.css', dirname(__FILE__) ) );
-		
+	
 	if(!isset($framework['bootstrap'])){
 		
+		wp_enqueue_style( 'bootstrap-grid',plugins_url( '/css/planso_bootstrap/bootstrap.grid.css', dirname(__FILE__) ) );
 		
 		wp_register_script( 'bootstrap-collapse',plugins_url( '/js/bootstrap/src/collapse.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
 		wp_register_script( 'bootstrap-transition',plugins_url( '/js/bootstrap/src/transition.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
@@ -59,7 +59,7 @@
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		}
 	}
-	//datepicker 
+	//datepicker
 	wp_register_script( 'moment',plugins_url( '/js/moment/moment.js', dirname(__FILE__) ), array('jquery'), '2.9.0', true );
 	if(substr(get_locale(),0,2)!='en'){
 		wp_register_script( 'moment-locale',plugins_url( '/js/moment/locale/'.substr(get_locale(),0,2).'.js', dirname(__FILE__) ), array('moment'), '2.9.0', true );
@@ -91,6 +91,7 @@
 	wp_register_script( 'planso_form_builder', plugins_url( '/js/planso-form-builder.js', dirname(__FILE__) ), array('jquery'), '1', true );
 	
 	wp_enqueue_script( 'planso_form_builder' );
+	
 	
 	do_action('psfb_form_enqueue_scripts');
 	
@@ -133,6 +134,8 @@
 	$out .= '<input type="hidden" name="psfb_form_id" value="'.$atts['id'].'"/>';
 	$out .= '<input type="hidden" name="psfb_form_cnt" value="'.$_POST['psfb_global_cnt'].'"/>';
 	
+	
+	
 	$out .= '<div style="display:none"><input type="text" name="psfb_hon_as"/></div>';
 	
 	$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']] = md5('we dont like spam'.time());
@@ -147,7 +150,6 @@
 <script type="text/javascript">document.write('<i'+'n'+'p'+'ut ty'+'pe="hi'+'dden" value="'+document.getElementById("psfb_hon_as2_{$atts['id']}_{$_POST['psfb_global_cnt']}").value+'" name="psfb_js_as">');</script>
 EOF;
 	}
-	
 	$all_atts = array(
 		'id' => $atts['id'],
 		'customfields' => $customfields,
@@ -161,7 +163,7 @@ EOF;
 	$j = $new_atts['j'];
 	$out = $new_atts['out'];
 	
-	
+
 	$cnt = 0;
 	if(isset($j->fields) && count($j->fields)>0){
 		foreach($j->fields as $row){

@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.5.6 =
+* Maintenance release
+
 = 1.5.5 =
 * Fix for Bootstrap based themes with bs version lower than 3.0
 

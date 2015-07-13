@@ -704,7 +704,27 @@ function ps_field_drop( event, ui, target, j, createcol ){
   if(row_mode=='plain'){
  		row += '<div class="row" data-type="'+mytype+'" data-id="'+dynID+'">';
   }
-  row += '<div class="col-md-12 field_container" data-type="'+mytype+'" data-id="'+dynID+'">';
+  row += '<div class="col-md-12 field_container" data-type="'+mytype+'" data-id="'+dynID+'"';
+  
+  if(typeof j.hide_label!='undefined' && (j.hide_label==true || j.hide_label=='true' || j.hide_label=='1')){
+  	row += ' data-hide_label="true"';
+  }
+  if(typeof j.required!='undefined' && (j.required==true || j.required=='true' || j.required=='required')){
+  	row += ' data-required="required"';
+  }
+  if(typeof j.style!='undefined' && j.style!=''){
+  	row += ' data-style="'+j.style+'"';
+  }
+  if(typeof j.class!='undefined' && j.class!=''){
+  	row += ' data-class="'+j.class+'"';
+  }
+  if(typeof j.icon!='undefined' && j.icon!=''){
+  	row += ' data-icon="'+j.icon+'"';
+  }
+  
+  row += '>';
+  
+  
   
   row += '<div class="options">'+$('.editoptions_template').html()+'</div>';
   
@@ -873,10 +893,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    	
 			  if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
 			  	var tmp_name = j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_');
-			  	console.log('name');
 			  } else {
 			  	var tmp_name = myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_');
-			  	console.log('label');
 			  }
 			  
 			  if( $('.form_builder_stage .field_container .form-group :input[name="'+tmp_name+'"]').length > 0 ){
@@ -1901,7 +1919,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
   						.html( $('<div></div>')
   							.addClass('radio_wrapper') );
   				*/
-  				
   				$('.selectoptions_content .row').each(function(){
   					var label = $(this).find('.field_option_label').val();
   					var val = $(this).find('.field_option_value').val();
@@ -2564,6 +2581,7 @@ jQuery.fn.setCursorPosition = function(position){
 	  <!-- Nav tabs -->
 	  <ul class="nav nav-tabs" role="tablist">
 	    <li role="presentation" class="active"><a href="#psfb_tab_form_stages" aria-controls="form_stage" role="tab" data-toggle="tab"><?php echo __('Form fields','psfbldr'); ?></a></li>
+	   	<?php do_action( 'psfb_edit_tabs_link_before_mails' ); ?>
 	    <li role="presentation"><a href="#psfb_tab_admin_email" aria-controls="admin_email" role="tab" data-toggle="tab"><?php echo __('Admin email','psfbldr'); ?></a></li>
 	    <li role="presentation"><a href="#psfb_tab_user_email" aria-controls="user_email" role="tab" data-toggle="tab"><?php echo __('User email','psfbldr'); ?></a></li>
 	    <li role="presentation"><a href="#psfb_tab_thankyou_page" aria-controls="thankyou_page" role="tab" data-toggle="tab"><?php echo __('Thankyou page','psfbldr'); ?></a></li>
@@ -2591,7 +2609,7 @@ jQuery.fn.setCursorPosition = function(position){
 						<section id="main_center_center">
 							<section id="content">
 								
-								<form class="form_builder_stage" onsubmit="return false;"></form>
+								<form class="form_builder_stage planso-form-builder" onsubmit="return false;"></form>
 								
 								
 							</section>

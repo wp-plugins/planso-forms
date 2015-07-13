@@ -85,6 +85,7 @@ if(isset($j->fields) && count($j->fields)>0){
 					$post_types[] = $col->type;
 					$fcnt ++;
 				}
+				
 			} else {
 				
 			}
