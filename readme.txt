@@ -146,6 +146,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.5.3 =
+* Updated form element styles to better suit non-bootstrap-based themes
+* Several bug fixes
+
 = 1.5.2 =
 * Fix for AnsPress style overwrite
 
