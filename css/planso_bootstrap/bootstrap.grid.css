@@ -1208,3 +1208,12 @@
   width:100%;
   display: table-cell;
 }
+.planso-form-builder label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+}
+.planso-form-builder .form-control {
+  display: block;
+  width: 100%;
+}

@@ -21,10 +21,10 @@
 			}
 		}
 	}
-	
+	wp_enqueue_style( 'bootstrap-grid',plugins_url( '/css/planso_bootstrap/bootstrap.grid.css', dirname(__FILE__) ) );
+		
 	if(!isset($framework['bootstrap'])){
 		
-		wp_enqueue_style( 'bootstrap-grid',plugins_url( '/css/planso_bootstrap/bootstrap.grid.css', dirname(__FILE__) ) );
 		
 		wp_register_script( 'bootstrap-collapse',plugins_url( '/js/bootstrap/src/collapse.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
 		wp_register_script( 'bootstrap-transition',plugins_url( '/js/bootstrap/src/transition.js', dirname(__FILE__) ), array('jquery'), '3.2.2', true );
