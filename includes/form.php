@@ -59,7 +59,7 @@
 			$_POST['psfb_global_datepicker_styles'] = 1;
 		}
 	}
-	//datepicker
+	//datepicker 
 	wp_register_script( 'moment',plugins_url( '/js/moment/moment.js', dirname(__FILE__) ), array('jquery'), '2.9.0', true );
 	if(substr(get_locale(),0,2)!='en'){
 		wp_register_script( 'moment-locale',plugins_url( '/js/moment/locale/'.substr(get_locale(),0,2).'.js', dirname(__FILE__) ), array('moment'), '2.9.0', true );
