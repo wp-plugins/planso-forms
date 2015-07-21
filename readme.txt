@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.5.7 =
+* Maintenance release
+
 = 1.5.6 =
 * Maintenance release
 
