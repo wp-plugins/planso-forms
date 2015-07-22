@@ -195,6 +195,18 @@ if(count($errors)<1){
 		'j' => $j
 	);
 	
+	
+	/*
+	* Run custom validation filter, should return true if valid, or an error message string when invalid
+	*/
+	$psfb_custom_validation_passed = apply_filters( 'psfb_validate_form_request', true, $page_detail_atts );
+	if( true !==  $psfb_custom_validation_passed){
+		$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => (string)$psfb_custom_validation_passed);
+		wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
+		exit;
+	}
+
+	
 	do_action( 'psfb_submit_after_error_check_success',$page_detail_atts );
 	
 	
