@@ -146,6 +146,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.5.8 =
+* Fixed an issue that could lead to an unwanted error message after creating a new form
+
 = 1.5.7 =
 * Maintenance release
 
