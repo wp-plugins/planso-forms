@@ -478,7 +478,7 @@ EOF;
 								$out .= ' multiple="multiple"';
 							}
 							if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-								$out .= ' required="required"';
+								$out .= ' required="required" data-required="required"';
 							}
 							$out .= ' name="'.$col->name.'';
 							if(isset($fieldinfo['multiple']) && $fieldinfo['multiple']==true){
@@ -507,7 +507,7 @@ EOF;
 								$out .= ' value="'.htmlentities($_REQUEST[$col->name], ENT_QUOTES).'"';
 							}
 							if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-								$out .= ' required="required"';
+								$out .= ' required="required" data-required="required"';
 							}
 							$out .= ' name="'.$col->name.'"';
 							if(isset($col->placeholder))$out .= ' placeholder="'.$col->placeholder.'"';
@@ -526,7 +526,7 @@ EOF;
 							if($col->type=='textarea'){
 								$out .= '<textarea';
 								if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-									$out .= ' required="required"';
+									$out .= ' required="required" data-required="required"';
 								}
 								$out .= ' name="'.$col->name.'"';
 								if(isset($col->placeholder))$out .= ' placeholder="'.$col->placeholder.'"';
@@ -563,7 +563,7 @@ EOF;
 									$out .= ' multiple="multiple"';
 								}
 								if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-									$out .= ' required="required"';
+									$out .= ' required="required" data-required="required"';
 								}
 								$out .= ' name="'.$col->name.'';
 								if($col->type=='multiselect'){
@@ -618,7 +618,7 @@ EOF;
 									$out .= '>';
 									$out .= '<input';
 									if(isset($col->required) && ($col->required=='required' || $col->required==true)){
-										$out .= ' required="required"';
+										$out .= ' required="required" data-required="required"';
 									}
 									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
 										$out .= ' checked="checked"';
@@ -657,7 +657,10 @@ EOF;
 									$out .= '"';
 									if(isset($col->style))$out .= ' style="'.$col->style.'"';
 									$out .= '>';
-									$out .= '<input';
+									$out .= '<input'; 
+									if(isset($col->required) && ($col->required=='required' || $col->required==true)){
+										$out .= ' data-required="required"';
+									}
 									//if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name.'_'.$ocnt])){
 									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && is_array($_SESSION['psfb_values'][$atts['id']][$col->name]) && in_array($opt->val,$_SESSION['psfb_values'][$atts['id']][$col->name])){
 										$out .= ' checked="checked"';

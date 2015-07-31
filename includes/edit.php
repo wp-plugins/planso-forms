@@ -2311,6 +2311,60 @@ jQuery.fn.setCursorPosition = function(position){
       	?>
       	
       	
+      	
+      	
+      	<?php 
+      	if ( is_plugin_active( 'goodbye-captcha/goodbye-captcha.php' ) ) {
+      		//plugin is activated
+      	} else if(is_dir( dirname(dirname(dirname(__FILE__))).'/goodbye-captcha' )){
+      		//plugin is installed but inactive
+      		?>
+      		<div class="form-group">
+	      		<label><?php echo __('GoodbyeCaptcha installed but inactive','psfbldr'); ?></label>
+	      		<a href="<?php 
+	      			echo admin_url( 'plugins.php' ).'?plugin_status=inactive';
+	      			/*
+	      			echo wp_nonce_url(
+					    add_query_arg(
+					        array(
+					            'action' => 'activate',
+					            'plugin' => 'postman-smtp/postman-smtp.php',
+					            'plugin_status' => 'all',
+					            'paged' => 1
+					            
+					        ),
+					        admin_url( 'plugins.php' )
+					    ),
+					    'activate_postman-smtp%2Fpostman-smtp.php_all_1'
+						);*/
+	      		?>" target="_blank" class="btn btn-success btn-xs"><?php echo __('Activate GoodbyeCaptcha','psfbldr'); ?></a>
+	      		<p class="help-block"><?php echo __('By clicking the button you will be transfered to your plugin-section. Please find GoodbyeCaptcha there and click on &#39;activate&#39;. Don&#39;nt forget to configure the plugin afterwards.','psfbldr'); ?></p>
+	      	</div>
+      	<?php
+				} else {
+					//plugin is not installed
+					?>
+					<div class="form-group">
+      		<label><?php echo __('Looking for better SPAM protection?','psfbldr'); ?></label>
+      		<a href="<?php
+					echo wp_nonce_url(
+					    add_query_arg(
+					        array(
+					            'action' => 'install-plugin',
+					            'plugin' => 'goodbye-captcha'
+					        ),
+					        admin_url( 'update.php' )
+					    ),
+					    'install-plugin_goodbye-captcha'
+					);
+					?>" target="_blank" class="btn btn-success btn-xs"><?php echo __('Install GoodbyeCaptcha','psfbldr'); ?></a>
+      		<p class="help-block"><?php echo __('The button above will lead you to the plugin installation of','psfbldr'); ?> <a href="https://wordpress.org/plugins/goodbye-captcha/" target="_blank">GoodbyeCaptcha</a></p>
+      	</div>
+      	<?php
+				}
+      	?>
+      	
+      	
       	<div class="form-group">
       		<label><?php echo __('Visit support forum','psfbldr'); ?></label>
       		<a href="https://wordpress.org/support/plugin/planso-forms" target="_blank" class="btn btn-success btn-xs"><?php echo __('Support forum','psfbldr'); ?></a>

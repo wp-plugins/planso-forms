@@ -2,7 +2,7 @@
 Contributors: Stephan Helbig, PabloFernandezGarcia, Sharath Chandra Prathiwadhi
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms,form maker
 Requires at least: 3.9
-Tested up to: 4.2.2
+Tested up to: 4.2.3
 Stable tag: trunk
 
 This form builder makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize fields with icons, etc
@@ -37,6 +37,9 @@ PlanSo Forms are based on Twitter's Bootstrap and allow flexible columns and row
 
 **No coding**  
 Thanks to the Drag-and-Drop functionality PlanSo Forms do not require any coding skills.
+
+**No SPAM**  
+Built in anti spam protection and compatible with other anti spam plugins like [GoodbyeCaptcha](https://wordpress.org/plugins/goodbye-captcha/ "Anti-Spam without Captcha")
 
 = Features =
 * HTML5 form fields
@@ -145,6 +148,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.6.0 =
+* Added an easy way to install GoodbyeCaptcha alongside PlanSo Forms
+* Tested for WordPress 4.2.3 compatability
 
 = 1.5.9 =
 * Added a new hook for better connection with anti-spam plugins
