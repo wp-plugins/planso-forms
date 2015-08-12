@@ -271,6 +271,7 @@ EOF;
 					}
 				}
 				
+			
 				$out .= '>';
 				
 				if($condition!=false){
@@ -451,6 +452,22 @@ EOF;
 				  	$out .= '</div>';
 					}
 					
+					
+					
+					$all_field_atts = array(
+						'out' => $out,
+						'col' => $col,
+						'mytype' => $mytype,
+						'fieldinfo' => $fieldinfo,
+						'customfields' => $customfields,
+						'j' => $j
+					);
+					$added_field_attributes = apply_filters('psfb_form_add_field_attributes',$all_field_atts);
+					if(is_array($added_field_attributes)){
+						//we are expecting a string from the filter
+						$added_field_attributes = '';
+					}
+					
 					if( in_array($mytype,$customfields)){
 						
 						$all_atts = array(
@@ -516,10 +533,32 @@ EOF;
 							$out .= '"';
 							$out .= ' id="psfield_'.$atts['id'].'_'.$cnt.'"';
 							if(isset($col->style))$out .= ' style="'.$col->style.'"';
+							
+							//do_action('psfb_form_add_field_attributes');
+							/*
+							$all_field_atts = array(
+								'out' => $out,
+								'col' => $col,
+								'mytype' => $mytype,
+								'fieldinfo' => $fieldinfo,
+								'customfields' => $customfields,
+								'j' => $j
+							);
+						
+							$all_field_atts = apply_filters('psfb_form_add_field_attributes',$all_field_atts);
+							
+							$out = $all_field_atts['out'];
+							$col = $all_field_atts['col'];
+							$mytype = $all_field_atts['mytype'];
+							$fieldinfo = $all_field_atts['fieldinfo'];
+							$customfields = $all_field_atts['customfields'];
+							$j = $all_field_atts['j'];
+							*/
+							$out .= $added_field_attributes;
 							$out .= '/>';
 						}
 					} else {
-						
+						//psfb_form_add_attribute
 						if(!in_array($col->type,$selectfields)){
 							//textarea, submit, ect
 							
@@ -535,6 +574,8 @@ EOF;
 								$out .= '"';
 								$out .= ' id="psfield_'.$atts['id'].'_'.$cnt.'"';
 								if(isset($col->style))$out .= ' style="'.$col->style.'"';
+								
+								$out .= $added_field_attributes;
 								$out .= '>';
 								
 								if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
@@ -573,19 +614,39 @@ EOF;
 								if(isset($col->class))$out .= ' '.$col->class.'';
 								$out .= '" id="psfield_'.$atts['id'].'_'.$cnt.'"';
 								if(isset($col->style))$out .= ' style="'.$col->style.'"';
+								
+								$out .= $added_field_attributes;
 								$out .= '>';
 								foreach($opts as $opt){
-									if(trim($opt->val)==''){
+									
+									if(isset($opt->empty) && $opt->empty == true){
+										$opt->val = '';
+									}else if(trim($opt->val)==''){
 										$opt->val = $opt->label;
 									}
+									
+									/*
+									
+									if(trim($opt->val)=='' && isset($opt->empty) && $opt->empty == false){
+										$opt->val = $opt->label;
+									}else if(isset($opt->empty) && $opt->empty == true){
+										$opt->val = '';
+									}*/
 									$out .= '<option value="'.$opt->val.'"';
+									
+									
+									
 									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
 										$out .= ' selected="selected"';
 									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && $atts[strtolower($col->name)]==$opt->val){
 										$out .= ' selected="selected"';
 									} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name]) && $_REQUEST[$col->name]==$opt->val){
 										$out .= ' selected="selected"';
+									}	else if(isset($opt->selected) && ($opt->selected == 'selected' || $opt->selected == true) ){
+										$out .= ' selected="selected"';
 									}
+									
+									
 									$out .= '>'.$opt->label.'</option>';
 								}
 								$out .= '</select>';
@@ -603,13 +664,15 @@ EOF;
 								}
 								foreach($opts as $opt){
 									$ocnt ++;
-									if($opt->val==''){
+									if(isset($opt->empty) && $opt->empty == true){
+										$opt->val = '';
+									} else if(trim($opt->val)==''){
 										$opt->val = $opt->label;
 									}
 									if($wrap_div){
 										$out .= '<div class="radio">';
 									}
-									//$out .= '<div class="radio_wrapper">';
+									
 									$out .= '<label class="';
 									if(!$wrap_div)$out .= 'radio-inline ';
 									if(isset($col->class))$out .= ''.$col->class.'';
@@ -626,8 +689,14 @@ EOF;
 										$out .= ' checked="checked"';
 									} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name]) && $_REQUEST[$col->name]==$opt->val){
 										$out .= ' checked="checked"';
+									} else if(isset($opt->checked) && ($opt->checked == 'checked' || $opt->checked == true) ){
+										$out .= ' checked="checked"';
 									}
-									$out .= ' type="radio" value="'.$opt->val.'" name="'.$col->name.'" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
+									$out .= ' type="radio" value="'.$opt->val.'" name="'.$col->name.'" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'"';
+									
+									$out .= $added_field_attributes;
+									$out .= '>';
+									
 									$out .= $opt->label;
 									$out .= '</label>';
 									if($wrap_div){
@@ -661,16 +730,21 @@ EOF;
 									if(isset($col->required) && ($col->required=='required' || $col->required==true)){
 										$out .= ' data-required="required"';
 									}
-									//if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name.'_'.$ocnt])){
+									
 									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && is_array($_SESSION['psfb_values'][$atts['id']][$col->name]) && in_array($opt->val,$_SESSION['psfb_values'][$atts['id']][$col->name])){
 										$out .= ' checked="checked"';
 									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && ((is_array($atts[strtolower($col->name)]) && in_array($opt->val,$atts[strtolower($col->name)]) ) || $atts[strtolower($col->name)] == $opt->val ) ){
 										$out .= ' checked="checked"';
 									} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name]) && ((is_array($_REQUEST[$col->name]) && in_array($opt->val,$_REQUEST[$col->name]) ) || $_REQUEST[$col->name] == $opt->val ) ){
 										$out .= ' checked="checked"';
+									}else if(isset($opt->checked) && ($opt->checked == 'checked' || $opt->checked == true) ){
+										$out .= ' checked="checked"';
 									}
 									
-									$out .= ' type="checkbox" value="'.$opt->val.'" name="'.$col->name.'[]" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'">';
+									$out .= ' type="checkbox" value="'.$opt->val.'" name="'.$col->name.'[]" id="psfield_'.$atts['id'].'_'.$cnt.'_'.$ocnt.'"';
+									
+									$out .= $added_field_attributes;
+									$out .= '>';
 									$out .= $opt->label;
 									
 									$out .= '</label>';

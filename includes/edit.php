@@ -487,7 +487,7 @@ jQuery(document).ready(function($){
 					j[rind][ind].name = name;
 				}
 				
-				
+				<?php do_action( 'psfb_edit_js_save_attributes_to_object' ); ?>
 				
 	 			if( $.inArray(mytype,customfields)!= -1 ){
 	 				
@@ -503,6 +503,11 @@ jQuery(document).ready(function($){
 	 						opts[i] = {};
 	 						opts[i].label = $(this).text();
 	 						opts[i].val = $(this).attr('value');
+	 						opts[i].empty = $(this).data('empty');
+	 						if(typeof $(this).attr('selected') != 'undefined' && $(this).attr('selected') !=''){
+	 							opts[i].selected = $(this).attr('selected');
+	 						}
+	 						
 	 					});
 	 				} else if(mytype=='checkbox'){
 	 					
@@ -510,6 +515,9 @@ jQuery(document).ready(function($){
 	 						opts[i] = {};
 	 						opts[i].label = $(this).text();
 	 						opts[i].val = $(this).find('input').attr('value');
+	 						if(typeof $(this).find('input').attr('checked') != 'undefined' && $(this).find('input').attr('checked') !=''){
+	 							opts[i].checked = $(this).find('input').attr('checked');
+	 						}
 	 						j[rind][ind].name = $(this).find('input').attr('name');
 	 					});
 	 				} else if(mytype=='radio'){
@@ -518,6 +526,10 @@ jQuery(document).ready(function($){
 	 						opts[i] = {};
 	 						opts[i].label = $(this).text();
 	 						opts[i].val = $(this).find('input').attr('value');
+	 						opts[i].empty = $(this).find('input').data('empty');
+	 						if(typeof $(this).find('input').attr('checked') != 'undefined' && $(this).find('input').attr('checked') !=''){
+	 							opts[i].checked = $(this).find('input').attr('checked');
+	 						}
 	 						j[rind][ind].name = $(this).find('input').attr('name');
 	 						
 	 					});
@@ -791,6 +803,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					row += tag_details.options[0];
 				}
 			}
+		
 			row += '>';
 			
 		} else {
@@ -802,6 +815,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    if(typeof j.class!='undefined' && j.class!=''){
 	    	row += ' class="'+j.class+'"';
 	    }
+	   
 	    row += '/>';
 		}
 		
@@ -842,8 +856,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    } else {
 					row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 		    }
-		    row += '></textarea>';
 		    
+		    <?php do_action('psfb_edit_js_attributes_create'); ?>
+		    
+		    row += '></textarea>';
 	    } else if(mytype == 'submit' || mytype=='submitimage'){
 	    	
 	    	row += '<input type="'+myFieldType.type+'" id="field'+dynID+'"';
@@ -877,6 +893,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    if(mytype=='submitimage' && typeof j.src!='undefined' && j.src!=''){
 		    	row += ' src="'+j.src+'"';
 		    }
+		    <?php do_action('psfb_edit_js_attributes_create'); ?>
 		    row += '>';
 	    } else if(mytype == 'radio'){
 	    	if(typeof j.orientation!='undefined' && j.orientation!==false){
@@ -967,6 +984,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    } else {
 			    	row += ' data-orientation="horizontal"';
 			    }
+			    <?php do_action('psfb_edit_js_attributes_create'); ?>
 			    row += '>';
 			    
 					$.each(j.select_options,function(key,value){
@@ -978,10 +996,17 @@ function ps_field_drop( event, ui, target, j, createcol ){
 						if(!wrap_div){
 							row += ' class="radio-inline"';
 						}
-						row += '><input type="radio"  value="'+value.val+'"';
+						row += '><input type="radio" value="'+value.val+'"';
+							
+		    		if(typeof value.empty != 'undefined' && value.empty !=''){
+							row += ' data-empty="'+value.empty+'"  ';
+						}
+		    		if(typeof value.checked != 'undefined' && value.checked !=''){
+		    			row += 'checked="checked"';
+		    		}
 						//name="optionsfield'+dynID+'"
 				    row += ' name="'+tmp_name+'"';
-				    
+				    <?php do_action('psfb_edit_js_attributes_create'); ?>
 						row += '>';
 						row += value.label;
 						row += '</label>';
@@ -1075,6 +1100,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 			    } else {
 			    	row += ' data-orientation="horizontal"';
 			    }
+			    <?php do_action('psfb_edit_js_attributes_create'); ?>
 			    row += '>';
 			    
 					$.each(j.select_options,function(key,value){
@@ -1086,6 +1112,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
 							row += ' class="checkbox-inline"';
 						}
 						row += '><input type="checkbox"';
+						
+						if(typeof value.checked != 'undefined' && value.checked !=''){
+		    			row += 'checked="checked"';
+		    		}
 						
 				    row += ' name="'+tmp_name_chk+'"';
 				    
@@ -1130,12 +1160,21 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    } else {
 		    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 		    }
+		    <?php do_action('psfb_edit_js_attributes_create'); ?>
 	    	row += '>';
 	    	if(j==false || typeof j.select_options == 'undefined' || j.select_options.length<1){
 		    	row += '<option value="">'+myLabel+'</option>';
 		    } else {
 		    	$.each(j.select_options,function(key,value){
-		    		row += '<option value="'+value.val+'">'+value.label+'</option>';
+		    		row += '<option value="'+value.val+'"';
+		    		
+		    		if(typeof value.empty != 'undefined' && value.empty !=''){
+							row += ' data-empty="'+value.empty+'"  ';
+						}
+		    		if(typeof value.selected != 'undefined' && value.selected !=''){
+		    			row += 'selected="selected"';
+		    		}
+		    		row += '>'+value.label+'</option>';
 		    	});
 		    }
 		    row += '</select>';
@@ -1192,6 +1231,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    } else {
 	    	row += ' name="'+myLabel.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 	    }
+	     <?php do_action('psfb_edit_js_attributes_create'); ?>
 	    row += '>';
 	    
 	    if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
@@ -1518,9 +1558,12 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		$('.field_orientation_wrapper').hide();
 	  	}
 	  	
+	  	
+	  	<?php do_action( 'psfb_edit_js_add_attributes' ); ?>
+	  	
 	  	psfb_handle_edit_special_tabs_closing();
 	  	if( $.inArray(mytype,customfields)!= -1 ){
-	  		//console.log(mytype);
+	  		
 	  		<?php do_action( 'psfb_edit_js_handle_edit_customfields' ); ?>
 	  		
 	  		
@@ -1532,32 +1575,75 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	} else if( $.inArray(mytype,selectfields)!= -1 ){
 	    	//selectfield
 	    	
+	    	
+	    	
 	    	$('.selectoptionstab').show();
 	    	$('.selectoptions_content').html('');
+	    	
 	    	if(mytype == 'select' || mytype == 'multiselect'){
+	    		$('.selectoptions_default_and_empty').show();
+	    		$('.selectoptions_default_checkbox').hide();
+	    		$('.selectoptions_content_desc_default_and_empty').show();
+	    		$('.selectoptions_content_desc_empty').show();
 	  			my_field_container.find('option').each(function(){
 	  				var h = $('.selectoptions_template').html();
 	  				$('.selectoptions_content').append(h);
+	  				if($(this).data('empty') == true){
+	  					$('.selectoptions_content .field_option_value_empty:last').prop('checked',true);
+	  					$('.selectoptions_content .field_option_value:last').attr("disabled",'');	
+	  					
+	  				}
+	  				
+	  				if($(this).attr('selected') == 'selected'){
+	  					$('.selectoptions_content .field_option_value_default:last').prop('checked',true);
+	  				}
 	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
 	  				$('.selectoptions_content .field_option_label:last').val( $(this).text() );
+	  				
+	  				
+	  				
 	  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
 	  					$(this).closest('.row').remove();
 	  				});
+	  				
+	  				
+	  				
 	  			});
 	  		} else if(mytype == 'radio'){
+	  			$('.selectoptions_default_checkbox').hide();
+	  			$('.selectoptions_content_desc_empty').show();
+	  			$('.selectoptions_default_and_empty').show();
+	  			
 	  			my_field_container.find('input[type="radio"]').each(function(){
 	  				var h = $('.selectoptions_template').html();
 	  				$('.selectoptions_content').append(h);
 	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
 	  				$('.selectoptions_content .field_option_label:last').val( $(this).parent().text() );
+	  				if($(this).data('empty') == true){
+	  					$('.selectoptions_content .field_option_value_empty:last').prop('checked',true);
+	  					$('.selectoptions_content .field_option_value:last').attr("disabled",'');	
+	  					
+	  				}
+	  				if($(this).prop('checked') == 'checked' || $(this).prop('checked') == true){
+	  					$('.selectoptions_content .field_option_value_default:last').prop('checked',true);
+	  					
+	  				}
 	  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
 	  					$(this).closest('.row').remove();
 	  				});
 	  			});
 	  		} else if(mytype == 'checkbox'){
+	  			$('.selectoptions_content_desc_empty').hide();
+	  			//$('.field_option_value_default').hide();
+	  			$('.selectoptions_default_checkbox').show();
+	  			$('.selectoptions_default_and_empty').hide();
+	  			//$('.selectoptions_content_desc_default_and_empty').hide();
 	  			my_field_container.find('input[type="checkbox"]').each(function(){
 	  				var h = $('.selectoptions_template').html();
 	  				$('.selectoptions_content').append(h);
+	  				if($(this).attr('checked') == 'checked'){
+	  					$('.selectoptions_content').find('.field_option_value_default_checkbox:last').prop('checked',true);
+	  				}
 	  				$('.selectoptions_content .field_option_value:last').val( $(this).attr('value') );
 	  				$('.selectoptions_content .field_option_label:last').val( $(this).parent().text() );
 	  				$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
@@ -1576,14 +1662,33 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		});
 	  		$('.add_selectoption').unbind('click').click(function(){
 	  			var h = $('.selectoptions_template').html();
+	  			//var radio_name = 'name="radio_'+$('.selectoptions_content .row').length+'"';
+	  			//h = h.replace(/name="radio"/g,radio_name);
+	  			
 	  			$('.selectoptions_content').append(h);
+	  			//$('.selectoptions_content').find('.field_option_value_empty').trigger('change');
 					$('.selectoptions_content .delete_selectoption:last').unbind('click').click(function(){
 						$(this).closest('.row').remove();
 					});
-	  		});
+					
+					
+					$('.field_option_value_empty').unbind('change').change(function(){
+						if($(this).is(':checked')){
+							
+							$(this).closest('.form-group').find('.field_option_value').attr("disabled",'');	
+								
+							
+						}else{
+							$(this).closest('.form-group').find('.field_option_value').removeAttr("disabled");
+							
+						}
+					}).trigger("change");
+					
+				});
 	  		
 	  		
 	  		$('.toggle_selectoption').unbind('click').click(function(){
+	  			
 	  			if( $('.selectoptions_content').is(':hidden') ){
 	  				//build rows from textarea
 	  				
@@ -1593,16 +1698,43 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  				$('.add_selectoption').show();
 	  				$('.selectoptions_content').show();
 	  				$('.selectoptions_content_desc').show();
-	  			} else {
 	  				
+	  			} else {
 	  				//fill texarea from rows
 	  				var h = '';
 	  				$('.selectoptions_content .row').each(function(i){
 	  					if(i>0)h += '\n';
 	  					h += $(this).find('.field_option_label').val();
+	  					
 	  					if( $(this).find('.field_option_value').val()!='' ){
-	  						h += '@=';
+	  						h += ',';
 	  						h += $(this).find('.field_option_value').val();
+	  					}
+	  					var default_checked = false;
+	  					if($(this).find('.field_option_value_default').is(':checked') && $(this).find('.field_option_value_default').is(':visible')){
+	  						if($(this).find('.field_option_value').val()==''){
+	  							h += ',';
+	  						}
+	  						h += ',';
+	  						h += 'd';
+	  						default_checked = true;
+	  					}else if($(this).find('.field_option_value_default_checkbox').is(':checked') && $(this).find('.selectoptions_default_checkbox').is(':visible')){
+	  						if($(this).find('.field_option_value').val()==''){
+	  							h += ',';
+	  						}
+	  						h += ',';
+	  						h += 'd';
+	  						default_checked = true;
+	  					}
+	  					if($(this).find('.field_option_value_empty').is(':checked')){
+	  						
+	  						if(default_checked == false ){
+	  							if($(this).find('.field_option_value').val()==''){
+	  								h += ',';
+	  							}
+	  							h += ',';
+	  						}
+	  						h += 'e';
 	  					}
 	  				});
 	  				$('.selectoptions_quick_content textarea').val( h );
@@ -1612,25 +1744,36 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  				$('.selectoptions_quick_content').show();
 	  				$('.selectoptions_quick_content_desc').show();
 	  			}
-	  		});
+	  		}).trigger('click');
 	  		$('.selectoptions_quick_content textarea').unbind('blur').blur(function(){
 	  			var lines = $(this).val().split('\n');
 	  			
 	  			$('.selectoptions_content').html('');
-	  			
-	  			if(typeof lines != 'undefined' && lines.length > 0){
+	  			$.each(lines,function(i,line){
+	  				$('.add_selectoption').trigger('click');
+	  				var default_empty_value = null;
+	  				var transformed_lines = $.csv.toArray( line );
+	   				if(typeof transformed_lines[0] != 'undefined' && transformed_lines[0] != ''){
+	  					$('.selectoptions_content .field_option_label:last').val( transformed_lines[0] );
+	  				}	
+	  				if(typeof transformed_lines[1] != 'undefined' && transformed_lines[1] != ''){
+	  					$('.selectoptions_content .field_option_value:last').val( transformed_lines[1] );
+	  				}	
+	  				if(typeof transformed_lines[2] != 'undefined' && transformed_lines[2] != '' && transformed_lines[2] == 'de'){
+	  						$('.selectoptions_content .field_option_value_default:last').prop('checked',true);
+	  						$('.selectoptions_content .field_option_value_empty:last').prop('checked',true);
+	  						$('.selectoptions_content .field_option_value:last').attr("disabled",'');
+	  				}else if(typeof transformed_lines[2] != 'undefined' && transformed_lines[2] != '' && transformed_lines[2] == 'd'){
+	  						$('.selectoptions_content .field_option_value_default:last').prop('checked',true);
+	  						$('.selectoptions_content .field_option_value_default_checkbox:last').prop('checked',true);
+	  				}else if(typeof transformed_lines[2] != 'undefined' && transformed_lines[2] != '' && transformed_lines[2] == 'e'){
+	  						$('.selectoptions_content .field_option_value_empty:last').prop('checked',true);
+	  						$('.selectoptions_content .field_option_value:last').attr("disabled",'');
+	  				}
 	  				
-	  				$.each(lines,function(i,line){
-	  					$('.add_selectoption').trigger('click');
-	  					if(line.indexOf('@=')!=-1){
-	  						var labelval = line.split('@=');
-	  						$('.selectoptions_content .field_option_label:last').val( labelval[0] );
-	  						$('.selectoptions_content .field_option_value:last').val( labelval[1] );
-	  					} else {
-	  						$('.selectoptions_content .field_option_label:last').val( line );
-	  					}
-	  				});
-	  			}
+	  				
+	  			});
+	  			
 	  		});
 	  		
 	  	} else {
@@ -1638,6 +1781,20 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	}
 	  	
 	  }//end if not html
+  	
+  	$('.selectoptions_content').find('.field_option_value_empty').unbind('change').change(function(){
+  		
+			if($(this).is(':checked')){
+				
+				$(this).closest('.form-group').find('.field_option_value').attr("disabled",'');		
+				
+			}else{
+				
+				$(this).closest('.form-group').find('.field_option_value').removeAttr("disabled");
+			}
+	
+		}).trigger("change");
+  	
   	
   	$('.add_conditionset').unbind('click').click(function(){
 			var h = $('.condition_set_template').html();
@@ -1868,8 +2025,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
   			
   		}
   		
+  		<?php do_action( 'psfb_edit_js_save_attributes' ); ?>
+  		
+  		
   		if( $.inArray(mytype,customfields)!= -1 ){
-	  		
 	  		
 	  		<?php do_action( 'psfb_edit_js_handle_save_customfields' ); ?>
 	  		
@@ -1888,13 +2047,24 @@ function ps_field_drop( event, ui, target, j, createcol ){
   				$('.field_container[data-id="'+myID+'"]').find('.form-group select').html('');
   				$('.selectoptions_content .row').each(function(){
   					var label = $(this).find('.field_option_label').val();
-  					var val = $(this).find('.field_option_value').val();
+  					var empty = false;
+  					if($(this).find('.field_option_value_empty').is(':checked')){
+  						empty = true;
+  					}
+  					var val = $(this).find('.field_option_value').val();	
+  					
   					
   					$('select#field'+myID)
-  						.append( $('<option></option>') 
-				        .attr('value', val )
-				        .text( label )
-			        );
+								.append( $('<option></option>') 
+			        	.attr('value', val )
+			        	.data('empty', empty )
+			      	  .text( label )
+		       	 	);
+  					
+		      	if(typeof $(this).find('.field_option_value_default:checked').val() != 'undefined' && $(this).find('.field_option_value_default:checked').val() !=''){
+		      		$('select#field'+myID).find('option:last').attr('selected','selected');
+		       	} 
+		       	
   				});
   				
   				
@@ -1922,13 +2092,18 @@ function ps_field_drop( event, ui, target, j, createcol ){
   				$('.selectoptions_content .row').each(function(){
   					var label = $(this).find('.field_option_label').val();
   					var val = $(this).find('.field_option_value').val();
-  					
+  					var empty = false;
+  					if($(this).find('.field_option_value_empty').is(':checked')){
+  						empty = true;
+  					}
   					$('.field_container[data-id="'+myID+'"]').find('.form-group .radio_wrapper')
-  					//	.append( $('<div></div>')
-  					//		.addClass('radio')
+  						//	.append( $('<div></div>')
+  						//		.addClass('radio')
 	  						.append( $('<label class="radio-inline"></label>') 
 					        .append( $('<input>')
 					        	.attr('type', 'radio' )
+					        	
+					        	.data('empty', empty )
 					        	//.attr('name', 'field'+myID ) //$('#field_label').val()
 					        	.attr('name', $('#field_name').val() ) //$('#field_label').val()
 					        	.attr('value', val )
@@ -1936,7 +2111,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					        .append( label )
 					    //  )
 			        );
+  					if(typeof $(this).find('.field_option_value_default:checked').val() != 'undefined' && $(this).find('.field_option_value_default:checked').val() !=''){
+  						$('.field_container[data-id="'+myID+'"]').find('.form-group .radio_wrapper').find('input:last').attr('checked', 'checked' );
+  			    } 
   				});
+  				
   				$('.field_container[data-id="'+myID+'"]').find('.form-group')
 		        .append( $('<p></p>' )
 		        	.addClass('help-block')
@@ -1964,6 +2143,9 @@ function ps_field_drop( event, ui, target, j, createcol ){
 					        )
 					        .append( label )
 			        );
+			      if(typeof $(this).find('.field_option_value_default_checkbox:checked').val() != 'undefined' && $(this).find('.field_option_value_default_checkbox:checked').val() !=''){
+  						$('.field_container[data-id="'+myID+'"]').find('.form-group .checkbox_wrapper').find('input:last').attr('checked', 'checked' );
+  			    }
   				});
   				$('.field_container[data-id="'+myID+'"]').find('.form-group')
 		        .append( $('<p></p>' )
@@ -2236,6 +2418,10 @@ jQuery.fn.setCursorPosition = function(position){
   min-height: inherit;
 }
 
+.selectoptions_content_desc_default{
+text-align:right;	
+}
+
 <?php do_action( 'psfb_edit_cssstyles' ); ?>
 </style>
 
@@ -2482,6 +2668,7 @@ jQuery.fn.setCursorPosition = function(position){
 							    <p class="help-block"><?php echo __('Check this to mark the field as required','psfbldr'); ?></p>
 							  </div>
 							  
+							  
 							  <div class="form-group col-md-6">
 							    <label for="field_hide_label"><?php echo __('Hide label','psfbldr'); ?></label>
 							  	<div class="checkbox">
@@ -2491,10 +2678,17 @@ jQuery.fn.setCursorPosition = function(position){
 							  	</div>
 							    <p class="help-block"><?php echo __('Check this to hide the label of the field','psfbldr'); ?></p>
 							  </div>
+							  
+							 
 						  
 						</div>
+							<?php do_action( 'psfb_edit_modal_basics_after_mandatory' ); ?>
+						
 						  
 		        </div><!-- ende basics -->
+		        
+		        
+		        
 		        <div class="basicshtml tab-pane" id="tab-basicshtml" role="tabpanel">
 		        	
 						  
@@ -2510,12 +2704,23 @@ jQuery.fn.setCursorPosition = function(position){
 		        		
 		        		<div class="row form-group">
 		        			
-		        			<div class="col-md-5">
+		        			<div class="col-md-4">
 		        				<input type="text" class="form-control field_option_label" placeholder="<?php echo __('Label','psfbldr'); ?>">
 		        			</div>
-		        			<div class="col-md-5">
+		        			<div class="col-md-4">
 		        				<input type="text" class="form-control field_option_value" placeholder="<?php echo __('Value','psfbldr'); ?>">
 		        			</div>
+		        			
+		        			<div class="col-md-1 selectoptions_default_and_empty">
+		        				<input type="radio" class="field_option_value_default" name="radio">
+		        			</div>
+		        			<div class="col-md-1 selectoptions_default_and_empty" >
+		        				<input type="checkbox" class="field_option_value_empty" name="checkbox">
+		        			</div>	
+		        			
+		        			<div class="selectoptions_default_checkbox col-md-1" >
+		        				<input type="checkbox" class="field_option_value_default_checkbox" name="checkbox">
+		        			</div>	
 		        			<div class="col-md-2">
 		        				<button class="delete_selectoption btn btn-danger btn-xs" tabindex="-1"><span class="glyphicon glyphicon-trash"></span></button>
 		        			</div>
@@ -2529,14 +2734,22 @@ jQuery.fn.setCursorPosition = function(position){
 							  <div class="form-group">
 							    <label for="field_helptext"><?php echo __('Option value pairs','psfbldr'); ?></label>
 								  <div class="row selectoptions_content_desc">
-			        			
-			        			<div class="col-md-5" title="<?php echo __('The visible part','psfbldr'); ?>">
+			        			<div class="col-md-4" title="<?php echo __('The visible part','psfbldr'); ?>">
 			        				<?php echo __('Label','psfbldr'); ?>
 			        			</div>
-			        			<div class="col-md-5" title="<?php echo __('The value will be submitted to you','psfbldr'); ?>">
+			        			<div class="col-md-3" title="<?php echo __('The value will be submitted to you','psfbldr'); ?>">
 			        				<?php echo __('Value','psfbldr'); ?>
 			        			</div>
+			        			
+			        			<div class="col-md-2 selectoptions_content_desc_default selectoptions_content_desc_default_and_empty" >
+		        					<?php echo __('Default','psfbldr'); ?>
+		        				</div>
+		        				<div class="col-md-1 selectoptions_content_desc_empty selectoptions_content_desc_default_and_empty">
+		        					<?php echo __('Empty','psfbldr'); ?>
+		        				</div>
+		        					
 			        			<div class="col-md-2">
+			        				
 			        				
 			        			</div>
 			        			
@@ -2544,7 +2757,7 @@ jQuery.fn.setCursorPosition = function(position){
 			        		<div class="row selectoptions_quick_content_desc" style="display:none;">
 			        			
 			        			<div class="col-md-12">
-			        				<?php echo __('Please enter one option per line. If you want to use a value different from the label please divide your label value pairs with &quot;<em>@=</em>&quot; like &quot;mylabel@=myvalue&quot;.','psfbldr'); ?>
+			        				<?php echo __('Please enter one option per line. If you want to use a value different from the label please divide your label value pairs with "," like <em>mylabel,myvalue</em>. If you want to use a comma (,) in either your label or value you additionally have to wrap the corresponding string in quotes like <em>"mylabel with, comma","myvalue, with comma"</em>. For empty or default values you can use <abbr title="Default">d</abbr>,<abbr title="Empty">e</abbr> or <abbr title="Default &amp; Empty">de</abbr> as the third option after the value as in: <em>mylabel,myvalue, <abbr title="Default &amp; Empty">de</abbr></em>.','psfbldr'); ?>
 			        			</div>
 			        			
 			        		</div>
@@ -2558,6 +2771,7 @@ jQuery.fn.setCursorPosition = function(position){
 			        		<div class="selectoptions_option">
 			        			<button class="btn btn-success btn-xs add_selectoption"><span class="glyphicon glyphicon-plus"></span> <?php echo __('Add option','psfbldr'); ?></button>
 			        			<button class="btn btn-default btn-xs toggle_selectoption"><span class="glyphicon glyphicon-random"></span> <?php echo __('Toggle option edit mode','psfbldr'); ?></button>
+			        			
 			        		</div>
 			        		
 							  </div>

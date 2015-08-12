@@ -98,6 +98,7 @@ Built in anti spam protection and compatible with other anti spam plugins like [
 > PayPal Payment Forms<br />
 > Multi-Page Forms<br />
 > Special Survey-Fields<br />
+> Custom field validation<br />
 > No reference to PlanSo Forms in emails<br />
 > Predefined attachments for autoresponder mails<br />
 > Google Analytics Integration<br />
@@ -148,6 +149,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.6.1 =
+* Added new options to define default and empty values to select, checkbox and radio fields
+* Fixed a bug when toggleing input modes of select, checkbox and radio fields
 
 = 1.6.0 =
 * Added an easy way to install GoodbyeCaptcha alongside PlanSo Forms

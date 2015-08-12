@@ -353,6 +353,7 @@ $psfb_pro_teaser = '
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Easyly send attachments via autoresponder to your users','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Conditional logic for intelligent field handling','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Special survey and rating fields','psfbldr').'</li>
+						<li><i class="fa-li fa fa-check-square"></i>'. __('Custom field validation using regex and predefined formats','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Awesome form elements designer','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Zapier.com & Pushover.net Integration','psfbldr').'</li>
 						<li><i class="fa-li fa fa-check-square"></i>'. __('Google Analytics Conversion Tracking','psfbldr').'</li>

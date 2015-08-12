@@ -122,7 +122,7 @@ if(isset($j->fields) && count($j->fields)>0){
 				  $post_value = htmlspecialchars($post_value);
 				}
 				
-				if( isset($col->required) && ($col->required==true || $col->required=='required' || $col->required=='true')){
+				if( isset($col->required) && $post_value!='c34774bc9ee05f717f36af1bd98ac0939120ccc5592cf7863d0050afc2652ed5' && ($col->required==true || $col->required=='required' || $col->required=='true')){
 					
 					if(strstr($post_types[$i],'file')){
 						//file && required
@@ -168,7 +168,9 @@ if(isset($j->fields) && count($j->fields)>0){
 						}
 					}
 				}//end required
-				
+				if($post_value == 'c34774bc9ee05f717f36af1bd98ac0939120ccc5592cf7863d0050afc2652ed5'){
+					$post_value = '';
+				}
 				$mail_replace[$pidx] = $post_value;
 				if(strstr($post_types[$i],'file')){
 					$file_keys[] = $pidx;
