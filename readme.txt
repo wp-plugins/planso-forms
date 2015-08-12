@@ -150,6 +150,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.6.2 =
+* Fixed missing js file
+
 = 1.6.1 =
 * Added new options to define default and empty values to select, checkbox and radio fields
 * Fixed a bug when toggleing input modes of select, checkbox and radio fields
