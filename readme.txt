@@ -2,7 +2,7 @@
 Contributors: Stephan Helbig, PabloFernandezGarcia, Sharath Chandra Prathiwadhi
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms,form maker
 Requires at least: 3.9
-Tested up to: 4.2.3
+Tested up to: 4.3.0
 Stable tag: trunk
 
 This form builder makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize fields with icons, etc
@@ -153,6 +153,7 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 = 1.6.1 =
 * Added new options to define default and empty values to select, checkbox and radio fields
 * Fixed a bug when toggleing input modes of select, checkbox and radio fields
+* Tested for WordPress 4.3.0 compatability
 
 = 1.6.0 =
 * Added an easy way to install GoodbyeCaptcha alongside PlanSo Forms
