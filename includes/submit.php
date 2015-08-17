@@ -221,6 +221,12 @@ if(count($errors)<1){
 	do_action( 'psfb_submit_before_redirect_successfull',$page_detail_atts );
 	
 	if(isset($j->thankyou_page_url) && validate_url($j->thankyou_page_url)){
+		
+		if(!empty($mail_replace)){
+			foreach($mail_replace as $k=>$v){
+				$j->thankyou_page_url = str_replace('['.$k.']',$v,$j->thankyou_page_url);
+			}
+		}
 		wp_redirect( $j->thankyou_page_url );
 	} else {
 		$_SESSION['psfb_success'][$_POST['psfb_form_id']] = true;

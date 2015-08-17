@@ -150,6 +150,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.6.3 =
+* Allow the inclusion of submitted data to the thank-you-page-url
+
 = 1.6.2 =
 * Fixed missing js file
 
