@@ -623,6 +623,9 @@ jQuery(document).ready(function($){
 		if( $('input.pushover_user').length > 0){
 			jj.pushover_user =  $('input.pushover_user').val();
 		}
+		if( $('input.pushover_sound').length > 0){
+			jj.pushover_sound =  $('input.pushover_sound').val();
+		}
 		<?php do_action('psfb_edit_js_before_save_json'); ?>
 		
 		$('#psfb_title').val( $('.psfb_title_input').val() );

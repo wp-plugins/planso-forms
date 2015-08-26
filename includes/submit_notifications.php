@@ -279,12 +279,19 @@
 	}
 	
 	if(isset($j->pushover_user) && !empty($j->pushover_user)){
+		if(isset($j->pushover_sound) && !empty($j->pushover_sound)){
+			$pushover_sound = $j->pushover_sound;
+		} else {
+			$pushover_sound = 'pushover';
+		}
+		
 		
 		$options = array(
 		  CURLOPT_URL => "https://api.pushover.net/1/messages.json",
 		  CURLOPT_POSTFIELDS => array(
 		    "token" => "aM5ZE5xttJQDnNkABYjwLdxpBUQzBv",
 		    "user" => $j->pushover_user,
+		    "sound" => $pushover_sound,
 		    "message" => $admin_content,
 		    "title" => $psform->post_title.' '.__('has been submitted','psfbldr'),
 		    "url" =>  $_POST['psfb_pageurl'],
