@@ -150,6 +150,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.6.7 =
+* Increased compatability with older versions of bootstrap
+
 = 1.6.6 =
 * Updated locales
 
