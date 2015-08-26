@@ -624,7 +624,7 @@ jQuery(document).ready(function($){
 			jj.pushover_user =  $('input.pushover_user').val();
 		}
 		if( $('select.pushover_sound').length > 0){
-			jj.pushover_sound =  $('input.pushover_sound').val();
+			jj.pushover_sound =  $('select.pushover_sound').val();
 		}
 		<?php do_action('psfb_edit_js_before_save_json'); ?>
 		
