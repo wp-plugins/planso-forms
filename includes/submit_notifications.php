@@ -365,6 +365,15 @@
 			rmdir($upload_dir);
 		}
 	}
+	if(!isset($affiliate_params)){
+		$amount = 0;
+		if(isset($j->affiliate_amount) && !empty($j->affiliate_amount)){
+			$amount = $j->affiliate_amount;
+		}
+		$affiliate_params = apply_filters( 'psfb_affiliate_gather_params', array(), $amount, $psform->post_title,$psform->ID );
+	}
 	
+	$affiliate_params = apply_filters( 'psfb_affiliate_add_referral', $affiliate_params);
+			
 	
 ?>

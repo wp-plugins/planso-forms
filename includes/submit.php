@@ -1,6 +1,23 @@
 <?php
-
-require_once(dirname(__FILE__).'/vars.inc.php');
+	
+	global $wp_session;
+	if(!isset($wp_session['psfb_errors'])){
+		$psfb_errors = array();
+	} else {
+		$psfb_errors = $wp_session['psfb_errors'];
+	}
+	if(!isset($wp_session['psfb_values'])){
+		$psfb_values = array();
+	} else {
+		$psfb_values = $wp_session['psfb_values'];
+	}
+	if(!isset($wp_session['psfb_success'])){
+		$psfb_success = array();
+	} else {
+		$psfb_success = $wp_session['psfb_success'];
+	}
+	
+	require_once(dirname(__FILE__).'/vars.inc.php');
 
 if(!isset($submitted_j)){
 	$psform = get_post( $_POST['psfb_form_id'] );
@@ -25,20 +42,24 @@ if(!isset($submitted_j)){
 	if(isset($_POST['psfb_hon_as']) && !empty($_POST['psfb_hon_as'])){
 		if($_POST['psfb_hon_as']!=''){
 			//honeypot is not empty - must be spam
-			$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Honeypot is not empty','psfbldr') );
+			$psfb_errors[$_POST['psfb_form_id']] = array('psfb_message' => __('Honeypot is not empty','psfbldr') );
+			$wp_session['psfb_errors'] = $psfb_errors;
+			wp_session_commit();
 			wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 		}
 	}
 	
-	if(isset($_SESSION['psfb_anti_spam'][$_POST['psfb_form_id']][$_POST['psfb_cnt_check']])){
+	if(isset($wp_session['psfb_anti_spam'][$_POST['psfb_form_id']][$_POST['psfb_cnt_check']])){
 		//psfb_hon_as2
-		if( $_SESSION['psfb_anti_spam'][$_POST['psfb_form_id']][$_POST['psfb_cnt_check']] == $_POST['psfb_hon_as2'] ){
+		if( $wp_session['psfb_anti_spam'][$_POST['psfb_form_id']][$_POST['psfb_cnt_check']] == $_POST['psfb_hon_as2'] ){
 			//session and value are equal - seems to be a user
 		} else {
 			//either no session available or 
 			if(strlen($_POST['psfb_hon_as2']) != 32){
 				//md5 was changed is definitly not 32 chars and therefore spam
-				$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Salt missmatch','psfbldr') );
+				$psfb_errors[$_POST['psfb_form_id']] = array('psfb_message' => __('Salt missmatch','psfbldr') );
+				$wp_session['psfb_errors'] = $psfb_errors;
+				wp_session_commit();
 				wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 			}
 		}
@@ -46,13 +67,16 @@ if(!isset($submitted_j)){
 	if(isset($j->javascript_antispam) && $j->javascript_antispam==true){
 		if( !isset($_POST['psfb_js_as']) || empty($_POST['psfb_js_as'])){
 			//javascript antispam field not submitted - spam
-			
-			$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Anti spam field was omitted','psfbldr') );
+			$psfb_errors[$_POST['psfb_form_id']] = array('psfb_message' => __('Anti spam field was omitted','psfbldr') );
+			$wp_session['psfb_errors'] = $psfb_errors;
+			wp_session_commit();
 			wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 		} else {
 			if($_POST['psfb_js_as']!=$_POST['psfb_hon_as2']){
 				//fields dont match - spam
-				$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => __('Anti spam fields dont match','psfbldr') );
+				$psfb_errors[$_POST['psfb_form_id']] = array('psfb_message' => __('Anti spam fields dont match','psfbldr') );
+				$wp_session['psfb_errors'] = $psfb_errors;
+				wp_session_commit();
 				wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 			}
 		}
@@ -203,7 +227,9 @@ if(count($errors)<1){
 	*/
 	$psfb_custom_validation_passed = apply_filters( 'psfb_validate_form_request', true, $page_detail_atts );
 	if( true !==  $psfb_custom_validation_passed){
-		$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = array('psfb_message' => (string)$psfb_custom_validation_passed);
+		$psfb_errors[$_POST['psfb_form_id']] = array('psfb_message' => (string)$psfb_custom_validation_passed);
+		$wp_session['psfb_errors'] = $psfb_errors;
+		wp_session_commit();
 		wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 		exit;
 	}
@@ -229,7 +255,9 @@ if(count($errors)<1){
 		}
 		wp_redirect( $j->thankyou_page_url );
 	} else {
-		$_SESSION['psfb_success'][$_POST['psfb_form_id']] = true;
+		$psfb_success[$_POST['psfb_form_id']] = true;
+		$wp_session['psfb_success'] = $psfb_success;
+		wp_session_commit();
 		wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 	}
 	exit();
@@ -238,8 +266,11 @@ if(count($errors)<1){
 else {
 	do_action( 'psfb_submit_before_redirect_error' );
 	//error: register in session
-	$_SESSION['psfb_errors'][$_POST['psfb_form_id']] = $errors;
-	$_SESSION['psfb_values'][$_POST['psfb_form_id']] = $_POST;
+	$psfb_errors[$_POST['psfb_form_id']] = $errors;
+	$wp_session['psfb_errors'] = $psfb_errors;
+	$psfb_values[$_POST['psfb_form_id']] = $_POST;
+	$wp_session['psfb_values'] = $psfb_values;
+	wp_session_commit();
 	wp_safe_redirect( $_POST['psfb_pageurl'].'#planso_forms_'.$_POST['psfb_form_id'].'_'.$_POST['psfb_form_cnt'] );
 	exit();
 }

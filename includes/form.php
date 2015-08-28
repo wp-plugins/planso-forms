@@ -1,11 +1,13 @@
 <?php
-	
+	//wp_session_start();
+
+	global $wp_session;
 	if(!isset($_POST['psfb_global_cnt'])){
 		$_POST['psfb_global_cnt'] = 0;
 	}
 	$_POST['psfb_global_cnt'] ++;
 	
-	//$_SESSION = null;
+	//$wp_session = null;
 	
 	$framework = array();
 	
@@ -101,10 +103,10 @@
 	$out = '';
 	
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($j,true).'</pre>';
-	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION['psfb_errors'][$atts['id']],true).'</pre>';
-	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION['psfb_errors'],true).'</pre>';
-	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION,true).'</pre>';
-	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($_SESSION['psfb_values'][$atts['id']],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($wp_session['psfb_errors'][$atts['id']],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($wp_session['psfb_errors'],true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($wp_session,true).'</pre>';
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($wp_session['psfb_values'][$atts['id']],true).'</pre>';
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_scripts'],true).'</pre>';
 	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($GLOBALS['wp_styles'],true).'</pre>';
 	
@@ -114,21 +116,21 @@
 	}
 	$out .= '" data-id="'.$atts['id'].'" data-cnt="'.$_POST['psfb_global_cnt'].'" id="planso_forms_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'">';
 	$out .= '<div class="container-fluid">';
-	if(isset($_SESSION['psfb_errors'][$atts['id']]) && !empty($_SESSION['psfb_errors'][$atts['id']]) ){
+	if(isset($wp_session['psfb_errors'][$atts['id']]) && !empty($wp_session['psfb_errors'][$atts['id']]) ){
 		$out .= '<p style="padding: 15px;" class="bg-danger">'.__('Attention! There has been an error submitting the form. Please check the marked fields below.','psfbldr').'</p>';
-		if(isset($_SESSION['psfb_errors'][$atts['id']]['psfb_message'])){
-			$out .= '<p class="bg-warning">'.$_SESSION['psfb_errors'][$atts['id']]['psfb_message'].'</p>';
+		if(isset($wp_session['psfb_errors'][$atts['id']]['psfb_message'])){
+			$out .= '<p class="bg-warning">'.$wp_session['psfb_errors'][$atts['id']]['psfb_message'].'</p>';
 		}
 	}
-	if(isset($_SESSION['psfb_success'][$atts['id']]) && !empty($_SESSION['psfb_success'][$atts['id']]) ){
+	if(isset($wp_session['psfb_success'][$atts['id']]) && !empty($wp_session['psfb_success'][$atts['id']]) ){
 		$out .= '<p style="padding: 15px;" class="bg-success">'.__('Your submission was successful.','psfbldr').'</p>';
-		$_SESSION['psfb_success'][$atts['id']] = null;
+		$wp_session['psfb_success'][$atts['id']] = null;
 	}
 	$out .= '<input type="hidden" name="psfb_pageurl" value="'.htmlspecialchars(get_permalink( get_the_ID() ) ).'"/>';
 	$out .= '<input type="hidden" name="psfb_userip" value="'.@$_SERVER['REMOTE_ADDR'].'"/>';
 	$out .= '<input type="hidden" name="psfb_useragent" value="'.@$_SERVER['HTTP_USER_AGENT'].'"/>';
-	$out .= '<input type="hidden" name="psfb_landingpage" value="'.htmlspecialchars(@$_SESSION['LandingPage']).'"/>';
-	$out .= '<input type="hidden" name="psfb_referer" value="'.htmlspecialchars(@$_SESSION['OriginalRef']).'"/>';
+	$out .= '<input type="hidden" name="psfb_landingpage" value="'.htmlspecialchars(@$wp_session['LandingPage']).'"/>';
+	$out .= '<input type="hidden" name="psfb_referer" value="'.htmlspecialchars(@$wp_session['OriginalRef']).'"/>';
 	$out .= '<input type="hidden" name="psfb_page_id" value="'.get_the_ID().'"/>';
 	$out .= '<input type="hidden" name="psfb_form_submit" value="1"/>';
 	$out .= '<input type="hidden" name="psfb_form_id" value="'.$atts['id'].'"/>';
@@ -138,9 +140,12 @@
 	
 	$out .= '<div style="display:none"><input type="text" name="psfb_hon_as"/></div>';
 	
-	$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']] = md5('we dont like spam'.time());
+	$psfb_anti_spam[$atts['id']][$_POST['psfb_global_cnt']] = md5('we dont like spam'.time());
 	
-	$out .= '<div style="display:none"><input type="text" name="psfb_hon_as2" id="psfb_hon_as2_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'" value="'.$_SESSION['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']].'"/></div>';
+	$wp_session['psfb_anti_spam'] = $psfb_anti_spam;
+	wp_session_commit();
+	//$out .= '<pre style="height:80px;overflow-y:auto;">'.print_r($wp_session,true).'</pre>';
+	$out .= '<div style="display:none"><input type="text" name="psfb_hon_as2" id="psfb_hon_as2_'.$atts['id'].'_'.$_POST['psfb_global_cnt'].'" value="'.$wp_session['psfb_anti_spam'][$atts['id']][$_POST['psfb_global_cnt']].'"/></div>';
 	$out .= '<div style="display:none"><input type="text" name="psfb_cnt_check" value="'.$_POST['psfb_global_cnt'].'"/></div>';
 	
 	if(isset($j->javascript_antispam) && $j->javascript_antispam==true){
@@ -237,7 +242,7 @@ EOF;
 				
 				$out .= '<div class="col-md-'.$colcnt.'">';
 				$out .= '<div class="form-group psfb-single-container';
-				if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name]) ){
+				if(isset($wp_session['psfb_errors'][$atts['id']]) && isset($wp_session['psfb_errors'][$atts['id']][$col->name]) ){
 					$out .= ' has-error';
 				}
 				$out .= '"';
@@ -253,7 +258,7 @@ EOF;
 							$groupshow = true;
 							foreach($c->rules as $rule){
 								if($c->groupOp=='AND'){
-									if( isset($_SESSION['psfb_values'][$atts['id']][$rule->field]) ){
+									if( isset($wp_session['psfb_values'][$atts['id']][$rule->field]) ){
 										//check if value exists
 									}
 								} else if($c->groupOp=='OR'){
@@ -395,8 +400,8 @@ EOF;
 								$out .= '<span class="psfb_required_mark">*</span>';
 							}
 							
-							if(isset($_SESSION['psfb_errors'][$atts['id']]) && isset($_SESSION['psfb_errors'][$atts['id']][$col->name])){
-								$out .= ' <small class="bg-danger">('.$_SESSION['psfb_errors'][$atts['id']][$col->name]['message'].')</small>';
+							if(isset($wp_session['psfb_errors'][$atts['id']]) && isset($wp_session['psfb_errors'][$atts['id']][$col->name])){
+								$out .= ' <small class="bg-danger">('.$wp_session['psfb_errors'][$atts['id']][$col->name]['message'].')</small>';
 							}
 							$out .= '</label>';
 							
@@ -516,8 +521,8 @@ EOF;
 							if(strstr($fieldtype,'date')){
 								$out .= ' data-psfb_datepicker="'.$j->datepicker.'"';
 							}
-							if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
-								$out .= ' value="'.$_SESSION['psfb_values'][$atts['id']][$col->name].'"';
+							if(isset($wp_session['psfb_values'][$atts['id']]) && isset($wp_session['psfb_values'][$atts['id']][$col->name])){
+								$out .= ' value="'.$wp_session['psfb_values'][$atts['id']][$col->name].'"';
 							} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)])){
 								$out .= ' value="'.htmlentities($atts[strtolower($col->name)], ENT_QUOTES).'"';
 							} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name])){
@@ -578,8 +583,8 @@ EOF;
 								$out .= $added_field_attributes;
 								$out .= '>';
 								
-								if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name])){
-									$out .= $_SESSION['psfb_values'][$atts['id']][$col->name];
+								if(isset($wp_session['psfb_values'][$atts['id']]) && isset($wp_session['psfb_values'][$atts['id']][$col->name])){
+									$out .= $wp_session['psfb_values'][$atts['id']][$col->name];
 								} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)])){
 									$out .= htmlentities($atts[strtolower($col->name)], ENT_QUOTES);
 								} else if(isset($j->allow_prefill) && $j->allow_prefill==true && isset($_REQUEST[$col->name]) && !empty($_REQUEST[$col->name])){
@@ -636,7 +641,7 @@ EOF;
 									
 									
 									
-									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
+									if(isset($wp_session['psfb_values'][$atts['id']]) && isset($wp_session['psfb_values'][$atts['id']][$col->name]) && $wp_session['psfb_values'][$atts['id']][$col->name]==$opt->val){
 										$out .= ' selected="selected"';
 									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && $atts[strtolower($col->name)]==$opt->val){
 										$out .= ' selected="selected"';
@@ -683,7 +688,7 @@ EOF;
 									if(isset($col->required) && ($col->required=='required' || $col->required==true)){
 										$out .= ' required="required" data-required="required"';
 									}
-									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && $_SESSION['psfb_values'][$atts['id']][$col->name]==$opt->val){
+									if(isset($wp_session['psfb_values'][$atts['id']]) && isset($wp_session['psfb_values'][$atts['id']][$col->name]) && $wp_session['psfb_values'][$atts['id']][$col->name]==$opt->val){
 										$out .= ' checked="checked"';
 									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && $atts[strtolower($col->name)]==$opt->val){
 										$out .= ' checked="checked"';
@@ -731,7 +736,7 @@ EOF;
 										$out .= ' data-required="required"';
 									}
 									
-									if(isset($_SESSION['psfb_values'][$atts['id']]) && isset($_SESSION['psfb_values'][$atts['id']][$col->name]) && is_array($_SESSION['psfb_values'][$atts['id']][$col->name]) && in_array($opt->val,$_SESSION['psfb_values'][$atts['id']][$col->name])){
+									if(isset($wp_session['psfb_values'][$atts['id']]) && isset($wp_session['psfb_values'][$atts['id']][$col->name]) && is_array($wp_session['psfb_values'][$atts['id']][$col->name]) && in_array($opt->val,$wp_session['psfb_values'][$atts['id']][$col->name])){
 										$out .= ' checked="checked"';
 									} else if(isset($atts[strtolower($col->name)]) && !empty($atts[strtolower($col->name)]) && ((is_array($atts[strtolower($col->name)]) && in_array($opt->val,$atts[strtolower($col->name)]) ) || $atts[strtolower($col->name)] == $opt->val ) ){
 										$out .= ' checked="checked"';
@@ -784,8 +789,9 @@ EOF;
 	if(isset($j->link_love) && !empty($j->link_love) && $j->link_love==true){
 		$out .= '<p style="text-align:right;"><small>'.__('powered by','psfbldr').' <a href="http://forms.planso.de/">'.__('PlanSo Forms','psfbldr').'</a></small></p>';
 	}
-	$_SESSION['psfb_errors'][$atts['id']] = null;
-	$_SESSION['psfb_values'][$atts['id']] = null;
+	$wp_session['psfb_errors'][$atts['id']] = null;
+	$wp_session['psfb_values'][$atts['id']] = null;
+	wp_session_commit();
 	return $out;
 	
 ?>

@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.6.7
+ * Version: 1.6.8
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -27,6 +27,22 @@
 */
 
 load_plugin_textdomain( 'psfbldr', false, dirname( plugin_basename( __FILE__ ) ).'/locale' );
+
+if ( ! class_exists( 'Recursive_ArrayAccess' ) ) {
+	require_once( dirname(__FILE__).'/libs/wp-session-manager/class-recursive-arrayaccess.php' );
+}
+
+// Only include the functionality if it's not pre-defined.
+if ( ! class_exists( 'WP_Session' ) ) {
+	
+	// let users change the session cookie name
+	if( ! defined( 'WP_SESSION_COOKIE' ) )
+		define( 'WP_SESSION_COOKIE', '_wp_session' );
+	
+	require_once( dirname(__FILE__).'/libs/wp-session-manager/class-wp-session.php' );
+	require_once( dirname(__FILE__).'/libs/wp-session-manager/wp-session.php' );
+}
+$wp_session = WP_Session::get_instance();
 
 
 function ps_echo_form($atts, $content= ''){
@@ -53,40 +69,48 @@ add_filter('widget_text', 'do_shortcode');
 // Original Referrer 
 function psfb_set_session_values() 
 {
+	
+	
+
+	global $wp_session;
+/*
 	if (!session_id()) 
 	{
 		session_start();
 	}
+*/
 
-	if (!isset($_SESSION['OriginalRef'])) 
+	if (!isset($wp_session['OriginalRef'])) 
 	{
-		if(isset($_SERVER['HTTP_REFERER'])){
-			$_SESSION['OriginalRef'] = $_SERVER['HTTP_REFERER']; 
+		if(isset($wp_session['HTTP_REFERER'])){
+			$wp_session['OriginalRef'] = $wp_session['HTTP_REFERER']; 
 		} else {
-			$_SESSION['OriginalRef'] = 'Direct';
+			$wp_session['OriginalRef'] = 'Direct';
 		}
 	}
 
-	if (!isset($_SESSION['LandingPage'])) 
+	if (!isset($wp_session['LandingPage'])) 
 	{
-		$_SESSION['LandingPage'] = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; 
+		$wp_session['LandingPage'] = "http://" . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]; 
 	}
-	if(isset($_SESSION['psfb_track_successfull_submission'])){
-		$_SESSION['psfb_track_successfull_submission'] = null;
+	if(isset($wp_session['psfb_track_successfull_submission'])){
+		$wp_session['psfb_track_successfull_submission'] = null;
 		add_action('wp_footer', 'psfb_track_successfull_submission');
 	}
+	wp_session_commit();
 }
 add_action('init', 'psfb_set_session_values');
 
 function psfb_track_successfull_submission(){
+	global $wp_session;
 ?>
 <script type="text/javascript">
-var _gaq = _gaq || [];_gaq.push(['_trackEvent', 'PlanSo Forms', '<?php echo $_SESSION['psfb_track_successfull_submission_form_label']; ?>', '<?php echo $_SESSION['psfb_track_successfull_submission_permalink']; ?>']);
-try{ga('send', 'event', 'PlanSo Forms', '<?php echo $_SESSION['psfb_track_successfull_submission_form_label']; ?>', '<?php echo $_SESSION['psfb_track_successfull_submission_form_id']; ?>', {'page': '<?php echo $_SESSION['psfb_track_successfull_submission_permalink']; ?>'});}catch(e){console.log('analytics.js not loaded');}
+var _gaq = _gaq || [];_gaq.push(['_trackEvent', 'PlanSo Forms', '<?php echo $wp_session['psfb_track_successfull_submission_form_label']; ?>', '<?php echo $wp_session['psfb_track_successfull_submission_permalink']; ?>']);
+try{ga('send', 'event', 'PlanSo Forms', '<?php echo $wp_session['psfb_track_successfull_submission_form_label']; ?>', '<?php echo $wp_session['psfb_track_successfull_submission_form_id']; ?>', {'page': '<?php echo $wp_session['psfb_track_successfull_submission_permalink']; ?>'});}catch(e){console.log('analytics.js not loaded');}
 </script>
 <?php
-	$_SESSION['psfb_track_successfull_submission_form_id'] = null;
-	$_SESSION['psfb_track_successfull_submission_permalink'] = null;
+	$wp_session['psfb_track_successfull_submission_form_id'] = null;
+	$wp_session['psfb_track_successfull_submission_permalink'] = null;
 }
 
 /** Register Admin Menu */

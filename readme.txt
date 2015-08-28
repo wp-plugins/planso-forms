@@ -150,6 +150,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.6.8 =
+* Replaced default session handling with custom sessions based on [Eric Mann#39;s WP Session Manager](https://wordpress.org/plugins/wp-session-manager/faq/) to improve caching of pages with PlanSo Forms
+
 = 1.6.7 =
 * Increased compatability with older versions of bootstrap
 
