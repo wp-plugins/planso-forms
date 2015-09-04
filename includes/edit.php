@@ -31,6 +31,7 @@ require_once( dirname(__FILE__).'/vars.inc.php' );
 	}
 	echo ' <a href="' . esc_url( menu_page_url( 'ps-form-builder', false ) ) . '" class="add-new-h2">' . esc_html( __( 'Back to forms', 'psfbldr' ) ) . '</a>';
 	
+	do_action('psfb_edit_nav_main_after',$post_id);
 ?></h2>
 
 <?php do_action( 'psfb_admin_notices' ); ?>

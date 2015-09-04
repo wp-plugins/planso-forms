@@ -789,8 +789,18 @@ EOF;
 	if(isset($j->link_love) && !empty($j->link_love) && $j->link_love==true){
 		$out .= '<p style="text-align:right;"><small>'.__('powered by','psfbldr').' <a href="http://forms.planso.de/">'.__('PlanSo Forms','psfbldr').'</a></small></p>';
 	}
-	$wp_session['psfb_errors'][$atts['id']] = null;
-	$wp_session['psfb_values'][$atts['id']] = null;
+	
+	$psfb_errors = $wp_session['psfb_errors'];
+	$psfb_values = $wp_session['psfb_values'];
+	if(isset($psfb_errors[$atts['id']])){
+		$psfb_errors[$atts['id']] = null;
+	}
+	if(isset($psfb_values[$atts['id']])){
+		$psfb_values[$atts['id']] = null;
+	}
+	
+	$wp_session['psfb_errors'] = $psfb_errors;
+	$wp_session['psfb_values'] = $psfb_values;
 	wp_session_commit();
 	return $out;
 	

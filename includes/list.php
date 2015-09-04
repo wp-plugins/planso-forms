@@ -123,6 +123,7 @@ if($r && count($r)>0){
 					</a>
 				</strong>
 				<div class="row-actions">
+					<?php do_action('psfb_list_entry_actions_before',$row); ?>
 					<span class="edit">
 						<a href="<?php echo esc_url( add_query_arg( array( 'psfbid' => $row->ID ), menu_page_url( 'ps-form-builder-new', false ) ) ); ?>"><?php echo __('Edit','psfbldr'); ?></a>
 						 | 
@@ -134,6 +135,7 @@ if($r && count($r)>0){
 					<span class="delete">
 						<a href="<?php echo esc_url( add_query_arg( array( 'psfbid' => $row->ID,'action' => 'delete' ), menu_page_url( 'ps-form-builder', false ) ) ); ?>" onclick="if(confirm('<?php echo __('Are you sure you want to delete this form?','psfbldr'); ?>')){return true;}else{return false;}"><?php echo __('Delete','psfbldr'); ?></a>
 					</span>
+					<?php do_action('psfb_list_entry_actions_after',$row); ?>
 				</div>
 			</td>
 			<td class="shortcode column-shortcode">

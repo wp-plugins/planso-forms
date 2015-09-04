@@ -60,6 +60,7 @@ Built in anti spam protection and compatible with other anti spam plugins like [
 * Batch edit, copy and paste label value pairs
 * Multiple form layouts
 * Multi file uploads
+* Affiliate referral tracking
 * Font-Awesome Icons for input groups
 * Select from different datepickers within form builder
 * Multiple form recipients of autoresponder email
@@ -69,6 +70,7 @@ Built in anti spam protection and compatible with other anti spam plugins like [
 * Works with any theme
 
 = Example use cases =
+* Lead forms
 * Simple Contact forms
 * Complex Contact forms
 * Registration forms
@@ -149,6 +151,13 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.7.0 =
+* Preparation for storing and exporting submission data ([Pro Feature](http://www.planso.net/pricing))
+* Preparation for affiliate referral tracking ([Pro Feature](http://www.planso.net/pricing))
+
+= 1.6.9 =
+* Fixed notice that could appear after the last update
 
 = 1.6.8 =
 * Replaced default session handling with custom sessions based on [Eric Mann#39;s WP Session Manager](https://wordpress.org/plugins/wp-session-manager/faq/) to improve caching of pages with PlanSo Forms
