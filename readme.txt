@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.7.1 =
+* Minor change in internal notification handling
+
 = 1.7.0 =
 * Preparation for storing and exporting submission data ([Pro Feature](http://www.planso.net/pricing))
 * Preparation for affiliate referral tracking ([Pro Feature](http://www.planso.net/pricing))

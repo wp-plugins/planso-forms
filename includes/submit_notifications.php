@@ -374,6 +374,17 @@
 	}
 	
 	$affiliate_params = apply_filters( 'psfb_affiliate_add_referral', $affiliate_params);
-			
+	
+	
+	$page_detail_atts = array(
+		'id' => $psform->ID,
+		'permalink' => $_POST['psfb_pageurl'],
+		'title' => $psform->post_title,
+		'mail_replace' => $mail_replace,
+		'zmail_replace' => $zmail_replace,
+		'j' => $j
+	);
+	
+	do_action( 'psfb_submitnotification_before_exit',$page_detail_atts );
 	
 ?>
