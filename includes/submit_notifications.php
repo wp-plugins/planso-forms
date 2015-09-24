@@ -357,11 +357,17 @@
 	$attachments = $filtered['attachments'];
 	
 	/** CLEAN UPLOADED ATTACHMENTS **/
-	if(!isset($j->clean_attachments) || $j->clean_attachments==true){
+	if(!isset($j->clean_attachments) || $j->clean_attachments===true || $j->clean_attachments===1){
 		if($has_attachments && count($attachments)>0){
 			foreach($attachments as $f){
+				chmod($f,0777);
 				unlink($f);
 			}
+			chmod($upload_dir,0777);
+			$files = array_diff(scandir($upload_dir), array('.','..')); 
+	    foreach ($files as $file) { 
+	      unlink($upload_dir.'/'.$file); 
+	    } 
 			rmdir($upload_dir);
 		}
 	}

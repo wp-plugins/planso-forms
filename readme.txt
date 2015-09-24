@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.7.2 =
+* Changes in handling deletion of uploaded files
+
 = 1.7.1 =
 * Minor change in internal notification handling
 
