@@ -2,7 +2,7 @@
 Contributors: Stephan Helbig, PabloFernandezGarcia, Sharath Chandra Prathiwadhi
 Tags: form,forms,contact form,form builder,form creator,build forms,create forms,manage forms,form manager,submit form,signup forms,application forms,form maker
 Requires at least: 3.9
-Tested up to: 4.3.0
+Tested up to: 4.3.1
 Stable tag: trunk
 
 This form builder makes it easy to create professional forms. Build forms and manage forms in a new intuitive way and customize fields with icons, etc
@@ -151,6 +151,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.7.3 =
+* Tested for WordPress 4.3.1 compatibility
 
 = 1.7.2 =
 * Changes in handling the deletion of uploaded files

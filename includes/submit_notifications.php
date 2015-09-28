@@ -365,7 +365,7 @@
 			}
 			chmod($upload_dir,0777);
 			$files = array_diff(scandir($upload_dir), array('.','..')); 
-	    foreach ($files as $file) { 
+	    foreach($files as $file){
 	      unlink($upload_dir.'/'.$file); 
 	    } 
 			rmdir($upload_dir);
