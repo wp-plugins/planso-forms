@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.7.4 =
+* Updated session handling for uploaded files
+
 = 1.7.3 =
 * Tested for WordPress 4.3.1 compatibility
 

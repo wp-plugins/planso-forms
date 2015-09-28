@@ -94,8 +94,8 @@
 					mkdir( $wp_upload_dir['basedir'].'/planso-forms/',0777 );
 				}
 				
-				$upload_dir = $wp_upload_dir['basedir'].'/planso-forms/'.session_id();
-				$upload_url = $wp_upload_dir['baseurl'].'/planso-forms/'.session_id();
+				$upload_dir = $wp_upload_dir['basedir'].'/planso-forms/'.wp_session_id();
+				$upload_url = $wp_upload_dir['baseurl'].'/planso-forms/'.wp_session_id();
 				if(!is_dir($upload_dir)){
 					mkdir( $upload_dir,0777 );
 				}

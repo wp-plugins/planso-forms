@@ -51,6 +51,17 @@ function wp_session_encode() {
 }
 
 /**
+ * Return current session id
+ *
+ * @return string
+ */
+function wp_session_id() {
+	$wp_session = WP_Session::get_instance();
+
+	return $wp_session->session_id;
+}
+
+/**
  * Regenerate the session ID.
  *
  * @param bool $delete_old_session
