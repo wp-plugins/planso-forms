@@ -166,6 +166,9 @@ final class WP_Session extends Recursive_ArrayAccess implements Iterator, Counta
 			}
 		}
 	}
+	public function return_session_id() {
+		return $this->session_id;
+	}
 
 	/**
 	 * Output the current container contents as a JSON-encoded string.

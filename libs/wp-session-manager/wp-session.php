@@ -58,7 +58,7 @@ function wp_session_encode() {
 function wp_session_id() {
 	$wp_session = WP_Session::get_instance();
 
-	return $wp_session->session_id;
+	return $wp_session->return_session_id();
 }
 
 /**
