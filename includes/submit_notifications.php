@@ -366,15 +366,30 @@
 	if(!isset($j->clean_attachments) || $j->clean_attachments===true || $j->clean_attachments===1){
 		if($has_attachments && count($attachments)>0){
 			foreach($attachments as $f){
-				chmod($f,0777);
-				unlink($f);
+				if(is_array($f)){
+					foreach($f as $ff){
+						if(is_file($ff)){
+							chmod($ff,0777);
+							unlink($ff);
+						}
+					}
+				} else {
+					if(is_file($f)){
+						chmod($f,0777);
+						unlink($f);
+					}
+				}
 			}
-			chmod($upload_dir,0777);
-			$files = array_diff(scandir($upload_dir), array('.','..')); 
-	    foreach($files as $file){
-	      unlink($upload_dir.'/'.$file); 
-	    } 
-			rmdir($upload_dir);
+			if(is_dir($upload_dir)){
+				chmod($upload_dir,0777);
+				$files = array_diff(scandir($upload_dir), array('.','..')); 
+		    foreach($files as $file){
+		    	if(is_file($file)){
+		      	unlink($upload_dir.'/'.$file); 
+		      }
+		    } 
+				rmdir($upload_dir);
+			}
 		}
 	}
 	if(!isset($affiliate_params)){

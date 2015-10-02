@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.7.7 =
+* Fixed a bug that could lead to missing newlines in response emails when no content was provided
+
 = 1.7.6 =
 * Removed error notification that could appear in certain installs when uploaded files are cleaned after emailing them
 
