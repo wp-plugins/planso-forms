@@ -30,6 +30,7 @@
 				$content = str_replace('['.$k.']',$v,$content);
 			}
 			
+			
 			/********** Automatischer Mail Body **********/
 			if(trim($content)==''){
 				if(isset($mail->html_mail) && $mail->html_mail==true){
@@ -175,14 +176,17 @@
 				$headers[] = 'Reply-To: '.trim($reply_to);
 			}
 			
+			
+			$admin_content = str_replace("\n","\r\n",str_replace("\r\n","\n",$admin_content));
+			
 			if($has_attachments && count($attachments)>0){
 				
-				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>$attachments));
+				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$admin_content,'headers'=>$headers,'attachments'=>$attachments));
 				wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers'], $filtered_mail_contents['attachments'] );
 				
 			} else {
 				
-				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>array()));
+				$filtered_mail_contents = apply_filters('psfb_submit_before_admin_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$admin_content,'headers'=>$headers,'attachments'=>array()));
 				if(isset($filtered_mail_contents['attachments']) && is_array($filtered_mail_contents['attachments']) && count($filtered_mail_contents['attachments']) > 0){
 					wp_mail( explode(';',$filtered_mail_contents['recipients']), $filtered_mail_contents['subject'], $filtered_mail_contents['content'], $filtered_mail_contents['headers'], $filtered_mail_contents['attachments']);
 				} else {
@@ -265,6 +269,8 @@
 			if(is_email($reply_to)){
 				$headers[] = 'Reply-To: '.trim($reply_to);
 			}
+			
+			$content = str_replace("\n","\r\n",str_replace("\r\n","\n",$content));
 			
 			$filtered_mail_contents = apply_filters('psfb_submit_before_user_mail_send',array('recipients'=>$recipients,'subject'=>$subject,'content'=>$content,'headers'=>$headers,'attachments'=>array()));
 			

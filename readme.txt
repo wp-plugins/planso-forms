@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.7.6 =
+* Removed error notification that could appear in certain installs when uploaded files are cleaned after emailing them
+
 = 1.7.5 =
 * Another fix for session handling for uploaded files
 

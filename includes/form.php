@@ -155,6 +155,7 @@
 <script type="text/javascript">document.write('<i'+'n'+'p'+'ut ty'+'pe="hi'+'dden" value="'+document.getElementById("psfb_hon_as2_{$atts['id']}_{$_POST['psfb_global_cnt']}").value+'" name="psfb_js_as">');</script>
 EOF;
 	}
+	
 	$all_atts = array(
 		'id' => $atts['id'],
 		'customfields' => $customfields,
@@ -467,10 +468,15 @@ EOF;
 						'customfields' => $customfields,
 						'j' => $j
 					);
-					$added_field_attributes = apply_filters('psfb_form_add_field_attributes',$all_field_atts);
-					if(is_array($added_field_attributes)){
+					$added_field_attributes = '';
+					$added_field_attributes_return = apply_filters('psfb_form_add_field_attributes',$all_field_atts);
+					if(is_array($added_field_attributes_return)){
 						//we are expecting a string from the filter
-						$added_field_attributes = '';
+						foreach($added_field_attributes_return as $a){
+							$added_field_attributes .= ' '.$a;
+						}
+					} else {
+						$added_field_attributes = $added_field_attributes_return;
 					}
 					
 					if( in_array($mytype,$customfields)){
