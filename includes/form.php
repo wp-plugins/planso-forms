@@ -472,9 +472,9 @@ EOF;
 					$added_field_attributes_return = apply_filters('psfb_form_add_field_attributes',$all_field_atts);
 					if(is_array($added_field_attributes_return)){
 						//we are expecting a string from the filter
-						foreach($added_field_attributes_return as $a){
-							$added_field_attributes .= ' '.$a;
-						}
+				//		foreach($added_field_attributes_return as $a){
+				//			$added_field_attributes .= ' '.$a;
+				//		}
 					} else {
 						$added_field_attributes = $added_field_attributes_return;
 					}

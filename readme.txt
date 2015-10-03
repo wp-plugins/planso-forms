@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.7.8 =
+* Fixed a bug that could prevent a form from showing correctly
+
 = 1.7.7 =
 * Fixed a bug that could lead to missing newlines in response emails when no content was provided
 
@@ -414,6 +417,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 * Added option to choose from 3 different Datepicker Frameworks
 
 == Upgrade Notice ==
+
+= 1.7.8 =
+Fixed a bug that could prevent a form from showing correctly
 
 = 1.4.3 =
 Major improvements in the backend - all new drag-n-drop and field sorting methods
