@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.7.9 =
+* Optimized error handling in the field editor
+
 = 1.7.8 =
 * Fixed a bug that could prevent a form from showing correctly
 

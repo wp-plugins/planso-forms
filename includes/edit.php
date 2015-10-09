@@ -1445,6 +1445,17 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		$('#field_label').val('');
 	  	}
 	  	$('#field_label').unbind('change').change(function(){
+	  		
+	  		$('.field_name_error').remove();
+	  		if( $('#field_label').val() == ''){
+	  			//Error field name must not be blank
+	  			$('#field_label').addClass('has-error').closest('.form-group').addClass('has-error').append('<p class="field_name_error help-block"><?php echo __('The field label may not be empty! You can hide the label by activating the checkbox down right.</p>','psfbldr'); ?>');
+	  			$('button.savefield').addClass('btn-danger').prop('disabled',true);
+	  		} else {
+	  			$('#field_label').removeClass('has-error').closest('.form-group').removeClass('has-error');
+	  			$('button.savefield').removeClass('btn-danger').prop('disabled',false);
+	  		}
+	  		
 	  		$('#field_name').val( $(this).val().replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_') );
 	  		
 	  		var current_name = $('#field_name').val();
@@ -1886,12 +1897,33 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		}
 		//$('#fieldeditor li a:visible').first().tab('show');
   	//$('#fieldeditor a:first').tab('show');
+  	
+  	$('#fieldeditor .cancelsavefield,#fieldeditor .modal-header button.close').unbind('click').click(function(){
+  		$('.field_name_error').remove();
+	  	$('#field_label').removeClass('has-error').closest('.form-group').removeClass('has-error');
+	  	$('button.savefield').removeClass('btn-danger').prop('disabled',false);
+	  	$('fieldeditor').modal('close');
+  	});
   	/************ MODAL SAVE BUTTON *********/
   	$('#fieldeditor .savefield').unbind('click').click(function(){
   		var myID = $('#fieldeditor').data('id');
   		var mytype = $('#fieldeditor').data('type');
   		
   		$('#field_label').trigger('change');
+  		
+  		
+  		$('.field_name_error').remove();
+  		if( $('#field_label').is(':visible') ){
+	  		if( $('#field_label').val() == ''){
+	  			//Error field name must not be blank
+	  			$('#field_label').addClass('has-error').closest('.form-group').addClass('has-error').append('<p class="field_name_error help-block"><?php echo __('The field label may not be empty! You can hide the label by activating the checkbox down right.</p>','psfbldr'); ?>');
+	  			return false;
+	  		} else {
+	  			$('#field_label').removeClass('has-error').closest('.form-group').removeClass('has-error');
+	  		}
+	  	} else {
+  			$('#field_label').removeClass('has-error').closest('.form-group').removeClass('has-error');
+  		}
   		
   		if( $.inArray(mytype,htmlfields)!=-1){
   			var tag_details = fieldtypes[mytype];
@@ -1910,6 +1942,8 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		
 	  		//ende if html
   		} else {
+	  		
+	  		
 	  		
 	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('placeholder',$('#field_placeholder').val());
 	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('style', $.trim( $('#field_cssstyle').val() ) );
@@ -2812,7 +2846,7 @@ text-align:right;
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo __('Cancel','psfbldr'); ?></button>
+        <button type="button" class="btn btn-default cancelsavefield" data-dismiss="modal"><?php echo __('Cancel','psfbldr'); ?></button>
         <button type="button" class="btn btn-primary savefield"><?php echo __('Update','psfbldr'); ?></button>
       </div>
     </div><!-- /.modal-content -->

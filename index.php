@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.7.8
+ * Version: 1.7.9
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
