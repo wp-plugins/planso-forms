@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.8.0 =
+* Better detection of file types
+
 = 1.7.9 =
 * Optimized error handling in the field editor
 
