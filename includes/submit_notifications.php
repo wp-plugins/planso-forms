@@ -172,7 +172,7 @@
 					$headers[] = 'Bcc: '.trim($b);
 				}
 			}
-			if(is_email($reply_to)){
+			if(is_email(trim($reply_to))){
 				$headers[] = 'Reply-To: '.trim($reply_to);
 			}
 			
@@ -266,7 +266,7 @@
 				}
 			}
 			
-			if(is_email($reply_to)){
+			if(is_email(trim($reply_to))){
 				$headers[] = 'Reply-To: '.trim($reply_to);
 			}
 			

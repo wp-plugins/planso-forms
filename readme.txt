@@ -152,6 +152,9 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.8.1 =
+* Less greedy with validating reply-to adresses
+
 = 1.8.0 =
 * Better detection of file types
 
