@@ -111,12 +111,10 @@ Built in anti spam protection and compatible with other anti spam plugins like [
 > [Learn more about PlanSo Forms Pro >>](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link)
 
 
+
 > #### Brand new PlanSo Leads Plugin
 >
-> Lead generation simple as 1-2-3.<br />
-> PlanSo Leads allows you to display different types of lead teasers managed within PlanSo Leads.<br />
-> No matter if you are looking for modals, sticky bars, page takeovers, call-outs or a combination:<br />
-> PlanSo Leads has beautyful assets for you to use in minutes.<br />
+> Lead generation simple as 1-2-3. PlanSo Leads allows you to display different types of lead teasers managed within PlanSo Leads. No matter if you are looking for modals, sticky bars, page takeovers, call-outs or a combination: PlanSo Leads has beautyful assets for you to use in minutes.<br />
 > [Check out PlanSo Leads in the WordPress Plugin directory >>](https://wordpress.org/plugins/planso-leads/)
 
 == Installation ==
