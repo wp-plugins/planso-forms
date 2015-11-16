@@ -518,6 +518,9 @@ EOF;
 							if(isset($col->class))$out .= ' '.$col->class.'';
 							$out .= '" id="psfield_'.$atts['id'].'_'.$cnt.'"';
 							if(isset($col->style))$out .= ' style="'.$col->style.'"';
+							if(isset($col->maxlength))$out .= ' maxlength="'.$col->maxlength.'"';
+							if(isset($col->number_max))$out .= ' max="'.$col->number_max.'"';
+							if(isset($col->number_min))$out .= ' min="'.$col->number_min.'"';
 							$out .= '/>';
 						} else {
 							$out .= '<input type="'.$fieldtype.'"';
@@ -544,7 +547,9 @@ EOF;
 							$out .= '"';
 							$out .= ' id="psfield_'.$atts['id'].'_'.$cnt.'"';
 							if(isset($col->style))$out .= ' style="'.$col->style.'"';
-							
+							if(isset($col->maxlength))$out .= ' maxlength="'.$col->maxlength.'"';
+							if(isset($col->number_max))$out .= ' max="'.$col->number_max.'"';
+							if(isset($col->number_min))$out .= ' min="'.$col->number_min.'"';
 							//do_action('psfb_form_add_field_attributes');
 							/*
 							$all_field_atts = array(
@@ -585,7 +590,9 @@ EOF;
 								$out .= '"';
 								$out .= ' id="psfield_'.$atts['id'].'_'.$cnt.'"';
 								if(isset($col->style))$out .= ' style="'.$col->style.'"';
-								
+								if(isset($col->maxlength))$out .= ' maxlength="'.$col->maxlength.'"';
+								if(isset($col->number_max))$out .= ' max="'.$col->number_max.'"';
+								if(isset($col->number_min))$out .= ' min="'.$col->number_min.'"';
 								$out .= $added_field_attributes;
 								$out .= '>';
 								

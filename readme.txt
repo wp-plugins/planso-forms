@@ -110,6 +110,12 @@ Built in anti spam protection and compatible with other anti spam plugins like [
 >
 > [Learn more about PlanSo Forms Pro >>](http://forms.planso.de/?utm_campaign=psfb-wpdir&utm_source=wordpress.org-plugins&utm_medium=link)
 
+> #### Brand new PlanSo Leads Plugin
+> Lead generation simple as 1-2-3.<br/>
+> PlanSo Leads allows you to display different types of lead teasers managed within PlanSo Leads.<br/>
+> No matter if you are looking for modals, sticky bars, page takeovers, call-outs or a combination:<br/>
+> PlanSo Leads has beautyful assets for you to use in minutes.
+> [Check out PlanSo Leads in the WordPress Plugin directory >>](https://wordpress.org/plugins/planso-leads/)
 
 == Installation ==
 
@@ -151,6 +157,11 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 8. Integrate your forms by inserting the generated shortcode anywhere within your site.
 
 == Changelog ==
+
+= 1.8.2 =
+* Detection of SMTP-Mail plugins added for better email handling
+* Easier entry of multiple recipients
+* New feature for limiting the max-length for input and textarea fields
 
 = 1.8.1 =
 * Less greedy with validating reply-to adresses

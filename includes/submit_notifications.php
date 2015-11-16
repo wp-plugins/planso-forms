@@ -1,7 +1,6 @@
 <?php
 
 
-
 	if(isset($j->mails)){
 		if(isset($j->mails->admin_mail)){
 			$mail = $j->mails->admin_mail;
@@ -9,10 +8,19 @@
 			$subject = $mail->subject;
 			$content = $mail->content;
 			$reply_to = $mail->reply_to;
-			$from_name = $mail->from_name;
-			$from_email = $mail->from_email;
 			$recipients = implode(';',$mail->recipients);
-			$bcc = implode(';',$mail->bcc);
+			if(isset($mail->from_name)){
+				$from_name = $mail->from_name;
+			}
+			if(isset($mail->from_email)){
+				$from_email = $mail->from_email;
+			}	
+			if(isset($mail->bcc)){
+				$bcc = implode(';',$mail->bcc);
+			}
+			
+				
+			
 			
 			foreach($mail_replace as $k=>$v){
 				$subject = str_replace('['.$k.']',$v,$subject);
@@ -20,8 +28,8 @@
 				$reply_to = str_replace('['.$k.']',$v,$reply_to);
 				$from_name = str_replace('['.$k.']',$v,$from_name);
 				$from_email = str_replace('['.$k.']',$v,$from_email);
-				$recipients = str_replace('['.$k.']',$v,$recipients);
 				$bcc = str_replace('['.$k.']',$v,$bcc);
+				$recipients = str_replace('['.$k.']',$v,$recipients);
 			}
 			foreach($psfb_mail_tracking_map as $k=>$v){
 				$content = str_replace('['.$v.']',$_REQUEST[$k],$content);
@@ -150,7 +158,7 @@
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
 				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
 			} else {
-				if(trim($from_name)!=''){
+				if( isset ($from_name) && trim($from_name) != ''){
 					$headers[] = 'From: "'.trim($from_name).'" <'.trim($from_email).'>';
 				} else {
 					$headers[] = 'From: '.trim($from_email);
@@ -162,10 +170,8 @@
   		} else {
 				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
 			}
-			if(strstr($bcc,';')){
+			if(isset($bcc)){
 				$bcca = explode(';',$bcc);
-			} else {
-				$bcca = array($bcc);
 			}
 			foreach($bcca as $b){
 				if(trim($b)!=''){
@@ -202,18 +208,24 @@
 			$subject = $mail->subject;
 			$content = $mail->content;
 			$reply_to = $mail->reply_to;
-			$from_name = $mail->from_name;
-			$from_email = $mail->from_email;
 			$recipients = implode(';',$mail->recipients);
-			$bcc = implode(';',$mail->bcc);
 			
+			if(isset($mail->from_name)){
+				$from_name = $mail->from_name;
+			}
+			if(isset($mail->from_email)){
+				$from_email = $mail->from_email;
+			}
+			if(isset($mail->bcc)){
+				$bcc = implode(';',$mail->bcc);	
+			}
 			foreach($mail_replace as $k=>$v){
 				$subject = str_replace('['.$k.']',$v,$subject);
 				$content = str_replace('['.$k.']',$v,$content);
 				$reply_to = str_replace('['.$k.']',$v,$reply_to);
+				$recipients = str_replace('['.$k.']',$v,$recipients);
 				$from_name = str_replace('['.$k.']',$v,$from_name);
 				$from_email = str_replace('['.$k.']',$v,$from_email);
-				$recipients = str_replace('['.$k.']',$v,$recipients);
 				$bcc = str_replace('['.$k.']',$v,$bcc);
 			}
 			
@@ -244,7 +256,7 @@
 			if(!isset($from_email) || empty($from_email) || !is_email(trim($from_email))){
 				$headers[] = 'From: "'.get_option( 'blogname', __('Your Wordpress Blog','psfbldr') ).'" <'.get_option( 'admin_email', 'no-reply@'.parse_url($_SERVER['HTTP_HOST'],PHP_URL_HOST) ).'>';
 			} else {
-				if(trim($from_name)!=''){
+				if(isset($from_name) && trim($from_name)!=''){
 					$headers[] = 'From: "'.trim($from_name).'" <'.trim($from_email).'>';
 				} else {
 					$headers[] = 'From: '.trim($from_email);
@@ -255,10 +267,8 @@
   		} else {
 				$headers[] = 'Content-Type: text/plain; charset='.get_option( 'blog_charset', 'UTF-8');
 			}
-			if(strstr($bcc,';')){
+			if(isset($bcc)){
 				$bcca = explode(';',$bcc);
-			} else {
-				$bcca = array($bcc);
 			}
 			foreach($bcca as $b){
 				if(trim($b)!=''){

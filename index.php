@@ -3,7 +3,7 @@
  * Plugin Name: PlanSo Forms
  * Plugin URI: http://forms.planso.de/
  * Description: Build forms and manage forms with the PlanSo Form Builder forms management plugin. PlanSo Form Builder makes it easy to create professional forms with drag and drop and all forms can be customnized in an easy and streamlined way.
- * Version: 1.8.1
+ * Version: 1.8.2
  * Author: PlanSo.de
  * Author URI: http://forms.planso.de/
  * Text Domain: psfbldr
@@ -189,8 +189,82 @@ function psfb_current_action() {
 	return false;
 }
 
+add_action( 'admin_notices', 'psfb_leads_promotion_admin_updated_message' );
+function psfb_leads_promotion_admin_updated_message() {
+	
+	$psfb_leads_promo_notice_dismiss = get_option( 'psfb_leads_promo_notice_dismiss', false);
+	if(!$psfb_leads_promo_notice_dismiss && !is_plugin_active( 'planso-leads/planso-leads.php' )){
+		
+		$bloginfo = get_bloginfo('language');
+		
+		if($bloginfo == 'de-DE'){
+			$target_url = 'http://www.planso.de/planso-leads/';	
+		}else{
+			$target_url = 'http://www.planso.net/planso-leads/';	
+		}
+		
+		?>
+			<div id="psfb_leads_promo_message" class="updated psfb_leads_promo_message">
+				<p><?php echo __( 'Do you like PlanSo Forms?  Then you should check out the brand new PlanSo Leads: it will help you capture more leads and increase your conversions.', 'psfbldr' )?>
+					<a href="<?php echo wp_nonce_url(
+						    add_query_arg(
+						        array(
+						            'action' => 'install-plugin',
+						            'plugin' => 'planso-leads'
+						        ),
+						        admin_url( 'update.php' )
+						    ),
+						    'install-plugin_planso-leads'
+						); ?>" target="_blank" class="btn btn-success btn-xs"><?php echo __('Install PlanSo Leads','psfbldr')?></a> 
+				</p>
+				<p>
+					<strong>
+						<a href="#" class="psfb_leads_promo_ignore_notice"><?php echo __('Dismiss this notice','psfbldr') ?></a> | <a href="<?php echo $target_url; ?>" target="_blank"><?php echo __('Visit PlanSo Leads','psfbldr')?></a>
+					</strong>
+				</p>
+			</div>
+			<script type="text/javascript">
+			jQuery(document).ready(function($){
+				$('.psfb_leads_promo_ignore_notice').click(function(){
+					var dat = {
+						action:'psfb_update_leads_promo_notice_dismiss',
+					};
+					var me = $(this);
+					$.ajax({
+						url:ajaxurl,
+						data:dat,
+						type:'post',
+						dataType:'json',
+						success:function(r){
+							me.closest('.psfb_leads_promo_message').remove();
+						},
+						error:function(o,r){
+							alert('Could not store dismissal');
+						}
+					});
+				});
+				
+			});
+			</script>
+			
+		<?php
+		
+	}
+	return;
+}
+
+
+function psfb_update_leads_promo_notice_dismiss(){
+	update_option('psfb_leads_promo_notice_dismiss',true);
+	echo json_encode(array('success'=>true));
+	wp_die();
+}
+add_action( 'wp_ajax_psfb_update_leads_promo_notice_dismiss', 'psfb_update_leads_promo_notice_dismiss' );
+
+
 add_action( 'psfb_admin_notices', 'psfb_admin_updated_message' );
 function psfb_admin_updated_message() {
+	
 	if ( empty( $_REQUEST['message'] ) )
 		return;
 
@@ -208,6 +282,7 @@ function psfb_admin_updated_message() {
 <div id="message" class="updated"><p><?php echo $updated_message; ?></p></div>
 <?php
 }
+
 
 function psfb_submit_form(){
 	if(!isset($_POST['psfb_form_submit'])){
@@ -266,6 +341,13 @@ function psfb_submit_test_values(){
 	exit();
 }
 add_action( 'wp_ajax_psfb_form_submit_test', 'psfb_submit_test_values' );
+
+function psfb_edit_update_smtp_notice_dismiss(){
+	update_option('psfb_smtp_notice_dismiss',true);
+	echo json_encode(array('success'=>true));
+	wp_die();
+}
+add_action( 'wp_ajax_psfb_edit_update_smtp_notice_dismiss', 'psfb_edit_update_smtp_notice_dismiss' );
 
 function psfb_save_form(){
 	
@@ -406,6 +488,9 @@ function ps_form_builder_enqueue($hook) {
 add_action( 'admin_enqueue_scripts', 'ps_form_builder_enqueue' );
 
 
+
+
+
 function ps_form_builder_list() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -446,9 +531,33 @@ function psfb_register_tinymce_javascript($plugin_array) {
 	$plugin_array['planso_forms_shortcodes'] = plugins_url('/js/mce-button.js',__FILE__);
 	return $plugin_array;
 }
-
-
-
+/*
+?>
+<script type="text/javascript">
+jQuery(document).ready(function($){
+	$('.psfb_leads_promo_ignore_notice').click(function(){
+		var dat = {
+			action:'psfb_update_leads_promo_notice_dismiss',
+		};
+		var me = $(this);
+		$.ajax({
+			url:ajaxurl,
+			data:dat,
+			type:'post',
+			dataType:'json',
+			success:function(r){
+				me.closest('.psfb_leads_promo_message').remove();
+			},
+			error:function(o,r){
+				alert('Could not store dismissal');
+			}
+		});
+	});
+	
+});
+</script>
+<?php
+*/
 
 function psfb_add_tinymce_button(){
 	

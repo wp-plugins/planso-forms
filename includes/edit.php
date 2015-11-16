@@ -6,6 +6,12 @@ if ( ! defined( 'ABSPATH' ) )
 
 require_once( dirname(__FILE__).'/vars.inc.php' );
 
+$psfb_smtp_notice_dismiss = get_option( 'psfb_smtp_notice_dismiss', false);
+$psfb_smtp_plugin_active = false;
+if ( is_plugin_active( 'postman-smtp/postman-smtp.php' ) ||  is_plugin_active( 'easy-wp-smtp/easy-wp-smtp.php' ) ||  is_plugin_active( 'webriti-smtp-mail/webriti-smtp-mail.php' ) ||  is_plugin_active( 'smtp/smtp.php' ) ||  is_plugin_active( 'wp-mail-bank/wp-mail-bank.php' ) ||  is_plugin_active( 'wp-smtp/wp-smtp.php' )) {
+	$psfb_smtp_plugin_active = true;
+}
+
 ?><div class="wrap">
 <div style="float:right;">
 	<a href="https://wordpress.org/support/view/plugin-reviews/planso-forms?rate=5#postform" target="_blank" class="btn btn-success btn-xs"><i class="fa fa-heart"></i> <?php echo __('Like PlanSo Forms? Post a review!','psfbldr'); ?></a>
@@ -32,9 +38,44 @@ require_once( dirname(__FILE__).'/vars.inc.php' );
 	echo ' <a href="' . esc_url( menu_page_url( 'ps-form-builder', false ) ) . '" class="add-new-h2">' . esc_html( __( 'Back to forms', 'psfbldr' ) ) . '</a>';
 	
 	do_action('psfb_edit_nav_main_after',$post_id);
+	
+	
+	
 ?></h2>
-
-<?php do_action( 'psfb_admin_notices' ); ?>
+<?php
+if(!$psfb_smtp_notice_dismiss){
+	if(strstr($_SERVER['SERVER_SOFTWARE'],'IIS') && $psfb_smtp_plugin_active == false){
+		echo '<div id="psfb_message" class="error psfb_message"><p>'.esc_html(__( 'Attention! As you are using a Microsoft IIS for hosting WordPress an SMTP-Mail plugin is needed for the auto-responder mails to work correctly.', 'psfbldr' )).' <a href="';
+						echo wp_nonce_url(
+						    add_query_arg(
+						        array(
+						            'action' => 'install-plugin',
+						            'plugin' => 'postman-smtp'
+						        ),
+						        admin_url( 'update.php' )
+						    ),
+						    'install-plugin_postman-smtp'
+						);
+		echo '" target="_blank" class="btn btn-success btn-xs">'. __('Install Postman SMTP','psfbldr').'</a></p>';
+		echo '<p><strong><a href="#" class="dismiss-notice psfb_smtp_ignore_notice">Dismiss this notice</a></strong></p></div>';
+	}else if(!strstr($_SERVER['SERVER_SOFTWARE'],'IIS') && $psfb_smtp_plugin_active == false){
+		echo '<div id="psfb_message" class="updated psfb_message"><p>'.esc_html(__( 'For best results PlanSo Forms recommends you to install an SMTP-Mail plugin like PostmanSMTP.', 'psfbldr' )).' <a href="';
+						echo wp_nonce_url(
+						    add_query_arg(
+						        array(
+						            'action' => 'install-plugin',
+						            'plugin' => 'postman-smtp'
+						        ),
+						        admin_url( 'update.php' )
+						    ),
+						    'install-plugin_postman-smtp'
+						);
+		echo '" target="_blank" class="btn btn-success btn-xs">'. __('Install Postman SMTP','psfbldr').'</a></p>';
+		echo '<p><strong><a href="#" class="dismiss-notice psfb_smtp_ignore_notice">Dismiss this notice</a></strong></p></div>';
+	}
+}
+do_action( 'psfb_admin_notices' );
+?>
 
 <br class="clear" />
 
@@ -153,6 +194,28 @@ var dragcontroller = {};
 <?php do_action('psfb_edit_js_before_document_ready'); ?>
 
 jQuery(document).ready(function($){
+	
+	$('.psfb_smtp_ignore_notice').click(function(){
+		var dat = {
+			action:'psfb_edit_update_smtp_notice_dismiss',
+		};
+		var me = $(this);
+		$.ajax({
+			url:ajaxurl,
+			data:dat,
+			type:'post',
+			dataType:'json',
+			success:function(r){
+				me.closest('.psfb_message').remove();
+			},
+			error:function(o,r){
+				alert('Could not store dismissal');
+			}
+		});
+	});
+	
+	
+	
 	$('body').css('background-color','inherit');
 	if( $('div.updated.fade').length > 0){
 		$('div.updated.fade').css('opacity','1');
@@ -223,7 +286,6 @@ jQuery(document).ready(function($){
 			$('#psfb_date_format').val(jf.date_format);
 		}
 		var j = jf.fields;
-		//console.log(j);
 		$.each(j,function(k,v){
 			$.each(v,function(i,val){
 				ps_field_drop( false, false, i, val, false );
@@ -380,7 +442,6 @@ jQuery(document).ready(function($){
 					} else {
 						
 					}
-					
 					var myclass = '';
 					try{
 						myclass = $(this).find('#field'+mid+'').find(tag).first().attr('class').replace('form-control','');
@@ -411,6 +472,19 @@ jQuery(document).ready(function($){
 						placeholder = $(this).find('#field'+mid+'').attr('placeholder');
 					}catch(e){}
 						
+					var maxlength = '';
+					try{
+						maxlength = $(this).find('#field'+mid+'').attr('maxlength');
+					}catch(e){}
+						
+					var number_max = '';
+					try{
+						number_max = $(this).find('#field'+mid+'').attr('max');
+					}catch(e){}
+					var number_min = '';
+					try{
+						number_min = $(this).find('#field'+mid+'').attr('min');
+					}catch(e){}	
 					var name = '';
 					try{
 						name = $(this).find('#field'+mid+'').attr('name');
@@ -481,6 +555,15 @@ jQuery(document).ready(function($){
 				if(typeof placeholder != 'undefined'){
 					j[rind][ind].placeholder = placeholder;
 				}
+				if(typeof maxlength != 'undefined'){
+					j[rind][ind].maxlength = maxlength;
+				}
+				if(typeof number_max != 'undefined'){
+					j[rind][ind].number_max = number_max;
+				}
+				if(typeof number_min != 'undefined'){
+					j[rind][ind].number_min = number_min;
+				}
 				if(typeof icon != 'undefined'){
 					j[rind][ind].icon = icon;
 				}
@@ -550,20 +633,72 @@ jQuery(document).ready(function($){
 		jj.mails.admin_mail = {};
 		jj.mails.admin_mail.content = $('#admin_mail_content').val();
 		jj.mails.admin_mail.subject = $('#admin_mail_subject').val();
-		jj.mails.admin_mail.from_name = $('#admin_mail_from_name').val();
-		jj.mails.admin_mail.from_email = $('#admin_mail_from_email').val();
+		if(typeof $('#admin_mail_from_name').val() != 'undefined' && $('#admin_mail_from_name').val() != ''){
+			jj.mails.admin_mail.from_name = $('#admin_mail_from_name').val();
+		}
+		if(typeof $('#admin_mail_from_email').val() != 'undefined' && $('#admin_mail_from_email').val() != ''){
+			jj.mails.admin_mail.from_email = $('#admin_mail_from_email').val();
+		}
 		jj.mails.admin_mail.reply_to = $('#admin_mail_reply_to').val();
-		jj.mails.admin_mail.recipients = $('#admin_mail_recipients').val().split(';');
-		jj.mails.admin_mail.bcc = $('#admin_mail_bcc').val().split(';');
+		
+		if($('#admin_mail_recipients').val().indexOf(';') != -1){
+			jj.mails.admin_mail.recipients = $('#admin_mail_recipients').val().split(';');
+		}else if($('#admin_mail_recipients').val().indexOf(',') != -1){
+			jj.mails.admin_mail.recipients = $('#admin_mail_recipients').val().split(',');
+		}else if($('#admin_mail_recipients').val().indexOf(' ') != -1){
+			jj.mails.admin_mail.recipients = $('#admin_mail_recipients').val().split(',');
+		}else{
+			jj.mails.admin_mail.recipients = [];
+			jj.mails.admin_mail.recipients.push($('#admin_mail_recipients').val());
+		}
+		
+		if(typeof $('#admin_mail_bcc').val() != 'undefined' && $('#admin_mail_bcc').val() != ''){
+			if($('#admin_mail_bcc').val().indexOf(';') != -1){
+				jj.mails.admin_mail.bcc = $('#admin_mail_bcc').val().split(';');
+			}else if($('#admin_mail_bcc').val().indexOf(',') != -1){
+				jj.mails.admin_mail.bcc = $('#admin_mail_bcc').val().split(',');
+			}else if($('#admin_mail_bcc').val().indexOf(' ') != -1){
+				jj.mails.admin_mail.bcc = $('#admin_mail_bcc').val().split(',');
+			}else{
+				jj.mails.admin_mail.bcc= [];
+				jj.mails.admin_mail.bcc.push($('#admin_mail_bcc').val());
+			}
+		}
 		
 		jj.mails.user_mail = {};
 		jj.mails.user_mail.content = $('#user_mail_content').val();
 		jj.mails.user_mail.subject = $('#user_mail_subject').val();
-		jj.mails.user_mail.from_name = $('#user_mail_from_name').val();
-		jj.mails.user_mail.from_email = $('#user_mail_from_email').val();
+		if(typeof $('#user_mail_from_name').val() != 'undefined' && $('#user_mail_from_name').val() != ''){
+			jj.mails.user_mail.from_name = $('#user_mail_from_name').val();
+		}
+		if(typeof $('#user_mail_from_email').val() != 'undefined' && $('#user_mail_from_email').val() != ''){
+			jj.mails.user_mail.from_email = $('#user_mail_from_email').val();
+		}
 		jj.mails.user_mail.reply_to = $('#user_mail_reply_to').val();
-		jj.mails.user_mail.recipients = $('#user_mail_recipients').val().split(';');
-		jj.mails.user_mail.bcc = $('#user_mail_bcc').val().split(';');
+		if($('#user_mail_recipients').val().indexOf(';') != -1){
+			jj.mails.user_mail.recipients = $('#user_mail_recipients').val().split(';');
+		}else if($('#user_mail_recipients').val().indexOf(',') != -1){
+			jj.mails.user_mail.recipients = $('#user_mail_recipients').val().split(',');
+		}else if($('#user_mail_recipients').val().indexOf(' ') != -1){
+			jj.mails.user_mail.recipients = $('#user_mail_recipients').val().split(',');
+		}else{
+			jj.mails.user_mail.recipients= [];
+			jj.mails.user_mail.recipients.push($('#user_mail_recipients').val());
+		}
+		
+		if(typeof $('#user_mail_bcc').val() != 'undefined' && $('#user_mail_bcc').val() != ''){
+			if($('#user_mail_bcc').val().indexOf(';') != -1){
+				jj.mails.user_mail.bcc = $('#user_mail_bcc').val().split(';');
+			}else if($('#user_mail_bcc').val().indexOf(',') != -1){
+				jj.mails.user_mail.bcc = $('#user_mail_bcc').val().split(',');
+			}else if($('#user_mail_bcc').val().indexOf(' ') != -1){
+				jj.mails.user_mail.bcc = $('#user_mail_bcc').val().split(',');
+			}else{
+				jj.mails.user_mail.bcc = [];
+				jj.mails.user_mail.bcc.push($('#user_mail_bcc').val());
+			}
+		}
+		
 		
 		if( $('#psfb_admin_mail_html').length>0 ){
 			if( $('#psfb_admin_mail_html').is(':checked') ){
@@ -712,7 +847,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
   while( $('#field'+dynID).length > 0 ){
   	dynID ++;
   }
-  //console.log(mytype);
   var myFieldType = fieldtypes[mytype];
   //var myLabel = myFieldType.label;
   //console.log(target);
@@ -759,7 +893,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  }
 		row += '</label>';
 	}
-	
   if( $.inArray(mytype,customfields) != -1 ){
   	
   	<?php do_action('psfb_edit_js_customfields_create'); ?>
@@ -771,7 +904,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
   } else if( $.inArray(mytype,htmlfields)!= -1 ){
 		
 		var tag_details = fieldtypes[mytype];
-		//console.log(tag_details);
 		row += '<div class="psfb_html_content" id="field'+dynID+'" data-tag="'+tag_details.type+'"';
 		if(typeof tag_details.options != 'undefined'){
 			row += ' data-options="'+JSON.stringify(tag_details.options)+'"';
@@ -793,6 +925,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    if(typeof j.class!='undefined' && j.class!=''){
 	    	row += ' class="'+j.class+'"';
 	    }
+     	
 			row += '>';
 			if(typeof j.content != 'undefined'){
 				row += j.content;
@@ -851,9 +984,10 @@ function ps_field_drop( event, ui, target, j, createcol ){
 		    if(typeof j.rows!='undefined' && j.rows!=''){
 		    	row += ' rows="'+j.rows+'"';
 		    }
-		    if(typeof j.placeholder!='undefined' && j.placeholder!='' && j.placeholder!='undefined'){
+		    if(typeof j.placeholder!='undefined' && j.placeholder!=''){
 		    	row += ' placeholder="'+j.placeholder+'"';
 		    }
+		   
 		    
 		    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
 		    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
@@ -1191,7 +1325,7 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	//input group
 	  	
 	    if(typeof j.icon!='undefined' && j.icon!='' && j.icon!='undefined'){
-	    	//console.log(j.icon);
+	    	
 		  	row += '<div class="input-group">';
 		  	row += '<div class="input-group-addon">';
 		  	row += '<span class="fa '+j.icon+'"></span>';
@@ -1221,15 +1355,22 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	    if(typeof j.style!='undefined' && j.style!='' && j.style!='undefined'){
 	    	row += ' style="'+j.style+'"';
 	    }
-	    if(typeof j.min!='undefined' && j.min!='' && j.min!='undefined'){
-	    	row += ' min="'+j.min+'"';
+     	if(typeof j.maxlength!='undefined' && j.maxlength!=''){
+	    	row += ' maxlength="'+j.maxlength+'"';
 	    }
-	    if(typeof j.max!='undefined' && j.max!='' && j.max!='undefined'){
-	    	row += ' max="'+j.max+'"';
+	    if(typeof j.number_max != 'undefined' && j.number_max != ''){
+	    	row += ' max="'+j.number_max+'"';
+	    }
+	    if(typeof j.number_min != 'undefined' && j.number_min != '' ){
+	    	row += ' min="'+j.number_min+'"';
 	    }
 	    if(typeof j.placeholder!='undefined' && j.placeholder!='' && j.placeholder!='undefined'){
 	    	row += ' placeholder="'+j.placeholder+'"';
 	    }
+	    /*if(typeof j.maxlength!='undefined' && j.maxlength!='' && j.maxlength!='undefined'){
+	    	row += ' maxlength="'+j.maxlength+'"';
+	    }*/
+	    
 	    if(typeof j.name!='undefined' && j.name!='' && j.name!='undefined'){
 	    	row += ' name="'+j.name.replace(/(?!\w)[\x00-\xC0]/g,'_').replace(/[^\x00-\x7F]/g,'_')+'"';
 	    } else {
@@ -1401,7 +1542,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
   	
   	var mytype = $(this).closest('.field_container').data('type');
   	
-  	
   	if( $.inArray(mytype,htmlfields)!=-1){
   		
   		
@@ -1419,6 +1559,11 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	if( $('#field_cssstyle').val()=='undefined'){
 	  		$('#field_cssstyle').val('');
 	  	}
+	  	/*
+	  	$('#field_maxlength').val( $(this).closest('.field_container').find('.psfb_html_content').find(tag).first().attr('maxlength') );
+	  	if( $('#field_maxlength').val()=='undefined'){
+	  		$('#field_maxlength').val('');
+	  	}*/
   		var cssclass = $(this).closest('.field_container').find('.psfb_html_content').find(tag).first().attr('class');
 	  	if(typeof cssclass!='undefined'){
 	  		if(cssclass.indexOf('psfb_html_content')!=-1){
@@ -1489,6 +1634,20 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	if( $('#field_cssstyle').val()=='undefined'){
 	  		$('#field_cssstyle').val('');
 	  	}
+	  	if(mytype == 'number'){
+	  		$('.field_number_ranges_wrapper').show();
+	  		$('.field_maxlength_wrapper').hide();
+	  		$('#field_numbermax').val( my_field_container.find('.form-group :input').attr('max') );
+	  		$('#field_numbermin').val( my_field_container.find('.form-group :input').attr('min') );
+	  		
+	  	}else{
+	  		$('.field_number_ranges_wrapper').hide();
+	  		$('.field_maxlength_wrapper').show();
+		  	$('#field_maxlength').val( my_field_container.find('.form-group :input').attr('maxlength') );
+		  	if( $('#field_maxlength').val()=='undefined'){
+		  		$('#field_maxlength').val('');
+		  	}
+		  }	
 	  	var cssclass = my_field_container.find('.form-group :input').attr('class');
 	  	if(typeof cssclass!='undefined'){
 	  		if(cssclass.indexOf('form-control')!=-1){
@@ -1522,7 +1681,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		var req = my_field_container.find('.form-group :input').prop('required');
 	  		var orientation = false;
 	  	}
-	  	//console.log(req);
 	  	if(typeof req!='undefined' && (req == 'required' || req==true || req=='true') ){
 	  		req = true;
 	  		$('#field_required').prop('checked',true);
@@ -1540,7 +1698,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	} else {
 	  		var hide_label = my_field_container.find('.form-group :input').data('hide_label');
 	  	}
-	  	//console.log(req);
 	  	if(typeof hide_label!='undefined' && (hide_label == '1' || hide_label==true || hide_label=='true') ){
 	  		hide_label = true;
 	  		$('#field_hide_label').prop('checked',true);
@@ -1564,9 +1721,21 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  	}
 	  	if( $.inArray(mytype,noplaceholderfields)!= -1  ){
 	  		$('.field_placeholder_wrapper').hide();
+	  		$('.field_maxlength_wrapper').hide();
+	  		//if(mytype != 'range'){
+	  		$('.field_number_ranges_wrapper').hide();
+	  		//}
 	  	} else {
+	  		
 	  		$('.field_placeholder_wrapper').show();
+	  		if(mytype == 'number'){
+	  			$('.field_number_ranges_wrapper').show();
+	  		}else{
+	  			$('.field_maxlength_wrapper').show();
+	  		}
 	  	}
+	  	
+	  	
 	  	if( mytype=='radio' || mytype=='checkbox'){
 	  		$('.field_orientation_wrapper').show();
 	  	} else {
@@ -1938,14 +2107,26 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  		
 	  		$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').find(tag).first().attr('style', $('#field_cssstyle').val() );
 	  		$('.field_container[data-id="'+myID+'"]').find('.psfb_html_content').find(tag).first().attr('class', $('#field_cssclass').val() );
-	  			
 	  		
-	  		//ende if html
   		} else {
 	  		
-	  		
-	  		
 	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('placeholder',$('#field_placeholder').val());
+	  		
+	  		if(mytype != 'number' && typeof $('#field_maxlength').val() != 'undefined' && $('#field_maxlength').val() != ''){
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('maxlength', $('#field_maxlength').val() );
+	  		}else if(mytype == 'number'){
+	  			$('.field_container[data-id="'+myID+'"]').find('.form-group :input').removeAttr('maxlength');
+	  			if(typeof $('#field_numbermax').val() != 'undefined' && $('#field_numbermax').val() != ''){
+	  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('max', $('#field_numbermax').val() );
+	  			}else{
+	  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').removeAttr('max');
+	  			}
+	  			if(typeof $('#field_numbermin').val() != 'undefined' && $('#field_numbermin').val() != ''){
+	  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('min', $('#field_numbermin').val() );	
+	  			}else{
+	  				$('.field_container[data-id="'+myID+'"]').find('.form-group :input').removeAttr('min');	
+	  			}
+	  		}
 	  		$('.field_container[data-id="'+myID+'"]').find('.form-group :input').attr('style', $.trim( $('#field_cssstyle').val() ) );
 	  		
 	  		if(mytype.indexOf('submit')!=-1){
@@ -1979,14 +2160,26 @@ function ps_field_drop( event, ui, target, j, createcol ){
 	  				$('#admin_mail_recipients').val( $('#admin_mail_recipients').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
 	  				$('#user_mail_recipients').val( $('#user_mail_recipients').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
 	  				
-	  				$('#admin_mail_bcc').val( $('#admin_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-	  				$('#user_mail_bcc').val( $('#user_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				if(typeof $('#admin_mail_bcc').val() != 'undefined' && $('#admin_mail_bcc').val() != ''){
+	  					$('#admin_mail_bcc').val( $('#admin_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				}
+	  				if(typeof $('#user_mail_bcc').val() != 'undefined'  && $('#user_mail_bcc').val() != ''){
+	  					$('#user_mail_bcc').val( $('#user_mail_bcc').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				}
 	  				
-	  				$('#admin_mail_from_name').val( $('#admin_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-	  				$('#user_mail_from_name').val( $('#user_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				if(typeof $('#admin_mail_from_name').val() != 'undefined' && $('#admin_mail_from_name').val() != ''){
+	  					$('#admin_mail_from_name').val( $('#admin_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				}
+	  				if(typeof $('#user_mail_from_name').val() != 'undefined'  && $('#user_mail_from_name').val() != ''){
+	  					$('#user_mail_from_name').val( $('#user_mail_from_name').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				}
 	  				
-	  				$('#admin_mail_from_email').val( $('#admin_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
-	  				$('#user_mail_from_email').val( $('#user_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				if(typeof $('#admin_mail_from_email').val() != 'undefined' && $('#admin_mail_from_email').val() != ''){
+	  					$('#admin_mail_from_email').val( $('#admin_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				}
+	  				if(typeof $('#user_mail_from_email').val() != 'undefined'  && $('#user_mail_from_email').val() != ''){
+	  					$('#user_mail_from_email').val( $('#user_mail_from_email').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
+	  				}
 	  				
 	  				$('#admin_mail_reply_to').val( $('#admin_mail_reply_to').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
 	  				$('#user_mail_reply_to').val( $('#user_mail_reply_to').val().replace('['+$('#field_name_orig').val()+']','['+$('#field_name').val()+']') );
@@ -2047,8 +2240,6 @@ function ps_field_drop( event, ui, target, j, createcol ){
   					$(this).find('.condition_set_content .form-group').each(function(){
   						c.groups[i].rules[ii] = {};
   						c.groups[i].rules[ii].field = $(this).find('.condition_field_select').val();
-  						//console.log('here');
-  					//	console.log($(this).find('.condition_field_select').val());
   						c.groups[i].rules[ii].op = $(this).find('.condition_field_condition').val();
   						c.groups[i].rules[ii].data = $(this).find('.condition_field_value').val();
   						ii ++;
@@ -2484,7 +2675,7 @@ text-align:right;
       	
       	
       	<?php 
-      	if ( is_plugin_active( 'postman-smtp/postman-smtp.php' ) ) {
+      	if ( $psfb_smtp_plugin_active == true ) {
       		//plugin is activated
       	} else if(is_dir( dirname(dirname(dirname(__FILE__))).'/postman-smtp' )){
       		//plugin is installed but inactive
@@ -2533,9 +2724,6 @@ text-align:right;
       	<?php
 				}
       	?>
-      	
-      	
-      	
       	
       	<?php 
       	if ( is_plugin_active( 'goodbye-captcha/goodbye-captcha.php' ) ) {
@@ -2838,6 +3026,28 @@ text-align:right;
 						    <input type="text" id="field_cssstyle" class="form-control">
 						    <p class="help-block"><?php echo __('Format this field with custom inline CSS rules','psfbldr'); ?></p>
 						  </div>
+						  <div class="form-group field_maxlength_wrapper" style="display:none;">
+						    <label for="field_maxlength"><?php echo __('Max length','psfbldr'); ?></label>
+						    <input type="number" id="field_maxlength" class="form-control">
+						    <p class="help-block"><?php echo __('Restrict number of characters allowed by this input.Default is unlimited.','psfbldr'); ?></p>
+						  </div>
+						  <div class="row field_number_ranges_wrapper" style="display:none;">
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="field_numbermin"><?php echo __('Min','psfbldr'); ?></label>
+								    <input type="number" id="field_numbermin" class="form-control">
+								    <p class="help-block"><?php echo __('Minumum number allowed to be entered','psfbldr'); ?></p>
+								  </div>
+						  	</div>
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="field_numbermax"><?php echo __('Max','psfbldr'); ?></label>
+								    <input type="number" id="field_numbermax" class="form-control">
+								    <p class="help-block"><?php echo __('Maximum number allowed to be entered','psfbldr'); ?></p>
+								  </div>
+						  	</div>
+						  	
+					  	</div>
 						  
 						  <?php do_action( 'psfb_edit_modal_advanced_after_style' ); ?>
 		        	<!-- prefill value from get/post -->
@@ -3053,39 +3263,49 @@ text-align:right;
 						
 						<div class="form-group">
 					    <label for="admin_mail_recipients"><?php echo __('Admin mail recipient(s)','psfbldr'); ?></label>
-					    <input type="text" id="admin_mail_recipients" class="form-control admin_mail_recipients" value="<?php if(isset($admin_mail->recipients) && count($admin_mail->recipients)>0)echo implode(';',$admin_mail->recipients); ?>">
-					    <p class="help-block"><?php echo __('Enter one or more recipient email address for the admin mail. Devide multiple recipients with ;','psfbldr'); ?></p>
-					  </div>
-						
-						<div class="form-group">
-					    <label for="admin_mail_bcc"><?php echo __('Admin mail bcc recipient(s)','psfbldr'); ?></label>
-					    <input type="text" id="admin_mail_bcc" class="form-control admin_mail_bcc" value="<?php if(isset($admin_mail->bcc) && count($admin_mail->bcc)>0)echo implode(';',$admin_mail->bcc); ?>">
-					    <p class="help-block"><?php echo __('Enter one or more bcc email address for the admin mail. Devide multiple recipients with ;','psfbldr'); ?></p>
+					    <input type="text" id="admin_mail_recipients" class="form-control admin_mail_recipients" value="<?php if(isset($admin_mail->recipients) && count($admin_mail->recipients)>0)echo implode(';',$admin_mail->recipients) ?>">
+					    <p class="help-block"><?php echo __('Enter one or more recipient email address for the admin mail. Divide multiple recipients with ; or , or with a space','psfbldr'); ?></p>
 					  </div>
 					  
-					  <div class="row">
-					  	<div class="col-md-6">
-					  		<div class="form-group">
-							    <label for="admin_mail_from_name"><?php echo __('Admin mail from name','psfbldr'); ?></label>
-							    <input type="text" id="admin_mail_from_name" class="form-control admin_mail_from_name" value="<?php echo $admin_mail->from_name; ?>">
-							    <p class="help-block"><?php echo __('This is the senders name for the email sent to you/the admin','psfbldr'); ?></p>
-							  </div>
+						<?php 
+		      	if (  $psfb_smtp_plugin_active == true) {
+		      		//plugin is activated
+		      		?>
+		      		<div class="form-group">
+						    <label for="admin_mail_bcc"><?php echo __('Admin mail bcc recipient(s)','psfbldr'); ?></label>
+						    <input type="text" id="admin_mail_bcc" class="form-control admin_mail_bcc" value="<?php if(isset($admin_mail->bcc) && count($admin_mail->bcc)>0)echo implode(';',$admin_mail->bcc) ?>">
+						    <p class="help-block"><?php echo __('Enter one or more bcc email address for the admin mail. Divide multiple recipients with ; or , or with a space','psfbldr'); ?></p>
 					  	</div>
-					  	<div class="col-md-6">
-					  		<div class="form-group">
-							    <label for="admin_mail_from_email"><?php echo __('Admin mail from email','psfbldr'); ?></label>
-							    <input type="text" id="admin_mail_from_email" class="form-control admin_mail_from_email" value="<?php echo $admin_mail->from_email; ?>">
-							    <p class="help-block"><?php echo __('This is the senders email adress for the email sent to you/the admin','psfbldr'); ?></p>
-							  </div>
-					  	</div>
-					  </div>
+					 
+						  <div class="row">
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="admin_mail_from_name"><?php echo __('Admin mail from name','psfbldr'); ?></label>
+								    <input type="text" id="admin_mail_from_name" class="form-control admin_mail_from_name" value="<?php if(isset($admin_mail->from_name)) echo $admin_mail->from_name; ?>">
+								    <p class="help-block"><?php echo __('This is the senders name for the email sent to you/the admin','psfbldr'); ?></p>
+								  </div>
+						  	</div>
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="admin_mail_from_email"><?php echo __('Admin mail from email','psfbldr'); ?></label>
+								    <input type="text" id="admin_mail_from_email" class="form-control admin_mail_from_email" value="<?php if(isset($admin_mail->from_email)) echo $admin_mail->from_email; ?>">
+								    <p class="help-block"><?php echo __('This is the senders email adress for the email sent to you/the admin','psfbldr'); ?></p>
+								  </div>
+						  	</div>
+						  </div>
 						
-						<div class="form-group">
+							
+						  <?php
+		      	} else {
+							//plugin is not installed
+						
+						}
+			      ?>
+			      <div class="form-group">
 					    <label for="admin_mail_reply_to"><?php echo __('Admin mail reply to address','psfbldr'); ?></label>
 					    <input type="text" id="admin_mail_reply_to" class="form-control admin_mail_reply_to" value="<?php echo $admin_mail->reply_to; ?>">
 					    <p class="help-block"><?php echo __('Enter one email address that is used as the reply adress when answering the admin mail.','psfbldr'); ?></p>
 					  </div>
-						
 						<?php do_action( 'psfb_edit_after_admin_mail_reply_to' ); ?>
 						
 						
@@ -3148,39 +3368,49 @@ text-align:right;
 						
 						<div class="form-group">
 					    <label for="user_mail_recipients"><?php echo __('User mail recipient(s)','psfbldr'); ?></label>
-					    <input type="text" id="user_mail_recipients" class="form-control user_mail_recipients" value="<?php if(isset($user_mail->recipients) && count($user_mail->recipients)>0)echo implode(';',$user_mail->recipients); ?>">
-					    <p class="help-block"><?php echo __('Enter one or more recipient email address for the user mail. Devide multiple recipients with ;','psfbldr'); ?></p>
-					  </div>
-						
-						<div class="form-group">
-					    <label for="user_mail_bcc"><?php echo __('User mail bcc recipient(s)','psfbldr'); ?></label>
-					    <input type="text" id="user_mail_bcc" class="form-control user_mail_bcc" value="<?php if(isset($user_mail->bcc) && count($user_mail->bcc)>0)echo implode(';',$user_mail->bcc); ?>">
-					    <p class="help-block"><?php echo __('Enter one or more bcc email address for the user mail. Devide multiple recipients with ;','psfbldr'); ?></p>
+					    <input type="text" id="user_mail_recipients" class="form-control user_mail_recipients" value="<?php if(isset($user_mail->recipients) && count($user_mail->recipients)>0)echo implode(';',$user_mail->recipients) ?>">
+					    <p class="help-block"><?php echo __('Enter one or more recipient email address for the user mail. Divide multiple recipients with ; or , or with a space','psfbldr'); ?></p>
 					  </div>
 					  
-					  <div class="row">
-					  	<div class="col-md-6">
-					  		<div class="form-group">
-							    <label for="user_mail_from_name"><?php echo __('User mail from name','psfbldr'); ?></label>
-							    <input type="text" id="user_mail_from_name" class="form-control user_mail_from_name" value="<?php echo $user_mail->from_name; ?>">
-							    <p class="help-block"><?php echo __('This is the senders name for the email sent to the user','psfbldr'); ?></p>
-							  </div>
+					  <?php 
+		      	if ( $psfb_smtp_plugin_active == true) {
+		      		//plugin is activated
+		      		?>
+		      		<div class="form-group">
+					    	<label for="user_mail_bcc"><?php echo __('User mail bcc recipient(s)','psfbldr'); ?></label>
+					    	<input type="text" id="user_mail_bcc" class="form-control user_mail_bcc" value="<?php if(isset($user_mail->bcc) && count($user_mail->bcc)>0)echo implode(';',$user_mail->bcc) ?>">
+					    	<p class="help-block"><?php echo __('Enter one or more bcc email address for the user mail. Divide multiple recipients with ; or , or with a space','psfbldr'); ?></p>
 					  	</div>
-					  	<div class="col-md-6">
-					  		<div class="form-group">
-							    <label for="user_mail_from_email"><?php echo __('User mail from email','psfbldr'); ?></label>
-							    <input type="text" id="user_mail_from_email" class="form-control user_mail_from_email" value="<?php echo $user_mail->from_email; ?>">
-							    <p class="help-block"><?php echo __('This is the senders email adress for the email sent to the user','psfbldr'); ?></p>
-							  </div>
-					  	</div>
-					  </div>
+					  
+						  <div class="row">
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="user_mail_from_name"><?php echo __('User mail from name','psfbldr'); ?></label>
+								    <input type="text" id="user_mail_from_name" class="form-control user_mail_from_name" value="<?php if(isset($user_mail->from_name)) echo $user_mail->from_name; ?>">
+								    <p class="help-block"><?php echo __('This is the senders name for the email sent to the user','psfbldr'); ?></p>
+								  </div>
+						  	</div>
+						  	<div class="col-md-6">
+						  		<div class="form-group">
+								    <label for="user_mail_from_email"><?php echo __('User mail from email','psfbldr'); ?></label>
+								    <input type="text" id="user_mail_from_email" class="form-control user_mail_from_email" value="<?php if(isset($user_mail->from_email)) echo $user_mail->from_email; ?>">
+								    <p class="help-block"><?php echo __('This is the senders email adress for the email sent to the user','psfbldr'); ?></p>
+								  </div>
+						  	</div>
+						  </div>
 						
+							
+						 	<?php
+		      	} else {
+							//plugin is not installed
+						
+						}
+			      ?>
 						<div class="form-group">
-					    <label for="user_mail_reply_to"><?php echo __('User mail reply to address','psfbldr'); ?></label>
-					    <input type="text" id="user_mail_reply_to" class="form-control user_mail_reply_to" value="<?php echo $user_mail->reply_to; ?>">
-					    <p class="help-block"><?php echo __('Enter one email address that is used as the reply adress when answering the user mail.','psfbldr'); ?></p>
-					  </div>
-						
+						    <label for="user_mail_reply_to"><?php echo __('User mail reply to address','psfbldr'); ?></label>
+						    <input type="text" id="user_mail_reply_to" class="form-control user_mail_reply_to" value="<?php echo $user_mail->reply_to; ?>">
+						    <p class="help-block"><?php echo __('Enter one email address that is used as the reply adress when answering the user mail.','psfbldr'); ?></p>
+						  </div>
 						<?php do_action( 'psfb_edit_after_user_mail_reply_to' ); ?>
 						
 					</div>
