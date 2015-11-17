@@ -14,6 +14,22 @@ if ( is_plugin_active( 'postman-smtp/postman-smtp.php' ) ||  is_plugin_active( '
 
 ?><div class="wrap">
 <div style="float:right;">
+	<?php
+	if ( !is_plugin_active( 'planso-leads/planso-leads.php' ) && !is_dir(dirname(dirname(dirname(__FILE__))).'/planso-leads/' ) ){
+	echo '<a href="'.
+		wp_nonce_url(
+		    add_query_arg(
+		        array(
+		            'action' => 'install-plugin',
+		            'plugin' => 'planso-leads'
+		        ),
+		        admin_url( 'update.php' )
+		    ),
+		    'install-plugin_planso-leads'
+		)
+	.'" target="_blank" class="btn btn-warning btn-xs" title="'. __('PlanSo Leads is the brand new plugin for capturing new leads from the makers of PlanSo Forms','psfbldr').'"><i class="fa fa-download"></i> '. __('Install PlanSo Leads','psfbldr').'</a>';
+	}
+	?>
 	<a href="https://wordpress.org/support/view/plugin-reviews/planso-forms?rate=5#postform" target="_blank" class="btn btn-success btn-xs"><i class="fa fa-heart"></i> <?php echo __('Like PlanSo Forms? Post a review!','psfbldr'); ?></a>
 </div>
 <h2><?php
@@ -3192,7 +3208,34 @@ text-align:right;
 		<div class="metabox-holder">
 			<div class="meta-box-sortables">
 				<div id="titlediv">
-					<h3 class="hndle" style="cursor:default;"><span><strong><?php echo __('Admin Mail settings','psfbldr'); ?></strong></span></h3>
+					<h3 class="hndle" style="cursor:default;"><span><strong><?php echo __('Admin Mail settings','psfbldr'); ?></strong></span>
+					<?php 
+						$psfb_admin_user_mail_notice = '';
+						if ( $psfb_smtp_plugin_active ) {
+							//plugin is installed
+						}else if(is_dir( dirname(dirname(dirname(__FILE__))).'/postman-smtp' )){
+      				//plugin is installed but inactive
+      					$psfb_admin_user_mail_notice = '
+		      			
+			      		<p class="bg-warning help-block" style="padding: 0.4em 0.6em;border-radius: 4px;box-shadow: 0 0 4px #ffdd00;">'.__('Activate Postman Smtp plugin to have more mail settings and better delivery of mails.','psfbldr').'</p>
+			      		<a href="';
+			      		$psfb_admin_user_mail_notice .= admin_url( 'plugins.php' ).'?plugin_status=inactive.';
+			      		$psfb_admin_user_mail_notice .= '" target="_blank" class="btn btn-success btn-xs"> '.__('Activate Postman SMTP','psfbldr').' </a>
+			      		
+		      		';
+						} else if ( !$psfb_smtp_plugin_active ) {
+		      		//plugin is activated
+		      		
+		      		$psfb_admin_user_mail_notice = '
+		      			<p class="bg-warning help-block" style="padding: 0.4em 0.6em;border-radius: 4px;box-shadow: 0 0 4px #ffdd00;">
+		      				'.__('Please install a Smtp Plugin, so that you can have more mail settings and better delivery of mails.','psfbldr').'
+		      		 		<a href="'.wp_nonce_url(add_query_arg( array( 'action' => 'install-plugin', 'plugin' => 'postman-smtp' ),admin_url( 'update.php' )),'install-plugin_postman-smtp').'" class="btn btn-warning btn-xs">'. __('Install Postman-SMTP','psfbldr').'</a>
+		      			</p>
+		      		';
+		      	}
+		      	echo $psfb_admin_user_mail_notice;
+		      	?>
+		      	</h3>
 				</div>
 				<br class="clear">
 				
@@ -3340,7 +3383,11 @@ text-align:right;
 		<div class="metabox-holder">
 			<div class="meta-box-sortables">
 				<div id="titlediv">
-					<h3 class="hndle" style="cursor:default;"><span><strong><?php echo __('User Mail settings','psfbldr'); ?></strong></span></h3>
+					<h3 class="hndle" style="cursor:default;"><span><strong><?php echo __('User Mail settings','psfbldr'); ?></strong></span>
+						<?php 
+		      	echo $psfb_admin_user_mail_notice;
+		      	?>
+					</h3>
 				</div>
 				<br class="clear">
 				

@@ -157,6 +157,10 @@ Please use the [Support tab](https://wordpress.org/support/plugin/planso-forms) 
 
 == Changelog ==
 
+= 1.8.3 =
+* Increased the list of visible forms if more than 25 forms are created
+* Optimized the notifications about third-party SMTP  plugins
+
 = 1.8.2 =
 * Detection of SMTP-Mail plugins added for better email handling
 * Easier entry of multiple recipients

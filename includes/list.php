@@ -12,9 +12,9 @@ if($sort_ad=='ASC'){
 } else {
 	$new_sort = 'asc';
 }
-$page_limit = empty( $_REQUEST['rows'] ) ? 25 : $_REQUEST['rows'];
+$page_limit = empty( $_REQUEST['rows'] ) ? 100 : $_REQUEST['rows'];
 if(!is_numeric( $page_limit )){
-	$page_limit = 25;
+	$page_limit = 100;
 }
 ?>
 <style type="text/css">
